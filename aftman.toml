@@ -1,0 +1,10 @@
+# This file lists tools managed by Aftman, a cross-platform toolchain manager.
+# For more information, see https://github.com/LPGhatguy/aftman
+
+# To add a new tool, add an entry to this table.
+[tools]
+lune = "filiptibell/lune@0.7.11"
+mantle = "blake-mealey/mantle@0.11.9"
+rbxcloud = "Sleitnick/rbxcloud@0.5.0"
+rojo = "UpliftGames/rojo@7.4.0-uplift.syncback.rc.20"
+tarmac = "rojo-rbx/tarmac@0.7.3"
