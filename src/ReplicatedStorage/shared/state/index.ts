@@ -31,4 +31,3 @@ export const selectLocalPlayerState = () => (state: SharedState) =>
 
 export const selectLocalPlayerMusicEnabled = () => (state: SharedState) =>
   getPlayerState(state.players, USER_ID)?.settings?.music
-

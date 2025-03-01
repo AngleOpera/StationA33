@@ -1,12 +1,13 @@
 import { createProducer } from '@rbxts/reflex'
 import { Players } from '@rbxts/services'
+import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
 
 export enum GamePass {
   CoolGun = '',
 }
 
 export enum Product {
-  Dollars1000 = '',
+  Credits1000 = '',
 }
 
 export interface PlayerSettings {
@@ -22,6 +23,10 @@ export type PlayerProducts = {
   readonly [product in Product]: ProductData
 }
 
+export type PlayeInventory = {
+  readonly [product in Product]: ProductData
+}
+
 export interface GamePassData {
   active: boolean
 }
@@ -31,7 +36,8 @@ export interface ProductData {
 }
 
 export interface PlayerData {
-  readonly dollars: number
+  readonly credits: number
+  readonly inventory: Partial<Record<InventoryItemName, number>>
   readonly settings: PlayerSettings
   readonly gamePasses: Partial<PlayerGamePasses>
   readonly products: Partial<PlayerProducts>
@@ -58,7 +64,8 @@ export const defaultPlayerSettings: PlayerSettings = {
 } as const
 
 export const defaultPlayerData: PlayerData = {
-  dollars: 0,
+  credits: 0,
+  inventory: {},
   settings: defaultPlayerSettings,
   gamePasses: {},
   products: {},
@@ -79,17 +86,18 @@ const KEY_TEMPLATE = '%d'
 const initialState: Players = {}
 
 export const getPlayerData = (state: PlayerState): PlayerData => ({
-  dollars: state.dollars,
+  credits: state.credits,
+  inventory: {},
   settings: state.settings,
   gamePasses: state.gamePasses,
   products: state.products,
   receiptHistory: state.receiptHistory,
 })
 
-export function getPlayerDataCurrencyKey(currency: Currency): 'dollars' {
+export function getPlayerDataCurrencyKey(currency: Currency): 'credits' {
   switch (currency) {
-    case 'Dollars':
-      return 'dollars'
+    case 'Credits':
+      return 'credits'
   }
 }
 

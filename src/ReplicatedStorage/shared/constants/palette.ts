@@ -1,21 +1,19 @@
 export const accents = {
-  red: Color3.fromRGB(208, 40, 41),
-  pink: Color3.fromRGB(192, 112, 157),
-  orange: Color3.fromRGB(216, 103, 50),
-  yellow: Color3.fromRGB(248, 226, 159),
-  sun: Color3.fromRGB(238, 180, 71),
-  brown: Color3.fromRGB(141, 132, 71),
-  green: Color3.fromRGB(85, 198, 85),
-  sky: Color3.fromRGB(82, 198, 242),
-  blue: Color3.fromRGB(85, 152, 207),
-  indigo: Color3.fromRGB(19, 77, 151),
-  purple: Color3.fromRGB(151, 19, 142),
+  red: Color3.fromRGB(250, 47, 0),
+  orange: Color3.fromRGB(246, 99, 0),
+  grass: Color3.fromRGB(126, 184, 19),
+  green: Color3.fromRGB(41, 240, 17),
+  lime: Color3.fromRGB(27, 255, 60),
+  sky: Color3.fromRGB(0, 203, 250),
+  blue: Color3.fromRGB(0, 147, 246),
+  purple: Color3.fromRGB(88, 30, 184),
+  pink: Color3.fromRGB(255, 27, 222),
+  magenta: Color3.fromRGB(216, 17, 240),
 } as const
 
 export const neutrals = {
   text: Color3.fromRGB(234, 234, 234),
   base: Color3.fromRGB(30, 30, 46),
-  eerie: Color3.fromRGB(17, 17, 27),
 } as const
 
 const base = {
@@ -28,4 +26,3 @@ export const palette = {
   ...neutrals,
   ...base,
 } as const
-

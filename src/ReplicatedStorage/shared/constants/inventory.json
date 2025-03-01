@@ -1,0 +1,32 @@
+{
+  "Conveyor": {
+    "name": "Conveyor",
+    "description": "Moves items from one place to another",
+    "price": 100,
+    "image": "rbxassetid://0"
+  },
+  "Drill": {
+    "name": "Drill",
+    "description": "Mines ores from the ground",
+    "price": 200,
+    "image": "rbxassetid://0"
+  },
+  "Furnace": {
+    "name": "Furnace",
+    "description": "Smelts ores into bars",
+    "price": 300,
+    "image": "rbxassetid://0"
+  },
+  "Sawmill": {
+    "name": "Sawmill",
+    "description": "Cuts logs into planks",
+    "price": 400,
+    "image": "rbxassetid://0"
+  },
+  "Workbench": {
+    "name": "Workbench",
+    "description": "Crafts items from resources",
+    "price": 500,
+    "image": "rbxassetid://0"
+  }
+}
