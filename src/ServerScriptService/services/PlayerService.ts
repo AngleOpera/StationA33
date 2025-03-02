@@ -2,7 +2,12 @@ import { OnInit, Service } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import ProfileService from '@rbxts/profileservice'
 import { Profile } from '@rbxts/profileservice/globals'
-import { Players, RunService, Workspace } from '@rbxts/services'
+import {
+  Players,
+  ReplicatedStorage,
+  RunService,
+  Workspace,
+} from '@rbxts/services'
 import { selectPlayerState } from 'ReplicatedStorage/shared/state'
 import {
   defaultPlayerData,
@@ -10,6 +15,10 @@ import {
   PlayerData,
   PlayerState,
 } from 'ReplicatedStorage/shared/state/PlayersState'
+import {
+  findDescendentsWhichAre,
+  weldParts,
+} from 'ReplicatedStorage/shared/utils/instance'
 import { Events } from 'ServerScriptService/network'
 import { LeaderboardService } from 'ServerScriptService/services/LeaderboardService'
 import { TransactionService } from 'ServerScriptService/services/TransactionService'
@@ -21,6 +30,13 @@ import {
 
 const KEY_TEMPLATE = '%d_Data'
 const DataStoreName = RunService.IsStudio() ? 'Testing' : 'Production'
+
+export function setupTool(tool: Tool) {
+  const handle = tool.FindFirstChild<BasePart>('Handle')
+  if (!handle) return tool
+  weldParts(findDescendentsWhichAre<BasePart>(handle, 'BasePart'), handle)
+  return tool
+}
 
 @Service()
 export class PlayerService implements OnInit {
@@ -37,6 +53,10 @@ export class PlayerService implements OnInit {
   ) {}
 
   onInit() {
+    const ship = ReplicatedStorage.Ships.Spaceship1.Clone()
+    weldParts(findDescendentsWhichAre<BasePart>(ship, 'BasePart'), ship.floor)
+    ship.Parent = Workspace
+
     forEveryPlayer(
       (player) => this.handlePlayerJoined(player),
       (player) => this.handlePlayerLeft(player),
@@ -158,6 +178,12 @@ export class PlayerService implements OnInit {
       humanoid.Died.Connect(() =>
         this.handleKO(humanoid, player.UserId, player.Name),
       )
+
+      const backpack = player?.FindFirstChild<Backpack>('Backpack')
+      if (backpack) {
+        setupTool(ReplicatedStorage.Tools.PlaceBlock.Clone()).Parent = backpack
+        setupTool(ReplicatedStorage.Tools.BreakBlock.Clone()).Parent = backpack
+      }
     })
   }
 

@@ -15,7 +15,7 @@
           0.0,
           0.0
         ],
-        "Brightness": 3.1333863735198975,
+        "Brightness": 3.135266065597534,
         "GlobalShadows": true,
         "Outlines": false,
         "TimeOfDay": "06:15:00"
@@ -26,6 +26,15 @@
       "$path": "assets/MaterialService"
     },
     "ReplicatedStorage": {
+      "Common": {
+        "$path": "assets/ReplicatedStorage/Common"
+      },
+      "Ships": {
+        "$path": "assets/ReplicatedStorage/Ships"
+      },
+      "Tools": {
+        "$path": "assets/ReplicatedStorage/Tools"
+      },
       "rbxts_include": {
         "node_modules": {
           "$className": "Folder",
@@ -40,9 +49,6 @@
       },
       "shared": {
         "$path": "out/ReplicatedStorage/shared"
-      },
-      "Tools": {  
-        "$path": "assets/ReplicatedStorage/Tools"
       }
     },
     "ServerScriptService": {
