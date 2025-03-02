@@ -3,11 +3,11 @@ import { Players } from '@rbxts/services'
 import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
 
 export enum GamePass {
-  CoolGun = '',
+  CoolGun = '1',
 }
 
 export enum Product {
-  Credits1000 = '',
+  Credits1000 = '2',
 }
 
 export interface PlayerSettings {

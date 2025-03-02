@@ -8,7 +8,7 @@ export function App() {
     <ErrorHandler>
       <Music />
       <screengui>
-        <MainMenu message={'hello world'} />
+        <MainMenu />
       </screengui>
     </ErrorHandler>
   )

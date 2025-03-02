@@ -15,7 +15,7 @@
           0.0,
           0.0
         ],
-        "Brightness": 2.0,
+        "Brightness": 3.1333863735198975,
         "GlobalShadows": true,
         "Outlines": false,
         "TimeOfDay": "06:15:00"
@@ -40,6 +40,9 @@
       },
       "shared": {
         "$path": "out/ReplicatedStorage/shared"
+      },
+      "Tools": {  
+        "$path": "assets/ReplicatedStorage/Tools"
       }
     },
     "ServerScriptService": {
@@ -47,6 +50,15 @@
     },
     "SoundService": {
       "$properties": {
+        "AudioApiByDefault": {
+          "Enum": 0
+        },
+        "CharacterSoundsUseNewApi": {
+          "Enum": 0
+        },
+        "IsNewExpForAudioApiByDefault": {
+          "Bool": false
+        },
         "RespectFilteringEnabled": true
       }
     },
@@ -69,6 +81,12 @@
         "DecreaseMinimumPartDensityMode": {
           "Enum": 0
         },
+        "FallHeightEnabled": {
+          "Bool": true
+        },
+        "PhysicsImprovedSleep": {
+          "Enum": 0
+        },
         "RenderingCacheOptimizations": {
           "Enum": 0
         },
@@ -77,7 +95,7 @@
         }
       },
       "$attributes": {
-        "Rojo_Target_CurrentCamera": "3743ea1616f9b005065c6f8b00000003"
+        "Rojo_Target_CurrentCamera": "2e64c9f2efe7ba6b07d5593f00000358"
       },
       "$path": "assets/Workspace"
     }

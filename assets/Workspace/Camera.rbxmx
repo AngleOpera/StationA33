@@ -2,31 +2,30 @@
   <Item class="Camera" referent="0">
     <Properties>
       <string name="Name">Camera</string>
-      <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAA3ODM2N2EyYzdhMjMyOTBjMDdkMmM3NTAwMDAwMDM4NQ==</BinaryString>
+      <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAAyZTY0YzlmMmVmZTdiYTZiMDdkNTU5M2YwMDAwMDM1OA==</BinaryString>
       <CoordinateFrame name="CFrame">
-        <X>-19.789553</X>
-        <Y>14.091629</Y>
-        <Z>-19.202688</Z>
-        <R00>-0.64974195</R00>
-        <R01>0.33599252</R01>
-        <R02>-0.6818684</R02>
-        <R10>-0.000000014901161</R10>
-        <R11>0.8970125</R11>
-        <R12>0.44200537</R12>
-        <R20>0.76015484</R20>
-        <R21>0.28718942</R21>
-        <R22>-0.5828266</R22>
+        <X>0</X>
+        <Y>20</Y>
+        <Z>20</Z>
+        <R00>1</R00>
+        <R01>0</R01>
+        <R02>-0</R02>
+        <R10>-0</R10>
+        <R11>0.7808688</R11>
+        <R12>0.62469506</R12>
+        <R20>0</R20>
+        <R21>-0.62469506</R21>
+        <R22>0.7808688</R22>
       </CoordinateFrame>
       <Ref name="CameraSubject">null</Ref>
       <token name="CameraType">0</token>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-      <bool name="DefinesCapabilities">false</bool>
       <float name="FieldOfView">70</float>
       <token name="FieldOfViewMode">0</token>
       <CoordinateFrame name="Focus">
-        <X>-18.425814</X>
-        <Y>13.207617</Y>
-        <Z>-18.037033</Z>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>-5</Z>
         <R00>1</R00>
         <R01>0</R01>
         <R02>0</R02>
@@ -39,8 +38,11 @@
       </CoordinateFrame>
       <bool name="HeadLocked">true</bool>
       <float name="HeadScale">1</float>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+      <bool name="DefinesCapabilities">false</bool>
       <int64 name="SourceAssetId">-1</int64>
       <BinaryString name="Tags"></BinaryString>
+      <UniqueId name="UniqueId">2e64c9f2efe7ba6b07d5593f00000358</UniqueId>
       <bool name="VRTiltAndRollEnabled">false</bool>
     </Properties>
   </Item>

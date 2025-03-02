@@ -1,27 +1,25 @@
 import { createProducer } from '@rbxts/reflex'
 
 export interface MenuState {
-  readonly guideText: string
-  readonly music: boolean
   readonly open: boolean
   readonly page: MenuPage
-  readonly playerListOpen: boolean
   readonly transition: {
     readonly direction: 'left' | 'right'
     readonly counter: number
   }
 }
 
-export type MenuPage = 'support' | 'home'
+export type MenuPage = 'main' | 'store' | 'trade'
 
-export const MENU_PAGES: readonly MenuPage[] = ['support', 'home'] as const
+export const MENU_PAGES: readonly MenuPage[] = [
+  'main',
+  'store',
+  'trade',
+] as const
 
 const initialState: MenuState = {
-  guideText: 'Welcome to the arcade!',
-  music: true,
   open: true,
-  page: 'home',
-  playerListOpen: false,
+  page: 'main',
   transition: {
     direction: 'left',
     counter: 0,
@@ -29,11 +27,6 @@ const initialState: MenuState = {
 }
 
 export const menuSlice = createProducer(initialState, {
-  setGuideText: (state, guideText: string) => ({
-    ...state,
-    guideText,
-  }),
-
   setMenuPage: (state, page: MenuPage) => ({
     ...state,
     page,
@@ -46,21 +39,6 @@ export const menuSlice = createProducer(initialState, {
   setMenuOpen: (state, open: boolean) => ({
     ...state,
     open,
-  }),
-
-  setMenuMusic: (state, music: boolean) => ({
-    ...state,
-    music,
-  }),
-
-  setPlayerList: (state, open: boolean) => ({
-    ...state,
-    playerListOpen: open,
-  }),
-
-  togglePlayerList: (state) => ({
-    ...state,
-    playerListOpen: !state.playerListOpen,
   }),
 })
 

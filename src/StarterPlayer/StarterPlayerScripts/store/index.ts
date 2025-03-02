@@ -48,18 +48,6 @@ export const selectMenuTransition = (state: RootState) => {
   return state.menu.transition
 }
 
-export const selectMusicEnabled = (state: RootState) => {
-  return state.menu.music
-}
-
-export const selectIsPlayerListOpen = (state: RootState) => {
-  return state.menu.playerListOpen
-}
-
-export const selectGuideText = (state: RootState) => {
-  return state.menu.guideText
-}
-
 export function createStore() {
   const store = combineProducers({
     ...slices,

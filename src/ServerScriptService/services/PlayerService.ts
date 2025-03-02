@@ -1,0 +1,180 @@
+import { OnInit, Service } from '@flamework/core'
+import { Logger } from '@rbxts/log'
+import ProfileService from '@rbxts/profileservice'
+import { Profile } from '@rbxts/profileservice/globals'
+import { Players, RunService, Workspace } from '@rbxts/services'
+import { selectPlayerState } from 'ReplicatedStorage/shared/state'
+import {
+  defaultPlayerData,
+  getPlayerData,
+  PlayerData,
+  PlayerState,
+} from 'ReplicatedStorage/shared/state/PlayersState'
+import { Events } from 'ServerScriptService/network'
+import { LeaderboardService } from 'ServerScriptService/services/LeaderboardService'
+import { TransactionService } from 'ServerScriptService/services/TransactionService'
+import { store } from 'ServerScriptService/store'
+import {
+  forEveryPlayer,
+  getAttackerUserId,
+} from 'ServerScriptService/utils/player'
+
+const KEY_TEMPLATE = '%d_Data'
+const DataStoreName = RunService.IsStudio() ? 'Testing' : 'Production'
+
+@Service()
+export class PlayerService implements OnInit {
+  private profileStore = ProfileService.GetProfileStore(
+    DataStoreName,
+    defaultPlayerData,
+  )
+  private profiles = new Map<number, Profile<PlayerData>>()
+
+  constructor(
+    protected readonly logger: Logger,
+    protected readonly leaderboardService: LeaderboardService,
+    protected readonly transactionService: TransactionService,
+  ) {}
+
+  onInit() {
+    forEveryPlayer(
+      (player) => this.handlePlayerJoined(player),
+      (player) => this.handlePlayerLeft(player),
+    )
+  }
+
+  public getProfile(player: Player) {
+    return this.profiles.get(player.UserId)
+  }
+
+  public getPlayerSpace(player: Player): PlayerSpace {
+    const key = `${player.UserId}`
+    const existing = Workspace.PlayerSpaces.FindFirstChild(key)
+    if (existing) return existing as PlayerSpace
+    const folder = new Instance('Folder')
+    folder.Name = key
+    const placedBlocks = new Instance('Model')
+    placedBlocks.Name = 'PlacedBlocks'
+    placedBlocks.Parent = folder
+    const placeBlockPreview = new Instance('Model')
+    placeBlockPreview.Name = 'PlaceBlockPreview'
+    placeBlockPreview.Parent = folder
+    const vehicles = new Instance('Folder')
+    vehicles.Name = 'Vehicles'
+    vehicles.Parent = folder
+    folder.Parent = Workspace.PlayerSpaces
+    return folder as PlayerSpace
+  }
+
+  private cleanupPlayerSpace(player: Player) {
+    const key = `${player.UserId}`
+    const existing = Workspace.PlayerSpaces.FindFirstChild(key)
+    if (existing) existing.Destroy()
+  }
+
+  private handlePlayerLeft(player: Player) {
+    this.cleanupPlayerSpace(player)
+    const profile = this.profiles.get(player.UserId)
+    if (profile?.Data)
+      this.leaderboardService.updateDatastoresForPlayer(player, profile.Data)
+    this.logger.Info(`Player left ${player.UserId}`)
+    profile?.Release()
+  }
+
+  private handlePlayerJoined(player: Player) {
+    this.logger.Info(`Player joined ${player.UserId}`)
+    const profileKey = KEY_TEMPLATE.format(player.UserId)
+    const profile = this.profileStore.LoadProfileAsync(profileKey)
+    if (!profile) return player.Kick()
+
+    profile.AddUserId(player.UserId)
+    profile.Reconcile()
+    profile.ListenToRelease(() => {
+      this.logger.Info(`Releasing profile ${player.UserId}`)
+      this.profiles.delete(player.UserId)
+      store.closePlayerData(player.UserId)
+      player.Kick()
+    })
+
+    if (!player.IsDescendantOf(Players)) {
+      profile.Release()
+      return
+    }
+
+    this.logger.Info(`Player loaded ${player.UserId}`)
+    this.profiles.set(player.UserId, profile)
+    const state = store.loadPlayerData(player.UserId, player.Name, profile.Data)
+    const playerSelector = selectPlayerState(player.UserId)
+
+    this.getPlayerSpace(player)
+    Promise.try(() =>
+      this.transactionService.reloadPlayerGamePasses(player, player.UserId),
+    )
+
+    const unsubscribePlayerData = store.subscribe(
+      playerSelector,
+      (playerState, previousPlayerState) => {
+        if (!playerState) return
+        profile.Data = getPlayerData(playerState)
+        if (!previousPlayerState) return
+      },
+    )
+
+    const unsubscribeLeaderstats = this.createLeaderstatsHandler(
+      player,
+      playerSelector(state),
+    )
+    this.createRespawnHandler(player)
+
+    Players.PlayerRemoving.Connect((playerLeft) => {
+      if (playerLeft.UserId !== player.UserId) return
+      unsubscribePlayerData()
+      unsubscribeLeaderstats()
+    })
+  }
+
+  private createLeaderstatsHandler(player: Player, playerState?: PlayerState) {
+    const leaderstats = new Instance('Folder')
+    leaderstats.Name = 'leaderstats'
+    leaderstats.Parent = player
+
+    const credits = new Instance('IntValue')
+    credits.Name = `Credits`
+    credits.Value = playerState?.credits ?? 0
+    credits.Parent = leaderstats
+
+    const unsubscribe = store.subscribe(
+      selectPlayerState(player.UserId),
+      (playerData) => {
+        credits.Value = playerData?.credits ?? 0
+      },
+    )
+    return unsubscribe
+  }
+
+  private createRespawnHandler(player: Player) {
+    player.CharacterAdded.Connect((characterModel) => {
+      const humanoid = (characterModel as PlayerCharacter).Humanoid
+      humanoid.Died.Connect(() =>
+        this.handleKO(humanoid, player.UserId, player.Name),
+      )
+    })
+  }
+
+  public handleKO(
+    humanoid: Humanoid,
+    playerUserId: number,
+    playerName: string,
+  ) {
+    const attackerUserId = getAttackerUserId(humanoid)
+    let message
+    if (attackerUserId) {
+      message = `${playerName} was KO'd by ${Players.GetPlayerByUserId(attackerUserId)?.Name}`
+    } else if ((humanoid.RootPart?.Position?.Y ?? 0) < -30) {
+      message = `${playerName} fell to their doom`
+    } else {
+      message = `${playerName} was KO'd`
+    }
+    Events.message.broadcast('log', message)
+  }
+}
