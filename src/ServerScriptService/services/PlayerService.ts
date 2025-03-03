@@ -53,10 +53,6 @@ export class PlayerService implements OnInit {
   ) {}
 
   onInit() {
-    const ship = ReplicatedStorage.Ships.Spaceship1.Clone()
-    weldParts(findDescendentsWhichAre<BasePart>(ship, 'BasePart'), ship.Body)
-    ship.Parent = Workspace
-
     forEveryPlayer(
       (player) => this.handlePlayerJoined(player),
       (player) => this.handlePlayerLeft(player),
@@ -70,18 +66,37 @@ export class PlayerService implements OnInit {
   public getPlayerSpace(player: Player): PlayerSpace {
     const key = `${player.UserId}`
     const existing = Workspace.PlayerSpaces.FindFirstChild(key)
-    if (existing) return existing as PlayerSpace
+    if (!existing) throw 'PlayerSpace not found'
+    return existing as PlayerSpace
+  }
+
+  public createPlayerSpace(
+    player: Player,
+    playerState: PlayerState,
+  ): PlayerSpace {
+    const key = `${player.UserId}`
     const folder = new Instance('Folder')
     folder.Name = key
+
     const placedBlocks = new Instance('Model')
     placedBlocks.Name = 'PlacedBlocks'
     placedBlocks.Parent = folder
+
     const placeBlockPreview = new Instance('Model')
     placeBlockPreview.Name = 'PlaceBlockPreview'
     placeBlockPreview.Parent = folder
-    const vehicles = new Instance('Folder')
-    vehicles.Name = 'Vehicles'
-    vehicles.Parent = folder
+
+    const plot = ReplicatedStorage.Common.Plot.Clone()
+    this.setupPlot(plot, player, playerState)
+    plot.Parent = folder
+
+    const ships = new Instance('Folder')
+    ships.Name = 'Ships'
+    const ship = ReplicatedStorage.Ships.OlReliable.Clone()
+    ship.Parent = ships
+    this.setupShip(ship, player, playerState)
+    ships.Parent = folder
+
     folder.Parent = Workspace.PlayerSpaces
     return folder as PlayerSpace
   }
@@ -125,8 +140,11 @@ export class PlayerService implements OnInit {
     this.profiles.set(player.UserId, profile)
     const state = store.loadPlayerData(player.UserId, player.Name, profile.Data)
     const playerSelector = selectPlayerState(player.UserId)
+    const playerState = playerSelector(state)
+    if (!playerState) throw 'PlayerState not found'
 
-    this.getPlayerSpace(player)
+    this.cleanupPlayerSpace(player)
+    this.createPlayerSpace(player, playerState)
     Promise.try(() =>
       this.transactionService.reloadPlayerGamePasses(player, player.UserId),
     )
@@ -142,7 +160,7 @@ export class PlayerService implements OnInit {
 
     const unsubscribeLeaderstats = this.createLeaderstatsHandler(
       player,
-      playerSelector(state),
+      playerState,
     )
     this.createRespawnHandler(player)
 
@@ -189,7 +207,7 @@ export class PlayerService implements OnInit {
 
   public handleKO(
     humanoid: Humanoid,
-    playerUserId: number,
+    _playerUserId: number,
     playerName: string,
   ) {
     const attackerUserId = getAttackerUserId(humanoid)
@@ -202,5 +220,16 @@ export class PlayerService implements OnInit {
       message = `${playerName} was KO'd`
     }
     Events.message.broadcast('log', message)
+  }
+
+  public setupPlot(plot: Plot, _player: Player, playerState: PlayerState) {
+    plot.PrimaryPart = plot.Baseplate
+    plot.PivotTo(Workspace.Planet[playerState.plotName].CFrame)
+  }
+
+  public setupShip(ship: Ship, _player: Player, playerState: PlayerState) {
+    ship.PrimaryPart = ship.Body
+    weldParts(findDescendentsWhichAre<BasePart>(ship, 'BasePart'), ship.Body)
+    ship.PivotTo(Workspace.Planet[playerState.plotName].CFrame)
   }
 }

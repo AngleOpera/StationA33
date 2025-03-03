@@ -1,6 +1,10 @@
+import Object from '@rbxts/object-utils'
 import { createProducer } from '@rbxts/reflex'
 import { Players } from '@rbxts/services'
-import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
+import {
+  InventoryItemName,
+  PLOT_NAMES,
+} from 'ReplicatedStorage/shared/constants/core'
 
 export enum GamePass {
   CoolGun = '1',
@@ -46,6 +50,7 @@ export interface PlayerData {
 
 export interface PlayerDetail {
   readonly name: string
+  readonly plotName: PlotName
   readonly sessionStartTime: number
 }
 
@@ -74,6 +79,7 @@ export const defaultPlayerData: PlayerData = {
 
 export const defaultPlayerDetail: PlayerDetail = {
   name: '',
+  plotName: 'Plot1',
   sessionStartTime: 0,
 } as const
 
@@ -120,6 +126,21 @@ export const playersSlice = createProducer(initialState, {
   loadPlayerData: (state, userID: number, name: string, data: PlayerData) => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
+
+    const seenPlotNames = new Set<PlotName>()
+    for (const [key, player] of Object.entries(state)) {
+      if (key === playerKey) continue
+      seenPlotNames.add(player.plotName)
+    }
+    let plotName: PlotName | undefined
+    for (const name of PLOT_NAMES) {
+      if (!seenPlotNames.has(name)) {
+        plotName = name
+        break
+      }
+    }
+    if (!plotName) throw 'No available plot'
+
     return {
       ...state,
       [playerKey]: {
@@ -128,6 +149,7 @@ export const playersSlice = createProducer(initialState, {
         ...data,
         ...defaultPlayerDetail,
         name,
+        plotName,
         sessionStartTime: os.time(),
       },
     }

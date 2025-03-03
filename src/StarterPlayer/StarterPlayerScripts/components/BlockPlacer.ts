@@ -1,11 +1,6 @@
 import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
-import {
-  Players,
-  ReplicatedStorage,
-  RunService,
-  Workspace,
-} from '@rbxts/services'
+import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
 import { BlockPlacerTag } from 'ReplicatedStorage/shared/constants/tags'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
 
@@ -26,13 +21,14 @@ export class BlockPlacerComponent
 
   onStart() {
     const playerSpace = this.playerController.getPlayerSpace()
+    const baseplate = playerSpace.Plot.Baseplate
     const buildingModel = playerSpace.PlacedBlocks
     const ignoreModelForMouse = playerSpace.PlaceBlockPreview
     const previewBlock = ReplicatedStorage.Common.PlaceBlockPreview
     const previewBlockParent = previewBlock.Parent
-    const baseplate = Workspace.Baseplate
     const selectionBox = previewBlock.SelectionBox
 
+    print('starting', baseplate)
     const bottom = Enum.NormalId.Bottom
     const top = Enum.NormalId.Top
     const front = Enum.NormalId.Front

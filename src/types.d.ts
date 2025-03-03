@@ -18,6 +18,10 @@ interface BlockPlacerAttributes {
   MaxDistance: number
 }
 
+interface Door extends BasePart {
+  ClickDetector: ClickDetector
+}
+
 type Currency = 'Credits'
 
 interface Instance {
@@ -55,22 +59,13 @@ interface Leaderboard extends Model {
   }
 }
 
-interface ReplicatedStorage extends Instance {
-  Common: Folder & {
-    Beam: Beam
-    LootBox: Model
-    PlaceBlockBlock: Part
-    PlaceBlockPreview: Part & {
-      SelectionBox: SelectionBox
-    }
-  }
-  Ships: Folder & {
-    Spaceship1: Ship
-  }
-  Tools: Folder & {
-    BreakBlock: BlockBreaker
-    PlaceBlock: BlockPlacer
-  }
+interface Planet extends Folder {
+  Baseplate: BasePart
+  // LeaderboardCredits: Leaderboard
+  Plot1: BasePart
+  Plot2: BasePart
+  Plot3: BasePart
+  Plot4: BasePart
 }
 
 interface PlayerCharacter extends Model {
@@ -80,6 +75,35 @@ interface PlayerCharacter extends Model {
 interface PlayerSpace extends Folder {
   PlacedBlocks: Model
   PlaceBlockPreview: Model
+  Plot: Plot
+  Ships: Folder & Partial<Record<ShipName, Ship>>
+}
+
+interface Plot extends Model {
+  Baseplate: BasePart
+  // ShipSpawner: ShipSpawner
+  SpawnLocation: SpawnLocation
+}
+
+type PlotName = 'Plot1' | 'Plot2' | 'Plot3' | 'Plot4'
+
+interface ReplicatedStorage extends Instance {
+  Common: Folder & {
+    Beam: Beam
+    LootBox: Model
+    PlaceBlockBlock: Part
+    PlaceBlockPreview: Part & {
+      SelectionBox: SelectionBox
+    }
+    Plot: Plot
+  }
+  Ships: Folder & {
+    OlReliable: Ship
+  }
+  Tools: Folder & {
+    BreakBlock: BlockBreaker
+    PlaceBlock: BlockPlacer
+  }
 }
 
 interface Ship extends Model {
@@ -112,6 +136,8 @@ interface ShipMobileGui extends ScreenGui {
   }
 }
 
+type ShipName = 'OlReliable'
+
 interface Shooter extends Tool {
   MouseEvent: RemoteEvent
   Handle: BasePart & {
@@ -126,6 +152,6 @@ interface Workspace extends Instance {
     BlockBroken: Sound
     BlockPlaced: Sound
   }
-  Baseplate: BasePart
-  PlayerSpaces: Folder
+  Planet: Planet
+  PlayerSpaces: Folder & Record<string, PlayerSpace>
 }

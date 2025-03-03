@@ -22,3 +22,22 @@ export const INVENTORY = inventoryConstants as Record<
   InventoryItemName,
   InventoryItem
 >
+
+export const PLOT_NAMES: PlotName[] = [
+  'Plot1' as const,
+  'Plot2' as const,
+  'Plot3' as const,
+  'Plot4' as const,
+]
+
+export const TYPE = {
+  Attachment: 'Attachment' as const,
+  BasePart: 'BasePart' as const,
+  BillboardGui: 'BillboardGui' as const,
+  Frame: 'Frame' as const,
+  Folder: 'Folder' as const,
+  Humanoid: 'Humanoid' as const,
+  Model: 'Model' as const,
+  TextLabel: 'TextLabel' as const,
+  UIStroke: 'UIStroke' as const,
+}
