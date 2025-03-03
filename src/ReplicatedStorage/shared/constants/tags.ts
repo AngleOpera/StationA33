@@ -1,3 +1,5 @@
 export const BlockBreakerTag = 'BlockBreaker'
 export const BlockPlacerTag = 'BlockPlacer'
+export const DoorTag = 'Door'
+export const ShipTag = 'Ship'
 export const ShooterTag = 'Shooter'

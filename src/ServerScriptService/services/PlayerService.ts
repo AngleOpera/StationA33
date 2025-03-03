@@ -54,7 +54,7 @@ export class PlayerService implements OnInit {
 
   onInit() {
     const ship = ReplicatedStorage.Ships.Spaceship1.Clone()
-    weldParts(findDescendentsWhichAre<BasePart>(ship, 'BasePart'), ship.floor)
+    weldParts(findDescendentsWhichAre<BasePart>(ship, 'BasePart'), ship.Body)
     ship.Parent = Workspace
 
     forEveryPlayer(

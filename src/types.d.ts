@@ -65,9 +65,7 @@ interface ReplicatedStorage extends Instance {
     }
   }
   Ships: Folder & {
-    Spaceship1: Model & {
-      floor: BasePart
-    }
+    Spaceship1: Ship
   }
   Tools: Folder & {
     BreakBlock: BlockBreaker
@@ -82,6 +80,36 @@ interface PlayerCharacter extends Model {
 interface PlayerSpace extends Folder {
   PlacedBlocks: Model
   PlaceBlockPreview: Model
+}
+
+interface Ship extends Model {
+  AimPart: BasePart & {
+    ShipGui: BillboardGui
+    ShipMobileGui: ShipMobileGui
+  }
+  Body: BasePart
+  Guns: Model & {
+    Gun1: Model & {
+      Muzzle: BasePart
+    }
+    Gun2: Model & {
+      Muzzle: BasePart
+    }
+  }
+  Seat: Seat
+  Shoot: RemoteEvent
+}
+
+interface ShipConfig {
+  gunsEnabled: boolean
+  speed: number
+  turnSpeed: number
+}
+
+interface ShipMobileGui extends ScreenGui {
+  Throttle: Frame & {
+    Slider: TextButton
+  }
 }
 
 interface Shooter extends Tool {
