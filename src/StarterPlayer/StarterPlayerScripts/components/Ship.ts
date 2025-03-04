@@ -17,14 +17,14 @@ export class ShipComponent extends BaseComponent<{}, Ship> implements OnStart {
   }
 
   onStart() {
-    const plane = this.instance
-    plane.Seat.GetPropertyChangedSignal('Occupant').Connect(() => {
-      if (plane.Seat.Occupant) this.shipController.startShip(plane, this.config)
-      else this.shipController.stopShip(plane)
+    const ship = this.instance
+    ship.Seat.GetPropertyChangedSignal('Occupant').Connect(() => {
+      if (ship.Seat.Occupant) this.shipController.startShip(ship, this.config)
+      else this.shipController.stopShip(ship)
     })
 
-    if (plane.Guns) {
-      for (const gun of [plane.Guns.Gun1, plane.Guns.Gun2]) {
+    if (ship.Guns) {
+      for (const gun of [ship.Guns.Gun1, ship.Guns.Gun2]) {
         createBulletAdjuster(gun.Muzzle, gun)
       }
     }

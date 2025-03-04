@@ -10,8 +10,14 @@ export class DoorComponent extends BaseComponent<{}, Door> implements OnStart {
   }
 
   onStart() {
+    let debounce = false
     this.instance.ClickDetector.MouseClick.Connect(() => {
-      print('open door')
+      if (debounce) return
+      debounce = true
+      // print('open door')
+      this.instance.Destroy()
+      wait(0.1)
+      debounce = false
     })
   }
 }

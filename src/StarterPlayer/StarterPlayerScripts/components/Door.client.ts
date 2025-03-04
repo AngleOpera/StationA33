@@ -9,7 +9,6 @@ export class DoorComponent extends BaseComponent<{}, Door> implements OnStart {
 
   constructor() {
     super()
-    print('client starting')
     this.color = Color3.fromRGB(255, 255, 255)
     this.material = Enum.Material.Plastic
   }
@@ -19,17 +18,15 @@ export class DoorComponent extends BaseComponent<{}, Door> implements OnStart {
     this.material = this.instance.Material
 
     this.instance.ClickDetector.MouseHoverEnter.Connect(() => {
-      print('Hover enter')
       this.instance.Color = Color3.fromRGB(0, 255, 0)
       this.instance.Material = Enum.Material.Neon
     })
     this.instance.ClickDetector.MouseHoverLeave.Connect(() => {
-      print('Hover leave')
       this.instance.Color = this.color
       this.instance.Material = this.material
     })
     this.instance.ClickDetector.MouseClick.Connect(() => {
-      print('open door')
+      // print('open door')
     })
   }
 }

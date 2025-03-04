@@ -144,7 +144,9 @@ export class PlayerService implements OnInit {
     if (!playerState) throw 'PlayerState not found'
 
     this.cleanupPlayerSpace(player)
-    this.createPlayerSpace(player, playerState)
+    const playerSpace = this.createPlayerSpace(player, playerState)
+    player.RespawnLocation = playerSpace.Plot.SpawnLocation
+
     Promise.try(() =>
       this.transactionService.reloadPlayerGamePasses(player, player.UserId),
     )

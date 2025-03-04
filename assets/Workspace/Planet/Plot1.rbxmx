@@ -27,9 +27,9 @@
         <R21>0</R21>
         <R22>1</R22>
       </CoordinateFrame>
-      <bool name="CanCollide">true</bool>
-      <bool name="CanQuery">true</bool>
-      <bool name="CanTouch">true</bool>
+      <bool name="CanCollide">false</bool>
+      <bool name="CanQuery">false</bool>
+      <bool name="CanTouch">false</bool>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
       <bool name="CastShadow">true</bool>
       <string name="CollisionGroup">Default</string>
@@ -38,13 +38,13 @@
       <PhysicalProperties name="CustomPhysicalProperties">
         <CustomPhysics>false</CustomPhysics>
       </PhysicalProperties>
-      <bool name="DefinesCapabilities">false</bool>
       <bool name="EnableFluidForces">true</bool>
       <token name="formFactorRaw">0</token>
       <float name="FrontParamA">-0.5</float>
       <float name="FrontParamB">0.5</float>
       <token name="FrontSurface">0</token>
       <token name="FrontSurfaceInput">0</token>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <float name="LeftParamA">-0.5</float>
       <float name="LeftParamB">0.5</float>
       <token name="LeftSurface">0</token>
@@ -78,6 +78,7 @@
         <Y>0</Y>
         <Z>0</Z>
       </Vector3>
+      <bool name="DefinesCapabilities">false</bool>
       <token name="shape">1</token>
       <Vector3 name="size">
         <X>128</X>
@@ -91,6 +92,7 @@
       <token name="TopSurface">0</token>
       <token name="TopSurfaceInput">0</token>
       <float name="Transparency">0</float>
+      <UniqueId name="UniqueId">474a010eae9f129907d7d7590000070a</UniqueId>
       <Vector3 name="Velocity">
         <X>0</X>
         <Y>0</Y>

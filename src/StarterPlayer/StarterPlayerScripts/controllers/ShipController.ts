@@ -3,7 +3,7 @@ import { Players, RunService, UserInputService } from '@rbxts/services'
 
 @Controller({})
 export class ShipController implements OnStart {
-  plane: Ship | undefined
+  ship: Ship | undefined
   camera: Camera | undefined
   cameraType: Enum.CameraType | undefined
   config: ShipConfig | undefined
@@ -14,32 +14,32 @@ export class ShipController implements OnStart {
   sliding = false
   speed = 0
 
-  startShip(plane: Ship, config: ShipConfig) {
-    if (this.plane !== undefined) return
+  startShip(ship: Ship, config: ShipConfig) {
+    if (this.ship !== undefined) return
 
     this.camera = game.Workspace.CurrentCamera
     if (!this.camera) return
 
-    this.plane = plane
+    this.ship = ship
     this.config = config
     this.cameraType = this.camera.CameraType
     this.camera.CameraType = Enum.CameraType.Scriptable
-    this.bodyGyro = new Instance('BodyGyro', plane.Body)
+    this.bodyGyro = new Instance('BodyGyro', ship.Body)
     this.bodyGyro.D = 30
     this.bodyGyro.P = 300
     this.bodyGyro.MaxTorque = new Vector3()
-    this.bodyVelocity = new Instance('BodyVelocity', plane.Body)
+    this.bodyVelocity = new Instance('BodyVelocity', ship.Body)
     this.bodyVelocity.P = math.huge
     this.bodyVelocity.MaxForce = new Vector3()
 
-    plane.AimPart.ShipGui.Enabled = true
+    ship.AimPart.ShipGui.Enabled = true
     this.sliding = false
     this.speed = 0
 
     const playerGui = Players.LocalPlayer?.WaitForChild('PlayerGui')
     if (UserInputService.TouchEnabled && playerGui) {
       UserInputService.ModalEnabled = true
-      this.mobileGui = plane.AimPart.ShipMobileGui.Clone()
+      this.mobileGui = ship.AimPart.ShipMobileGui.Clone()
       this.mobileGui.Parent = playerGui
 
       const throttle = this.mobileGui.Throttle
@@ -61,14 +61,14 @@ export class ShipController implements OnStart {
     }
   }
 
-  stopShip(plane: Ship) {
-    if (this.plane !== plane) return
+  stopShip(ship: Ship) {
+    if (this.ship !== ship) return
 
     this.bodyGyro?.Destroy()
     this.bodyVelocity?.Destroy()
     this.mobileGui?.Destroy()
 
-    plane.AimPart.ShipGui.Enabled = false
+    ship.AimPart.ShipGui.Enabled = false
 
     if (this.camera && this.cameraType) this.camera.CameraType = this.cameraType
     if (UserInputService.TouchEnabled) UserInputService.ModalEnabled = false
@@ -78,7 +78,7 @@ export class ShipController implements OnStart {
     this.bodyGyro = undefined
     this.cameraType = undefined
     this.camera = undefined
-    this.plane = undefined
+    this.ship = undefined
   }
 
   onStart() {
@@ -88,15 +88,15 @@ export class ShipController implements OnStart {
     let thumb2 = new Vector2()
 
     UserInputService.InputBegan.Connect((inputObject, processed) => {
-      if (this.plane && !processed) {
+      if (this.ship && !processed) {
         if (inputObject.UserInputType === Enum.UserInputType.MouseButton1)
-          this.plane.Shoot.FireServer()
+          this.ship.Shoot.FireServer()
       }
     })
 
     if (UserInputService.TouchEnabled) {
       UserInputService.InputChanged.Connect((inputObject) => {
-        if (!this.plane || !this.config) return
+        if (!this.ship || !this.config) return
         if (inputObject.KeyCode === Enum.KeyCode.Thumbstick1) {
           thumb1 = new Vector2(0, inputObject.Position.Y)
           if (math.abs(thumb1.Y) <= 0.1) thumb1 = new Vector2(thumb1.X, 0)
@@ -110,18 +110,18 @@ export class ShipController implements OnStart {
     }
 
     for (;;) {
-      const plane = this.plane
+      const ship = this.ship
       const camera = this.camera
       const config = this.config
       const bodyVelocity = this.bodyVelocity
       const bodyGyro = this.bodyGyro
       const mouse = Players.LocalPlayer.GetMouse()
-      if (!plane || !camera || !config || !bodyVelocity || !bodyGyro) {
+      if (!ship || !camera || !config || !bodyVelocity || !bodyGyro) {
         task.wait(1)
         continue
       }
 
-      const body = plane.Body
+      const body = ship.Body
       const [deltaTime] = RunService.RenderStepped.Wait()
 
       let mouseX = -thumb2.X
@@ -160,7 +160,7 @@ export class ShipController implements OnStart {
       bodyVelocity.MaxForce = new Vector3(1000000, 1000000, 1000000).mul(power)
 
       if (config.gunsEnabled)
-        plane.AimPart.CFrame = body.CFrame.mul(new CFrame(0, 8, -100))
+        ship.AimPart.CFrame = body.CFrame.mul(new CFrame(0, 8, -100))
     }
   }
 }

@@ -3083,10 +3083,10 @@
     </Item>
     <Item class="Part" referent="31">
       <Properties>
-        <string name="Name">Door</string>
+        <string name="Name">AimPart</string>
         <bool name="Anchored">false</bool>
         <BinaryString name="AttributesSerialize"></BinaryString>
-        <bool name="AudioCanCollide">true</bool>
+        <bool name="AudioCanCollide">false</bool>
         <float name="BackParamA">-0.5</float>
         <float name="BackParamB">0.5</float>
         <token name="BackSurface">0</token>
@@ -3096,32 +3096,32 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>7.041969</X>
-          <Y>8.251639</Y>
-          <Z>-59.333122</Z>
-          <R00>-0.0523359</R00>
-          <R01>0.9986295</R01>
+          <X>55.777</X>
+          <Y>7.786</Y>
+          <Z>-58.412</Z>
+          <R00>1</R00>
+          <R01>0</R01>
           <R02>0</R02>
-          <R10>-0.99862945</R10>
-          <R11>-0.052335914</R11>
+          <R10>0</R10>
+          <R11>1</R11>
           <R12>0</R12>
           <R20>0</R20>
           <R21>0</R21>
           <R22>1</R22>
         </CoordinateFrame>
-        <bool name="CanCollide">true</bool>
+        <bool name="CanCollide">false</bool>
         <bool name="CanQuery">true</bool>
         <bool name="CanTouch">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <bool name="CastShadow">true</bool>
         <string name="CollisionGroup">Default</string>
         <int name="CollisionGroupId">0</int>
-        <Color3uint8 name="Color3uint8">5987689</Color3uint8>
+        <Color3uint8 name="Color3uint8">10724005</Color3uint8>
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
         <bool name="EnableFluidForces">true</bool>
-        <token name="formFactorRaw">1</token>
+        <token name="formFactorRaw">3</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
@@ -3133,7 +3133,7 @@
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
         <bool name="Massless">false</bool>
-        <token name="Material">1328</token>
+        <token name="Material">256</token>
         <string name="MaterialVariantSerialized"></string>
         <CoordinateFrame name="PivotOffset">
           <X>0</X>
@@ -3163,127 +3163,9 @@
         <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
-          <X>16.525803</X>
-          <Y>1</Y>
-          <Z>29.81567</Z>
-        </Vector3>
-        <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">RG9vcg==</BinaryString>
-        <float name="TopParamA">-0.5</float>
-        <float name="TopParamB">0.5</float>
-        <token name="TopSurface">0</token>
-        <token name="TopSurfaceInput">0</token>
-        <float name="Transparency">0</float>
-        <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003ac</UniqueId>
-        <Vector3 name="Velocity">
-          <X>0</X>
-          <Y>0</Y>
-          <Z>0</Z>
-        </Vector3>
-      </Properties>
-      <Item class="ClickDetector" referent="32">
-        <Properties>
-          <string name="Name">ClickDetector</string>
-          <BinaryString name="AttributesSerialize"></BinaryString>
-          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <ContentId name="CursorIcon">
-            <null>
-            </null>
-          </ContentId>
-          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-          <float name="MaxActivationDistance">32</float>
-          <bool name="DefinesCapabilities">false</bool>
-          <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
-          <UniqueId name="UniqueId">1a3661570641289b07d7768f000059db</UniqueId>
-        </Properties>
-      </Item>
-    </Item>
-    <Item class="Part" referent="33">
-      <Properties>
-        <string name="Name">Part</string>
-        <bool name="Anchored">false</bool>
-        <BinaryString name="AttributesSerialize"></BinaryString>
-        <bool name="AudioCanCollide">true</bool>
-        <float name="BackParamA">-0.5</float>
-        <float name="BackParamB">0.5</float>
-        <token name="BackSurface">0</token>
-        <token name="BackSurfaceInput">0</token>
-        <float name="BottomParamA">-0.5</float>
-        <float name="BottomParamB">0.5</float>
-        <token name="BottomSurface">0</token>
-        <token name="BottomSurfaceInput">0</token>
-        <CoordinateFrame name="CFrame">
-          <X>7.041969</X>
-          <Y>8.251639</Y>
-          <Z>-59.333122</Z>
-          <R00>-0.0523359</R00>
-          <R01>0.9986295</R01>
-          <R02>0</R02>
-          <R10>-0.99862945</R10>
-          <R11>-0.052335914</R11>
-          <R12>0</R12>
-          <R20>0</R20>
-          <R21>0</R21>
-          <R22>1</R22>
-        </CoordinateFrame>
-        <bool name="CanCollide">true</bool>
-        <bool name="CanQuery">true</bool>
-        <bool name="CanTouch">true</bool>
-        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <bool name="CastShadow">true</bool>
-        <string name="CollisionGroup">Default</string>
-        <int name="CollisionGroupId">0</int>
-        <Color3uint8 name="Color3uint8">5987689</Color3uint8>
-        <PhysicalProperties name="CustomPhysicalProperties">
-          <CustomPhysics>false</CustomPhysics>
-        </PhysicalProperties>
-        <bool name="EnableFluidForces">true</bool>
-        <token name="formFactorRaw">1</token>
-        <float name="FrontParamA">-0.5</float>
-        <float name="FrontParamB">0.5</float>
-        <token name="FrontSurface">0</token>
-        <token name="FrontSurfaceInput">0</token>
-        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-        <float name="LeftParamA">-0.5</float>
-        <float name="LeftParamB">0.5</float>
-        <token name="LeftSurface">0</token>
-        <token name="LeftSurfaceInput">0</token>
-        <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
-        <token name="Material">1328</token>
-        <string name="MaterialVariantSerialized"></string>
-        <CoordinateFrame name="PivotOffset">
-          <X>0</X>
-          <Y>0</Y>
-          <Z>0</Z>
-          <R00>1</R00>
-          <R01>0</R01>
-          <R02>0</R02>
-          <R10>0</R10>
-          <R11>1</R11>
-          <R12>0</R12>
-          <R20>0</R20>
-          <R21>0</R21>
-          <R22>1</R22>
-        </CoordinateFrame>
-        <float name="Reflectance">0</float>
-        <float name="RightParamA">-0.5</float>
-        <float name="RightParamB">0.5</float>
-        <token name="RightSurface">0</token>
-        <token name="RightSurfaceInput">0</token>
-        <int name="RootPriority">0</int>
-        <Vector3 name="RotVelocity">
-          <X>0</X>
-          <Y>0</Y>
-          <Z>0</Z>
-        </Vector3>
-        <bool name="DefinesCapabilities">false</bool>
-        <token name="shape">1</token>
-        <Vector3 name="size">
-          <X>16.525803</X>
-          <Y>1</Y>
-          <Z>29.81567</Z>
+          <X>0.2</X>
+          <Y>0.2</Y>
+          <Z>0.2</Z>
         </Vector3>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
@@ -3291,16 +3173,552 @@
         <float name="TopParamB">0.5</float>
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
-        <float name="Transparency">0</float>
-        <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003ad</UniqueId>
+        <float name="Transparency">1</float>
+        <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003ef</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
       </Properties>
+      <Item class="BillboardGui" referent="32">
+        <Properties>
+          <string name="Name">ShipGui</string>
+          <bool name="Active">false</bool>
+          <Ref name="Adornee">null</Ref>
+          <bool name="AlwaysOnTop">true</bool>
+          <BinaryString name="AttributesSerialize"></BinaryString>
+          <bool name="AutoLocalize">true</bool>
+          <float name="Brightness">1</float>
+          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+          <bool name="ClipsDescendants">false</bool>
+          <float name="DistanceLowerLimit">0</float>
+          <float name="DistanceStep">0</float>
+          <float name="DistanceUpperLimit">-1</float>
+          <bool name="Enabled">false</bool>
+          <Vector3 name="ExtentsOffset">
+            <X>0</X>
+            <Y>0</Y>
+            <Z>0</Z>
+          </Vector3>
+          <Vector3 name="ExtentsOffsetWorldSpace">
+            <X>0</X>
+            <Y>0</Y>
+            <Z>0</Z>
+          </Vector3>
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <float name="LightInfluence">0</float>
+          <float name="MaxDistance">INF</float>
+          <Ref name="PlayerToHideFrom">null</Ref>
+          <bool name="ResetOnSpawn">true</bool>
+          <Ref name="RootLocalizationTable">null</Ref>
+          <bool name="DefinesCapabilities">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
+          <UDim2 name="Size">
+            <XS>0</XS>
+            <XO>100</XO>
+            <YS>0</YS>
+            <YO>100</YO>
+          </UDim2>
+          <Vector2 name="SizeOffset">
+            <X>0</X>
+            <Y>0</Y>
+          </Vector2>
+          <int64 name="SourceAssetId">-1</int64>
+          <Vector3 name="StudsOffset">
+            <X>0</X>
+            <Y>0</Y>
+            <Z>0</Z>
+          </Vector3>
+          <Vector3 name="StudsOffsetWorldSpace">
+            <X>0</X>
+            <Y>0</Y>
+            <Z>0</Z>
+          </Vector3>
+          <BinaryString name="Tags"></BinaryString>
+          <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f0</UniqueId>
+          <token name="ZIndexBehavior">0</token>
+        </Properties>
+        <Item class="Frame" referent="33">
+          <Properties>
+            <string name="Name">Frame</string>
+            <bool name="Active">false</bool>
+            <Vector2 name="AnchorPoint">
+              <X>0</X>
+              <Y>0</Y>
+            </Vector2>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <bool name="AutoLocalize">true</bool>
+            <token name="AutomaticSize">0</token>
+            <Color3 name="BackgroundColor3">
+              <R>1</R>
+              <G>1</G>
+              <B>1</B>
+            </Color3>
+            <float name="BackgroundTransparency">0</float>
+            <Color3 name="BorderColor3">
+              <R>0.10588236</R>
+              <G>0.16470589</G>
+              <B>0.20784315</B>
+            </Color3>
+            <token name="BorderMode">0</token>
+            <int name="BorderSizePixel">0</int>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="ClipsDescendants">false</bool>
+            <bool name="Draggable">false</bool>
+            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+            <bool name="Interactable">true</bool>
+            <int name="LayoutOrder">0</int>
+            <Ref name="NextSelectionDown">null</Ref>
+            <Ref name="NextSelectionLeft">null</Ref>
+            <Ref name="NextSelectionRight">null</Ref>
+            <Ref name="NextSelectionUp">null</Ref>
+            <UDim2 name="Position">
+              <XS>0.5</XS>
+              <XO>-2</XO>
+              <YS>0.7</YS>
+              <YO>0</YO>
+            </UDim2>
+            <Ref name="RootLocalizationTable">null</Ref>
+            <float name="Rotation">0</float>
+            <bool name="DefinesCapabilities">false</bool>
+            <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
+            <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
+            <UDim2 name="Size">
+              <XS>0</XS>
+              <XO>4</XO>
+              <YS>0.3</YS>
+              <YO>0</YO>
+            </UDim2>
+            <token name="SizeConstraint">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <token name="Style">0</token>
+            <BinaryString name="Tags"></BinaryString>
+            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f1</UniqueId>
+            <bool name="Visible">true</bool>
+            <int name="ZIndex">1</int>
+          </Properties>
+        </Item>
+        <Item class="Frame" referent="34">
+          <Properties>
+            <string name="Name">Frame</string>
+            <bool name="Active">false</bool>
+            <Vector2 name="AnchorPoint">
+              <X>0</X>
+              <Y>0</Y>
+            </Vector2>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <bool name="AutoLocalize">true</bool>
+            <token name="AutomaticSize">0</token>
+            <Color3 name="BackgroundColor3">
+              <R>1</R>
+              <G>1</G>
+              <B>1</B>
+            </Color3>
+            <float name="BackgroundTransparency">0</float>
+            <Color3 name="BorderColor3">
+              <R>0.10588236</R>
+              <G>0.16470589</G>
+              <B>0.20784315</B>
+            </Color3>
+            <token name="BorderMode">0</token>
+            <int name="BorderSizePixel">0</int>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="ClipsDescendants">false</bool>
+            <bool name="Draggable">false</bool>
+            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+            <bool name="Interactable">true</bool>
+            <int name="LayoutOrder">0</int>
+            <Ref name="NextSelectionDown">null</Ref>
+            <Ref name="NextSelectionLeft">null</Ref>
+            <Ref name="NextSelectionRight">null</Ref>
+            <Ref name="NextSelectionUp">null</Ref>
+            <UDim2 name="Position">
+              <XS>0</XS>
+              <XO>0</XO>
+              <YS>0.5</YS>
+              <YO>-2</YO>
+            </UDim2>
+            <Ref name="RootLocalizationTable">null</Ref>
+            <float name="Rotation">0</float>
+            <bool name="DefinesCapabilities">false</bool>
+            <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
+            <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
+            <UDim2 name="Size">
+              <XS>0.2</XS>
+              <XO>0</XO>
+              <YS>0</YS>
+              <YO>4</YO>
+            </UDim2>
+            <token name="SizeConstraint">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <token name="Style">0</token>
+            <BinaryString name="Tags"></BinaryString>
+            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f2</UniqueId>
+            <bool name="Visible">true</bool>
+            <int name="ZIndex">1</int>
+          </Properties>
+        </Item>
+        <Item class="Frame" referent="35">
+          <Properties>
+            <string name="Name">Frame</string>
+            <bool name="Active">false</bool>
+            <Vector2 name="AnchorPoint">
+              <X>0</X>
+              <Y>0</Y>
+            </Vector2>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <bool name="AutoLocalize">true</bool>
+            <token name="AutomaticSize">0</token>
+            <Color3 name="BackgroundColor3">
+              <R>1</R>
+              <G>1</G>
+              <B>1</B>
+            </Color3>
+            <float name="BackgroundTransparency">0</float>
+            <Color3 name="BorderColor3">
+              <R>0.10588236</R>
+              <G>0.16470589</G>
+              <B>0.20784315</B>
+            </Color3>
+            <token name="BorderMode">0</token>
+            <int name="BorderSizePixel">0</int>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="ClipsDescendants">false</bool>
+            <bool name="Draggable">false</bool>
+            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+            <bool name="Interactable">true</bool>
+            <int name="LayoutOrder">0</int>
+            <Ref name="NextSelectionDown">null</Ref>
+            <Ref name="NextSelectionLeft">null</Ref>
+            <Ref name="NextSelectionRight">null</Ref>
+            <Ref name="NextSelectionUp">null</Ref>
+            <UDim2 name="Position">
+              <XS>0.8</XS>
+              <XO>0</XO>
+              <YS>0.5</YS>
+              <YO>-2</YO>
+            </UDim2>
+            <Ref name="RootLocalizationTable">null</Ref>
+            <float name="Rotation">0</float>
+            <bool name="DefinesCapabilities">false</bool>
+            <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
+            <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
+            <UDim2 name="Size">
+              <XS>0.2</XS>
+              <XO>0</XO>
+              <YS>0</YS>
+              <YO>4</YO>
+            </UDim2>
+            <token name="SizeConstraint">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <token name="Style">0</token>
+            <BinaryString name="Tags"></BinaryString>
+            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f3</UniqueId>
+            <bool name="Visible">true</bool>
+            <int name="ZIndex">1</int>
+          </Properties>
+        </Item>
+      </Item>
+      <Item class="ScreenGui" referent="36">
+        <Properties>
+          <string name="Name">ShipMobileGui</string>
+          <BinaryString name="AttributesSerialize"></BinaryString>
+          <bool name="AutoLocalize">true</bool>
+          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+          <bool name="ClipToDeviceSafeArea">true</bool>
+          <int name="DisplayOrder">0</int>
+          <bool name="Enabled">true</bool>
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <bool name="ResetOnSpawn">true</bool>
+          <Ref name="RootLocalizationTable">null</Ref>
+          <token name="SafeAreaCompatibility">1</token>
+          <bool name="DefinesCapabilities">false</bool>
+          <token name="ScreenInsets">2</token>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
+          <int64 name="SourceAssetId">-1</int64>
+          <BinaryString name="Tags"></BinaryString>
+          <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f4</UniqueId>
+          <token name="ZIndexBehavior">0</token>
+        </Properties>
+        <Item class="Frame" referent="37">
+          <Properties>
+            <string name="Name">Throttle</string>
+            <bool name="Active">false</bool>
+            <Vector2 name="AnchorPoint">
+              <X>0</X>
+              <Y>0</Y>
+            </Vector2>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <bool name="AutoLocalize">true</bool>
+            <token name="AutomaticSize">0</token>
+            <Color3 name="BackgroundColor3">
+              <R>0.12156863</R>
+              <G>0.12156863</G>
+              <B>0.12156863</B>
+            </Color3>
+            <float name="BackgroundTransparency">0.5</float>
+            <Color3 name="BorderColor3">
+              <R>0.10588236</R>
+              <G>0.16470589</G>
+              <B>0.20784315</B>
+            </Color3>
+            <token name="BorderMode">0</token>
+            <int name="BorderSizePixel">0</int>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="ClipsDescendants">false</bool>
+            <bool name="Draggable">false</bool>
+            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+            <bool name="Interactable">true</bool>
+            <int name="LayoutOrder">0</int>
+            <Ref name="NextSelectionDown">null</Ref>
+            <Ref name="NextSelectionLeft">null</Ref>
+            <Ref name="NextSelectionRight">null</Ref>
+            <Ref name="NextSelectionUp">null</Ref>
+            <UDim2 name="Position">
+              <XS>0</XS>
+              <XO>35</XO>
+              <YS>0.4</YS>
+              <YO>-35</YO>
+            </UDim2>
+            <Ref name="RootLocalizationTable">null</Ref>
+            <float name="Rotation">0</float>
+            <bool name="DefinesCapabilities">false</bool>
+            <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
+            <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
+            <UDim2 name="Size">
+              <XS>0</XS>
+              <XO>25</XO>
+              <YS>0.6</YS>
+              <YO>0</YO>
+            </UDim2>
+            <token name="SizeConstraint">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <token name="Style">0</token>
+            <BinaryString name="Tags"></BinaryString>
+            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f5</UniqueId>
+            <bool name="Visible">true</bool>
+            <int name="ZIndex">1</int>
+          </Properties>
+          <Item class="TextButton" referent="38">
+            <Properties>
+              <string name="Name">Slider</string>
+              <bool name="Active">true</bool>
+              <Vector2 name="AnchorPoint">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <bool name="AutoButtonColor">true</bool>
+              <bool name="AutoLocalize">true</bool>
+              <token name="AutomaticSize">0</token>
+              <Color3 name="BackgroundColor3">
+                <R>0</R>
+                <G>0.5019608</G>
+                <B>1</B>
+              </Color3>
+              <float name="BackgroundTransparency">0</float>
+              <Color3 name="BorderColor3">
+                <R>0.12156863</R>
+                <G>0.12156863</G>
+                <B>0.12156863</B>
+              </Color3>
+              <token name="BorderMode">0</token>
+              <int name="BorderSizePixel">2</int>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="ClipsDescendants">false</bool>
+              <bool name="Draggable">false</bool>
+              <Font name="FontFace">
+                <Family>
+                  <url>rbxasset://fonts/families/SourceSansPro.json</url>
+                </Family>
+                <Weight>400</Weight>
+                <Style>Normal</Style>
+                <CachedFaceId>
+                  <url>rbxasset://fonts/SourceSansPro-Regular.ttf</url>
+                </CachedFaceId>
+              </Font>
+              <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+              <bool name="Interactable">true</bool>
+              <int name="LayoutOrder">0</int>
+              <float name="LineHeight">1</float>
+              <string name="LocalizationMatchIdentifier"></string>
+              <string name="LocalizationMatchedSourceText"></string>
+              <int name="MaxVisibleGraphemes">-1</int>
+              <bool name="Modal">false</bool>
+              <Ref name="NextSelectionDown">null</Ref>
+              <Ref name="NextSelectionLeft">null</Ref>
+              <Ref name="NextSelectionRight">null</Ref>
+              <Ref name="NextSelectionUp">null</Ref>
+              <string name="OpenTypeFeatures"></string>
+              <UDim2 name="Position">
+                <XS>0</XS>
+                <XO>-10</XO>
+                <YS>1</YS>
+                <YO>-35</YO>
+              </UDim2>
+              <bool name="RichText">false</bool>
+              <Ref name="RootLocalizationTable">null</Ref>
+              <float name="Rotation">0</float>
+              <bool name="DefinesCapabilities">false</bool>
+              <bool name="Selectable">true</bool>
+              <bool name="Selected">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
+              <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
+              <UDim2 name="Size">
+                <XS>0</XS>
+                <XO>45</XO>
+                <YS>0</YS>
+                <YO>45</YO>
+              </UDim2>
+              <token name="SizeConstraint">0</token>
+              <int64 name="SourceAssetId">-1</int64>
+              <token name="Style">0</token>
+              <BinaryString name="Tags"></BinaryString>
+              <string name="Text"></string>
+              <Color3 name="TextColor3">
+                <R>0.10588236</R>
+                <G>0.16470589</G>
+                <B>0.20784315</B>
+              </Color3>
+              <token name="TextDirection">0</token>
+              <bool name="TextScaled">false</bool>
+              <float name="TextSize">14</float>
+              <Color3 name="TextStrokeColor3">
+                <R>0</R>
+                <G>0</G>
+                <B>0</B>
+              </Color3>
+              <float name="TextStrokeTransparency">1</float>
+              <float name="TextTransparency">0</float>
+              <token name="TextTruncate">0</token>
+              <bool name="TextWrapped">false</bool>
+              <token name="TextXAlignment">2</token>
+              <token name="TextYAlignment">1</token>
+              <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f6</UniqueId>
+              <bool name="Visible">true</bool>
+              <int name="ZIndex">1</int>
+            </Properties>
+            <Item class="Frame" referent="39">
+              <Properties>
+                <string name="Name">Frame</string>
+                <bool name="Active">false</bool>
+                <Vector2 name="AnchorPoint">
+                  <X>0</X>
+                  <Y>0</Y>
+                </Vector2>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <bool name="AutoLocalize">true</bool>
+                <token name="AutomaticSize">0</token>
+                <Color3 name="BackgroundColor3">
+                  <R>1</R>
+                  <G>1</G>
+                  <B>1</B>
+                </Color3>
+                <float name="BackgroundTransparency">0.7</float>
+                <Color3 name="BorderColor3">
+                  <R>0.10588236</R>
+                  <G>0.16470589</G>
+                  <B>0.20784315</B>
+                </Color3>
+                <token name="BorderMode">0</token>
+                <int name="BorderSizePixel">0</int>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="ClipsDescendants">false</bool>
+                <bool name="Draggable">false</bool>
+                <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+                <bool name="Interactable">true</bool>
+                <int name="LayoutOrder">0</int>
+                <Ref name="NextSelectionDown">null</Ref>
+                <Ref name="NextSelectionLeft">null</Ref>
+                <Ref name="NextSelectionRight">null</Ref>
+                <Ref name="NextSelectionUp">null</Ref>
+                <UDim2 name="Position">
+                  <XS>0</XS>
+                  <XO>0</XO>
+                  <YS>0</YS>
+                  <YO>0</YO>
+                </UDim2>
+                <Ref name="RootLocalizationTable">null</Ref>
+                <float name="Rotation">0</float>
+                <bool name="DefinesCapabilities">false</bool>
+                <bool name="Selectable">false</bool>
+                <token name="SelectionBehaviorDown">0</token>
+                <token name="SelectionBehaviorLeft">0</token>
+                <token name="SelectionBehaviorRight">0</token>
+                <token name="SelectionBehaviorUp">0</token>
+                <bool name="SelectionGroup">false</bool>
+                <Ref name="SelectionImageObject">null</Ref>
+                <int name="SelectionOrder">0</int>
+                <UDim2 name="Size">
+                  <XS>1</XS>
+                  <XO>0</XO>
+                  <YS>0.4</YS>
+                  <YO>0</YO>
+                </UDim2>
+                <token name="SizeConstraint">0</token>
+                <int64 name="SourceAssetId">-1</int64>
+                <token name="Style">0</token>
+                <BinaryString name="Tags"></BinaryString>
+                <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f7</UniqueId>
+                <bool name="Visible">true</bool>
+                <int name="ZIndex">1</int>
+              </Properties>
+            </Item>
+          </Item>
+        </Item>
+      </Item>
     </Item>
-    <Item class="Part" referent="34">
+    <Item class="RemoteEvent" referent="40">
+      <Properties>
+        <string name="Name">Shoot</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+        <bool name="DefinesCapabilities">false</bool>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+        <UniqueId name="UniqueId">0da55ac67e93939106e7d21400000493</UniqueId>
+      </Properties>
+    </Item>
+    <Item class="Part" referent="41">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3401,7 +3819,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="35">
+    <Item class="Part" referent="42">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3502,7 +3920,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="36">
+    <Item class="Part" referent="43">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3603,7 +4021,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="37">
+    <Item class="Part" referent="44">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3704,7 +4122,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="38">
+    <Item class="Part" referent="45">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3805,7 +4223,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="39">
+    <Item class="Part" referent="46">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3906,7 +4324,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="40">
+    <Item class="Part" referent="47">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4007,7 +4425,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="41">
+    <Item class="Part" referent="48">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4108,7 +4526,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="42">
+    <Item class="Part" referent="49">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4209,7 +4627,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="43">
+    <Item class="Part" referent="50">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4310,7 +4728,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="44">
+    <Item class="Part" referent="51">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4411,7 +4829,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="45">
+    <Item class="Part" referent="52">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4512,7 +4930,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Seat" referent="46">
+    <Item class="Seat" referent="53">
       <Properties>
         <string name="Name">Seat</string>
         <bool name="Anchored">false</bool>
@@ -4614,7 +5032,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="47">
+    <Item class="Part" referent="54">
       <Properties>
         <string name="Name">LeftThrusterBase</string>
         <bool name="Anchored">false</bool>
@@ -4715,7 +5133,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="48">
+    <Item class="Part" referent="55">
       <Properties>
         <string name="Name">RightThrusterBase</string>
         <bool name="Anchored">false</bool>
@@ -4816,7 +5234,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="49">
+    <Item class="Part" referent="56">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4917,7 +5335,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="50">
+    <Item class="Part" referent="57">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -5018,7 +5436,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="51">
+    <Item class="Part" referent="58">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -5119,7 +5537,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Model" referent="52">
+    <Item class="Model" referent="59">
       <Properties>
         <string name="Name">PlasmaBasedAxe</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -5171,7 +5589,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="53">
+      <Item class="Part" referent="60">
         <Properties>
           <string name="Name">PlasmaContainer</string>
           <bool name="Anchored">false</bool>
@@ -5272,7 +5690,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="54">
+      <Item class="Part" referent="61">
         <Properties>
           <string name="Name">WoolHilt</string>
           <bool name="Anchored">false</bool>
@@ -5373,7 +5791,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="55">
+      <Item class="Part" referent="62">
         <Properties>
           <string name="Name">Blade</string>
           <bool name="Anchored">false</bool>
@@ -5474,7 +5892,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="56">
+      <Item class="Part" referent="63">
         <Properties>
           <string name="Name">Handle</string>
           <bool name="Anchored">false</bool>
@@ -5576,7 +5994,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="57">
+    <Item class="Model" referent="64">
       <Properties>
         <string name="Name">PlasmaBuildingHammer</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -5628,7 +6046,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="58">
+      <Item class="Part" referent="65">
         <Properties>
           <string name="Name">Handle</string>
           <bool name="Anchored">false</bool>
@@ -5729,7 +6147,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="59">
+      <Item class="Part" referent="66">
         <Properties>
           <string name="Name">HammerHead</string>
           <bool name="Anchored">false</bool>
@@ -5830,7 +6248,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="60">
+      <Item class="Part" referent="67">
         <Properties>
           <string name="Name">HandlePlasma</string>
           <bool name="Anchored">false</bool>
@@ -5931,7 +6349,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="61">
+      <Item class="Part" referent="68">
         <Properties>
           <string name="Name">Plasma1</string>
           <bool name="Anchored">false</bool>
@@ -6032,7 +6450,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="62">
+      <Item class="Part" referent="69">
         <Properties>
           <string name="Name">Plasma2</string>
           <bool name="Anchored">false</bool>
@@ -6133,7 +6551,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="63">
+      <Item class="Part" referent="70">
         <Properties>
           <string name="Name">Projection1</string>
           <bool name="Anchored">false</bool>
@@ -6234,7 +6652,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="64">
+      <Item class="Part" referent="71">
         <Properties>
           <string name="Name">Plasma3</string>
           <bool name="Anchored">false</bool>
@@ -6335,7 +6753,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="65">
+      <Item class="Part" referent="72">
         <Properties>
           <string name="Name">Projection2</string>
           <bool name="Anchored">false</bool>
@@ -6436,7 +6854,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="66">
+      <Item class="Part" referent="73">
         <Properties>
           <string name="Name">Projection3</string>
           <bool name="Anchored">false</bool>
@@ -6537,7 +6955,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="67">
+      <Item class="Part" referent="74">
         <Properties>
           <string name="Name">Projection4</string>
           <bool name="Anchored">false</bool>
@@ -6639,7 +7057,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="68">
+    <Item class="Model" referent="75">
       <Properties>
         <string name="Name">RightThruster</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -6691,10 +7109,10 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="69">
+      <Item class="Part" referent="76">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -6791,7 +7209,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="70">
+        <Item class="Fire" referent="77">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -6818,10 +7236,10 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="71">
+      <Item class="Part" referent="78">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -6918,7 +7336,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="72">
+        <Item class="Fire" referent="79">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -6945,10 +7363,10 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="73">
+      <Item class="Part" referent="80">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7046,10 +7464,10 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="74">
+      <Item class="Part" referent="81">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7147,10 +7565,10 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="75">
+      <Item class="Part" referent="82">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7248,10 +7666,10 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="76">
+      <Item class="Part" referent="83">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7349,11 +7767,11 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="UnionOperation" referent="77">
+      <Item class="UnionOperation" referent="84">
         <Properties>
           <string name="Name">Union</string>
           <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <ContentId name="AssetId">
             <url>https://www.roblox.com//asset/?id=3661164699</url>
           </ContentId>
@@ -7488,7 +7906,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="78">
+    <Item class="Model" referent="85">
       <Properties>
         <string name="Name">LeftThruster</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -7540,10 +7958,10 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="79">
+      <Item class="Part" referent="86">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7640,7 +8058,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="80">
+        <Item class="Fire" referent="87">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -7667,10 +8085,10 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="81">
+      <Item class="Part" referent="88">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7767,7 +8185,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="82">
+        <Item class="Fire" referent="89">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -7794,10 +8212,10 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="83">
+      <Item class="Part" referent="90">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7895,10 +8313,10 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="84">
+      <Item class="Part" referent="91">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -7996,10 +8414,10 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="85">
+      <Item class="Part" referent="92">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -8097,10 +8515,10 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="86">
+      <Item class="Part" referent="93">
         <Properties>
           <string name="Name">Part</string>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AudioCanCollide">true</bool>
           <float name="BackParamA">-0.5</float>
@@ -8198,11 +8616,11 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="UnionOperation" referent="87">
+      <Item class="UnionOperation" referent="94">
         <Properties>
           <string name="Name">Union</string>
           <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
-          <bool name="Anchored">true</bool>
+          <bool name="Anchored">false</bool>
           <ContentId name="AssetId">
             <url>https://www.roblox.com//asset/?id=3661164699</url>
           </ContentId>
@@ -8337,7 +8755,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="88">
+    <Item class="Model" referent="95">
       <Properties>
         <string name="Name">Guns</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8389,7 +8807,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Model" referent="89">
+      <Item class="Model" referent="96">
         <Properties>
           <string name="Name">Gun2</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8441,7 +8859,7 @@
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="UnionOperation" referent="90">
+        <Item class="UnionOperation" referent="97">
           <Properties>
             <string name="Name">Union</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -8578,7 +8996,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="Weld" referent="91">
+          <Item class="Weld" referent="98">
             <Properties>
               <string name="Name">Weld</string>
               <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAAMjQyMGEyOGUxNzIxZWFiZDA3ZDZiMzhhMDAwMDAzZTYRAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADI0MjBhMjhlMTcyMWVhYmQwN2Q2YjM4YTAwMDAwM2U4</BinaryString>
@@ -8613,8 +9031,8 @@
               <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
               <bool name="Enabled">true</bool>
               <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-              <Ref name="Part0">90</Ref>
-              <Ref name="Part1">92</Ref>
+              <Ref name="Part0">97</Ref>
+              <Ref name="Part1">99</Ref>
               <bool name="DefinesCapabilities">false</bool>
               <int64 name="SourceAssetId">-1</int64>
               <BinaryString name="Tags"></BinaryString>
@@ -8622,7 +9040,7 @@
             </Properties>
           </Item>
         </Item>
-        <Item class="Part" referent="92">
+        <Item class="Part" referent="99">
           <Properties>
             <string name="Name">Muzzle</string>
             <bool name="Anchored">false</bool>
@@ -8722,7 +9140,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="CylinderMesh" referent="93">
+          <Item class="CylinderMesh" referent="100">
             <Properties>
               <string name="Name">Mesh</string>
               <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8754,7 +9172,7 @@
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="94">
+      <Item class="Model" referent="101">
         <Properties>
           <string name="Name">Gun1</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8806,7 +9224,7 @@
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="UnionOperation" referent="95">
+        <Item class="UnionOperation" referent="102">
           <Properties>
             <string name="Name">Union</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -8943,7 +9361,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="Weld" referent="96">
+          <Item class="Weld" referent="103">
             <Properties>
               <string name="Name">Weld</string>
               <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAAMjQyMGEyOGUxNzIxZWFiZDA3ZDZiMzhhMDAwMDAzZWIRAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADI0MjBhMjhlMTcyMWVhYmQwN2Q2YjM4YTAwMDAwM2Vk</BinaryString>
@@ -8978,8 +9396,8 @@
               <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
               <bool name="Enabled">true</bool>
               <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-              <Ref name="Part0">95</Ref>
-              <Ref name="Part1">97</Ref>
+              <Ref name="Part0">102</Ref>
+              <Ref name="Part1">104</Ref>
               <bool name="DefinesCapabilities">false</bool>
               <int64 name="SourceAssetId">-1</int64>
               <BinaryString name="Tags"></BinaryString>
@@ -8987,7 +9405,7 @@
             </Properties>
           </Item>
         </Item>
-        <Item class="Part" referent="97">
+        <Item class="Part" referent="104">
           <Properties>
             <string name="Name">Muzzle</string>
             <bool name="Anchored">false</bool>
@@ -9087,7 +9505,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="CylinderMesh" referent="98">
+          <Item class="CylinderMesh" referent="105">
             <Properties>
               <string name="Name">Mesh</string>
               <BinaryString name="AttributesSerialize"></BinaryString>
@@ -9120,12 +9538,12 @@
         </Item>
       </Item>
     </Item>
-    <Item class="Part" referent="99">
+    <Item class="Part" referent="106">
       <Properties>
-        <string name="Name">AimPart</string>
-        <bool name="Anchored">true</bool>
+        <string name="Name">Door</string>
+        <bool name="Anchored">false</bool>
         <BinaryString name="AttributesSerialize"></BinaryString>
-        <bool name="AudioCanCollide">false</bool>
+        <bool name="AudioCanCollide">true</bool>
         <float name="BackParamA">-0.5</float>
         <float name="BackParamB">0.5</float>
         <token name="BackSurface">0</token>
@@ -9135,32 +9553,32 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>55.777</X>
-          <Y>7.786</Y>
-          <Z>-58.412</Z>
-          <R00>1</R00>
-          <R01>0</R01>
+          <X>7.041969</X>
+          <Y>8.251639</Y>
+          <Z>-59.333122</Z>
+          <R00>-0.0523359</R00>
+          <R01>0.9986295</R01>
           <R02>0</R02>
-          <R10>0</R10>
-          <R11>1</R11>
+          <R10>-0.99862945</R10>
+          <R11>-0.052335914</R11>
           <R12>0</R12>
           <R20>0</R20>
           <R21>0</R21>
           <R22>1</R22>
         </CoordinateFrame>
-        <bool name="CanCollide">false</bool>
+        <bool name="CanCollide">true</bool>
         <bool name="CanQuery">true</bool>
         <bool name="CanTouch">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <bool name="CastShadow">true</bool>
         <string name="CollisionGroup">Default</string>
         <int name="CollisionGroupId">0</int>
-        <Color3uint8 name="Color3uint8">10724005</Color3uint8>
+        <Color3uint8 name="Color3uint8">5987689</Color3uint8>
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
         <bool name="EnableFluidForces">true</bool>
-        <token name="formFactorRaw">3</token>
+        <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
@@ -9172,7 +9590,7 @@
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
         <bool name="Massless">false</bool>
-        <token name="Material">256</token>
+        <token name="Material">1328</token>
         <string name="MaterialVariantSerialized"></string>
         <CoordinateFrame name="PivotOffset">
           <X>0</X>
@@ -9202,560 +9620,41 @@
         <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
-          <X>0.2</X>
-          <Y>0.2</Y>
-          <Z>0.2</Z>
+          <X>16.525803</X>
+          <Y>1</Y>
+          <Z>29.81567</Z>
         </Vector3>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">RG9vcg==</BinaryString>
         <float name="TopParamA">-0.5</float>
         <float name="TopParamB">0.5</float>
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
-        <float name="Transparency">1</float>
-        <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003ef</UniqueId>
+        <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003ac</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
       </Properties>
-      <Item class="BillboardGui" referent="100">
+      <Item class="ClickDetector" referent="107">
         <Properties>
-          <string name="Name">ShipGui</string>
-          <bool name="Active">false</bool>
-          <Ref name="Adornee">null</Ref>
-          <bool name="AlwaysOnTop">true</bool>
+          <string name="Name">ClickDetector</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
-          <bool name="AutoLocalize">true</bool>
-          <float name="Brightness">1</float>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="ClipsDescendants">false</bool>
-          <float name="DistanceLowerLimit">0</float>
-          <float name="DistanceStep">0</float>
-          <float name="DistanceUpperLimit">-1</float>
-          <bool name="Enabled">false</bool>
-          <Vector3 name="ExtentsOffset">
-            <X>0</X>
-            <Y>0</Y>
-            <Z>0</Z>
-          </Vector3>
-          <Vector3 name="ExtentsOffsetWorldSpace">
-            <X>0</X>
-            <Y>0</Y>
-            <Z>0</Z>
-          </Vector3>
+          <ContentId name="CursorIcon">
+            <null>
+            </null>
+          </ContentId>
           <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-          <float name="LightInfluence">0</float>
-          <float name="MaxDistance">INF</float>
-          <Ref name="PlayerToHideFrom">null</Ref>
-          <bool name="ResetOnSpawn">true</bool>
-          <Ref name="RootLocalizationTable">null</Ref>
+          <float name="MaxActivationDistance">32</float>
           <bool name="DefinesCapabilities">false</bool>
-          <token name="SelectionBehaviorDown">0</token>
-          <token name="SelectionBehaviorLeft">0</token>
-          <token name="SelectionBehaviorRight">0</token>
-          <token name="SelectionBehaviorUp">0</token>
-          <bool name="SelectionGroup">false</bool>
-          <UDim2 name="Size">
-            <XS>0</XS>
-            <XO>100</XO>
-            <YS>0</YS>
-            <YO>100</YO>
-          </UDim2>
-          <Vector2 name="SizeOffset">
-            <X>0</X>
-            <Y>0</Y>
-          </Vector2>
-          <int64 name="SourceAssetId">-1</int64>
-          <Vector3 name="StudsOffset">
-            <X>0</X>
-            <Y>0</Y>
-            <Z>0</Z>
-          </Vector3>
-          <Vector3 name="StudsOffsetWorldSpace">
-            <X>0</X>
-            <Y>0</Y>
-            <Z>0</Z>
-          </Vector3>
-          <BinaryString name="Tags"></BinaryString>
-          <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f0</UniqueId>
-          <token name="ZIndexBehavior">0</token>
-        </Properties>
-        <Item class="Frame" referent="101">
-          <Properties>
-            <string name="Name">Frame</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0</X>
-              <Y>0</Y>
-            </Vector2>
-            <BinaryString name="AttributesSerialize"></BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>1</R>
-              <G>1</G>
-              <B>1</B>
-            </Color3>
-            <float name="BackgroundTransparency">0</float>
-            <Color3 name="BorderColor3">
-              <R>0.10588236</R>
-              <G>0.16470589</G>
-              <B>0.20784315</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">0</int>
-            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-            <bool name="Interactable">true</bool>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0.5</XS>
-              <XO>-2</XO>
-              <YS>0.7</YS>
-              <YO>0</YO>
-            </UDim2>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <bool name="DefinesCapabilities">false</bool>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>0</XS>
-              <XO>4</XO>
-              <YS>0.3</YS>
-              <YO>0</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <int64 name="SourceAssetId">-1</int64>
-            <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
-            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f1</UniqueId>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">1</int>
-          </Properties>
-        </Item>
-        <Item class="Frame" referent="102">
-          <Properties>
-            <string name="Name">Frame</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0</X>
-              <Y>0</Y>
-            </Vector2>
-            <BinaryString name="AttributesSerialize"></BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>1</R>
-              <G>1</G>
-              <B>1</B>
-            </Color3>
-            <float name="BackgroundTransparency">0</float>
-            <Color3 name="BorderColor3">
-              <R>0.10588236</R>
-              <G>0.16470589</G>
-              <B>0.20784315</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">0</int>
-            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-            <bool name="Interactable">true</bool>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0</XS>
-              <XO>0</XO>
-              <YS>0.5</YS>
-              <YO>-2</YO>
-            </UDim2>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <bool name="DefinesCapabilities">false</bool>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>0.2</XS>
-              <XO>0</XO>
-              <YS>0</YS>
-              <YO>4</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <int64 name="SourceAssetId">-1</int64>
-            <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
-            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f2</UniqueId>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">1</int>
-          </Properties>
-        </Item>
-        <Item class="Frame" referent="103">
-          <Properties>
-            <string name="Name">Frame</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0</X>
-              <Y>0</Y>
-            </Vector2>
-            <BinaryString name="AttributesSerialize"></BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>1</R>
-              <G>1</G>
-              <B>1</B>
-            </Color3>
-            <float name="BackgroundTransparency">0</float>
-            <Color3 name="BorderColor3">
-              <R>0.10588236</R>
-              <G>0.16470589</G>
-              <B>0.20784315</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">0</int>
-            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-            <bool name="Interactable">true</bool>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0.8</XS>
-              <XO>0</XO>
-              <YS>0.5</YS>
-              <YO>-2</YO>
-            </UDim2>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <bool name="DefinesCapabilities">false</bool>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>0.2</XS>
-              <XO>0</XO>
-              <YS>0</YS>
-              <YO>4</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <int64 name="SourceAssetId">-1</int64>
-            <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
-            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f3</UniqueId>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">1</int>
-          </Properties>
-        </Item>
-      </Item>
-      <Item class="ScreenGui" referent="104">
-        <Properties>
-          <string name="Name">ShipMobileGui</string>
-          <BinaryString name="AttributesSerialize"></BinaryString>
-          <bool name="AutoLocalize">true</bool>
-          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="ClipToDeviceSafeArea">true</bool>
-          <int name="DisplayOrder">0</int>
-          <bool name="Enabled">true</bool>
-          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-          <bool name="ResetOnSpawn">true</bool>
-          <Ref name="RootLocalizationTable">null</Ref>
-          <token name="SafeAreaCompatibility">1</token>
-          <bool name="DefinesCapabilities">false</bool>
-          <token name="ScreenInsets">2</token>
-          <token name="SelectionBehaviorDown">0</token>
-          <token name="SelectionBehaviorLeft">0</token>
-          <token name="SelectionBehaviorRight">0</token>
-          <token name="SelectionBehaviorUp">0</token>
-          <bool name="SelectionGroup">false</bool>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f4</UniqueId>
-          <token name="ZIndexBehavior">0</token>
+          <UniqueId name="UniqueId">1a3661570641289b07d7768f000059db</UniqueId>
         </Properties>
-        <Item class="Frame" referent="105">
-          <Properties>
-            <string name="Name">Throttle</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0</X>
-              <Y>0</Y>
-            </Vector2>
-            <BinaryString name="AttributesSerialize"></BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>0.12156863</R>
-              <G>0.12156863</G>
-              <B>0.12156863</B>
-            </Color3>
-            <float name="BackgroundTransparency">0.5</float>
-            <Color3 name="BorderColor3">
-              <R>0.10588236</R>
-              <G>0.16470589</G>
-              <B>0.20784315</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">0</int>
-            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-            <bool name="Interactable">true</bool>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0</XS>
-              <XO>35</XO>
-              <YS>0.4</YS>
-              <YO>-35</YO>
-            </UDim2>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <bool name="DefinesCapabilities">false</bool>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>0</XS>
-              <XO>25</XO>
-              <YS>0.6</YS>
-              <YO>0</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <int64 name="SourceAssetId">-1</int64>
-            <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
-            <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f5</UniqueId>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">1</int>
-          </Properties>
-          <Item class="TextButton" referent="106">
-            <Properties>
-              <string name="Name">Slider</string>
-              <bool name="Active">true</bool>
-              <Vector2 name="AnchorPoint">
-                <X>0</X>
-                <Y>0</Y>
-              </Vector2>
-              <BinaryString name="AttributesSerialize"></BinaryString>
-              <bool name="AutoButtonColor">true</bool>
-              <bool name="AutoLocalize">true</bool>
-              <token name="AutomaticSize">0</token>
-              <Color3 name="BackgroundColor3">
-                <R>0</R>
-                <G>0.5019608</G>
-                <B>1</B>
-              </Color3>
-              <float name="BackgroundTransparency">0</float>
-              <Color3 name="BorderColor3">
-                <R>0.12156863</R>
-                <G>0.12156863</G>
-                <B>0.12156863</B>
-              </Color3>
-              <token name="BorderMode">0</token>
-              <int name="BorderSizePixel">2</int>
-              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-              <bool name="ClipsDescendants">false</bool>
-              <bool name="Draggable">false</bool>
-              <Font name="FontFace">
-                <Family>
-                  <url>rbxasset://fonts/families/SourceSansPro.json</url>
-                </Family>
-                <Weight>400</Weight>
-                <Style>Normal</Style>
-                <CachedFaceId>
-                  <url>rbxasset://fonts/SourceSansPro-Regular.ttf</url>
-                </CachedFaceId>
-              </Font>
-              <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-              <bool name="Interactable">true</bool>
-              <int name="LayoutOrder">0</int>
-              <float name="LineHeight">1</float>
-              <string name="LocalizationMatchIdentifier"></string>
-              <string name="LocalizationMatchedSourceText"></string>
-              <int name="MaxVisibleGraphemes">-1</int>
-              <bool name="Modal">false</bool>
-              <Ref name="NextSelectionDown">null</Ref>
-              <Ref name="NextSelectionLeft">null</Ref>
-              <Ref name="NextSelectionRight">null</Ref>
-              <Ref name="NextSelectionUp">null</Ref>
-              <string name="OpenTypeFeatures"></string>
-              <UDim2 name="Position">
-                <XS>0</XS>
-                <XO>-10</XO>
-                <YS>1</YS>
-                <YO>-35</YO>
-              </UDim2>
-              <bool name="RichText">false</bool>
-              <Ref name="RootLocalizationTable">null</Ref>
-              <float name="Rotation">0</float>
-              <bool name="DefinesCapabilities">false</bool>
-              <bool name="Selectable">true</bool>
-              <bool name="Selected">false</bool>
-              <token name="SelectionBehaviorDown">0</token>
-              <token name="SelectionBehaviorLeft">0</token>
-              <token name="SelectionBehaviorRight">0</token>
-              <token name="SelectionBehaviorUp">0</token>
-              <bool name="SelectionGroup">false</bool>
-              <Ref name="SelectionImageObject">null</Ref>
-              <int name="SelectionOrder">0</int>
-              <UDim2 name="Size">
-                <XS>0</XS>
-                <XO>45</XO>
-                <YS>0</YS>
-                <YO>45</YO>
-              </UDim2>
-              <token name="SizeConstraint">0</token>
-              <int64 name="SourceAssetId">-1</int64>
-              <token name="Style">0</token>
-              <BinaryString name="Tags"></BinaryString>
-              <string name="Text"></string>
-              <Color3 name="TextColor3">
-                <R>0.10588236</R>
-                <G>0.16470589</G>
-                <B>0.20784315</B>
-              </Color3>
-              <token name="TextDirection">0</token>
-              <bool name="TextScaled">false</bool>
-              <float name="TextSize">14</float>
-              <Color3 name="TextStrokeColor3">
-                <R>0</R>
-                <G>0</G>
-                <B>0</B>
-              </Color3>
-              <float name="TextStrokeTransparency">1</float>
-              <float name="TextTransparency">0</float>
-              <token name="TextTruncate">0</token>
-              <bool name="TextWrapped">false</bool>
-              <token name="TextXAlignment">2</token>
-              <token name="TextYAlignment">1</token>
-              <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f6</UniqueId>
-              <bool name="Visible">true</bool>
-              <int name="ZIndex">1</int>
-            </Properties>
-            <Item class="Frame" referent="107">
-              <Properties>
-                <string name="Name">Frame</string>
-                <bool name="Active">false</bool>
-                <Vector2 name="AnchorPoint">
-                  <X>0</X>
-                  <Y>0</Y>
-                </Vector2>
-                <BinaryString name="AttributesSerialize"></BinaryString>
-                <bool name="AutoLocalize">true</bool>
-                <token name="AutomaticSize">0</token>
-                <Color3 name="BackgroundColor3">
-                  <R>1</R>
-                  <G>1</G>
-                  <B>1</B>
-                </Color3>
-                <float name="BackgroundTransparency">0.7</float>
-                <Color3 name="BorderColor3">
-                  <R>0.10588236</R>
-                  <G>0.16470589</G>
-                  <B>0.20784315</B>
-                </Color3>
-                <token name="BorderMode">0</token>
-                <int name="BorderSizePixel">0</int>
-                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-                <bool name="ClipsDescendants">false</bool>
-                <bool name="Draggable">false</bool>
-                <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-                <bool name="Interactable">true</bool>
-                <int name="LayoutOrder">0</int>
-                <Ref name="NextSelectionDown">null</Ref>
-                <Ref name="NextSelectionLeft">null</Ref>
-                <Ref name="NextSelectionRight">null</Ref>
-                <Ref name="NextSelectionUp">null</Ref>
-                <UDim2 name="Position">
-                  <XS>0</XS>
-                  <XO>0</XO>
-                  <YS>0</YS>
-                  <YO>0</YO>
-                </UDim2>
-                <Ref name="RootLocalizationTable">null</Ref>
-                <float name="Rotation">0</float>
-                <bool name="DefinesCapabilities">false</bool>
-                <bool name="Selectable">false</bool>
-                <token name="SelectionBehaviorDown">0</token>
-                <token name="SelectionBehaviorLeft">0</token>
-                <token name="SelectionBehaviorRight">0</token>
-                <token name="SelectionBehaviorUp">0</token>
-                <bool name="SelectionGroup">false</bool>
-                <Ref name="SelectionImageObject">null</Ref>
-                <int name="SelectionOrder">0</int>
-                <UDim2 name="Size">
-                  <XS>1</XS>
-                  <XO>0</XO>
-                  <YS>0.4</YS>
-                  <YO>0</YO>
-                </UDim2>
-                <token name="SizeConstraint">0</token>
-                <int64 name="SourceAssetId">-1</int64>
-                <token name="Style">0</token>
-                <BinaryString name="Tags"></BinaryString>
-                <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003f7</UniqueId>
-                <bool name="Visible">true</bool>
-                <int name="ZIndex">1</int>
-              </Properties>
-            </Item>
-          </Item>
-        </Item>
       </Item>
-    </Item>
-    <Item class="RemoteEvent" referent="108">
-      <Properties>
-        <string name="Name">Shoot</string>
-        <BinaryString name="AttributesSerialize"></BinaryString>
-        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-        <bool name="DefinesCapabilities">false</bool>
-        <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
-        <UniqueId name="UniqueId">0da55ac67e93939106e7d21400000493</UniqueId>
-      </Properties>
     </Item>
   </Item>
   <SharedStrings>
