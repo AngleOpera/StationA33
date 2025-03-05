@@ -189,7 +189,7 @@ export function updateBodyAngularVelocity(
     existingBodyAngularVelocity || new Instance('BodyAngularVelocity', parent)
   if (!existingBodyAngularVelocity) {
     bodyAngularVelocity.P = math.huge
-    bodyAngularVelocity.MaxTorque = new Vector3(1000000, 1000000, 1000000)
+    bodyAngularVelocity.MaxTorque = new Vector3(10000000, 10000000, 10000000)
     bodyAngularVelocity.AngularVelocity = new Vector3(0, 0, 0)
   }
   bodyAngularVelocity.AngularVelocity = options?.additive

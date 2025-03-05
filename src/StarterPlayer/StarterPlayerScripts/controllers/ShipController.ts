@@ -1,6 +1,9 @@
 import { Controller, OnStart } from '@flamework/core'
 import { RunService, UserInputService } from '@rbxts/services'
-import { updateBodyVelocity } from 'ReplicatedStorage/shared/utils/instance'
+import {
+  updateBodyAngularVelocity,
+  updateBodyVelocity,
+} from 'ReplicatedStorage/shared/utils/instance'
 
 @Controller({})
 export class ShipController implements OnStart {
@@ -20,6 +23,8 @@ export class ShipController implements OnStart {
   fallDown = false
   strafeLeftDown = false
   strafeRightDown = false
+  rollLeftDown = false
+  rollRightDown = false
 
   onStart() {
     UserInputService.InputBegan.Connect((inputObject, processed) => {
@@ -54,6 +59,7 @@ export class ShipController implements OnStart {
         CFrame.lookAt(
           body.CFrame.ToWorldSpace(new CFrame(0, 30, -100)).Position,
           body.CFrame.ToWorldSpace(new CFrame(0, 10, 100)).Position,
+          body.CFrame.UpVector,
         ),
         deltaTime * 15,
       )
@@ -88,6 +94,9 @@ export class ShipController implements OnStart {
       case Enum.KeyCode.A:
         this.leftDown = down
         break
+      case Enum.KeyCode.C:
+        this.rollRightDown = down
+        break
       case Enum.KeyCode.D:
         this.rightDown = down
         break
@@ -105,6 +114,9 @@ export class ShipController implements OnStart {
         break
       case Enum.KeyCode.W:
         this.upDown = down
+        break
+      case Enum.KeyCode.Z:
+        this.rollLeftDown = down
         break
       case Enum.KeyCode.CapsLock:
         this.strafeLeftDown = down
@@ -143,7 +155,42 @@ export class ShipController implements OnStart {
       velocity = velocity.add(body.CFrame.RightVector.mul(config.speed))
     }
 
-    print('updateBodyVelocity', velocity)
+    let angularVelocity = new Vector3(0, 0, 0)
+    if (this.leftDown) {
+      angularVelocity = angularVelocity.add(
+        body.CFrame.UpVector.mul(config.speed),
+      )
+    }
+    if (this.rightDown) {
+      angularVelocity = angularVelocity.add(
+        body.CFrame.UpVector.mul(-config.speed),
+      )
+    }
+    if (this.upDown) {
+      angularVelocity = angularVelocity.add(
+        body.CFrame.RightVector.mul(-config.speed),
+      )
+    }
+    if (this.downDown) {
+      angularVelocity = angularVelocity.add(
+        body.CFrame.RightVector.mul(config.speed),
+      )
+    }
+    if (this.rollLeftDown) {
+      angularVelocity = angularVelocity.add(
+        body.CFrame.LookVector.mul(-config.speed),
+      )
+    }
+    if (this.rollRightDown) {
+      angularVelocity = angularVelocity.add(
+        body.CFrame.LookVector.mul(config.speed),
+      )
+    }
+
+    print('updateBodyVelocity', velocity, angularVelocity)
     updateBodyVelocity(body, velocity, { requireAlreadyExists: !down })
+    updateBodyAngularVelocity(body, angularVelocity, {
+      requireAlreadyExists: !down,
+    })
   }
 }

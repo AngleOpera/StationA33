@@ -292,12 +292,12 @@
           </Color3>
           <token name="Face">1</token>
           <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-          <float name="OffsetStudsU">0</float>
-          <float name="OffsetStudsV">0</float>
+          <float name="OffsetStudsU">-0.6</float>
+          <float name="OffsetStudsV">-0.4</float>
           <bool name="DefinesCapabilities">false</bool>
           <int64 name="SourceAssetId">-1</int64>
-          <float name="StudsPerTileU">8</float>
-          <float name="StudsPerTileV">8</float>
+          <float name="StudsPerTileU">6</float>
+          <float name="StudsPerTileV">6</float>
           <BinaryString name="Tags"></BinaryString>
           <ContentId name="Texture">
             <url>rbxassetid://6372755229</url>
