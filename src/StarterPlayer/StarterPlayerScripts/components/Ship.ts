@@ -7,7 +7,7 @@ import { createBulletAdjuster } from 'StarterPlayer/StarterPlayerScripts/utils/p
 @Component({ tag: ShipTag })
 export class ShipComponent extends BaseComponent<{}, Ship> implements OnStart {
   config: ShipConfig = {
-    gunsEnabled: true,
+    gunsEnabled: false,
     speed: 120,
     turnSpeed: 10,
   }
@@ -19,7 +19,8 @@ export class ShipComponent extends BaseComponent<{}, Ship> implements OnStart {
   onStart() {
     const ship = this.instance
     ship.Seat.GetPropertyChangedSignal('Occupant').Connect(() => {
-      if (ship.Seat.Occupant) this.shipController.startShip(ship, this.config)
+      if (ship?.FindFirstChild<Seat>('Seat')?.Occupant)
+        this.shipController.startShip(ship, this.config)
       else this.shipController.stopShip(ship)
     })
 

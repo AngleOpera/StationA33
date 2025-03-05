@@ -107,10 +107,6 @@ interface ReplicatedStorage extends Instance {
 }
 
 interface Ship extends Model {
-  AimPart: BasePart & {
-    ShipGui: BillboardGui
-    ShipMobileGui: ShipMobileGui
-  }
   Body: BasePart
   Guns: Model & {
     Gun1: Model & {

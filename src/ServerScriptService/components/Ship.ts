@@ -2,6 +2,7 @@ import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Players } from '@rbxts/services'
 import { ShipTag } from 'ReplicatedStorage/shared/constants/tags'
+import { setNetworkOwner } from 'ReplicatedStorage/shared/utils/instance'
 import { createBullet } from 'ServerScriptService/utils/part'
 
 @Component({ tag: ShipTag })
@@ -28,9 +29,10 @@ export class ShipComponent extends BaseComponent<{}, Ship> implements OnStart {
       if (seat.Occupant) {
         this.startEngine(true)
         const player = Players.GetPlayerFromCharacter(seat.Occupant.Parent)
-        if (player) ship.Body.SetNetworkOwner(player)
+        setNetworkOwner(ship, player)
       } else {
         this.startEngine(false)
+        setNetworkOwner(ship, undefined)
       }
     })
   }

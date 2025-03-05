@@ -1,166 +1,149 @@
 import { Controller, OnStart } from '@flamework/core'
-import { Players, RunService, UserInputService } from '@rbxts/services'
+import { RunService, UserInputService } from '@rbxts/services'
+import { updateBodyVelocity } from 'ReplicatedStorage/shared/utils/instance'
 
 @Controller({})
 export class ShipController implements OnStart {
-  ship: Ship | undefined
-  camera: Camera | undefined
-  cameraType: Enum.CameraType | undefined
-  config: ShipConfig | undefined
-  bodyGyro: BodyGyro | undefined
-  bodyVelocity: BodyVelocity | undefined
-  mobileGui: ShipMobileGui | undefined
-
-  sliding = false
-  speed = 0
-
-  startShip(ship: Ship, config: ShipConfig) {
-    if (this.ship !== undefined) return
-
-    this.camera = game.Workspace.CurrentCamera
-    if (!this.camera) return
-
-    this.ship = ship
-    this.config = config
-    this.cameraType = this.camera.CameraType
-    this.camera.CameraType = Enum.CameraType.Scriptable
-    this.bodyGyro = new Instance('BodyGyro', ship.Body)
-    this.bodyGyro.D = 30
-    this.bodyGyro.P = 300
-    this.bodyGyro.MaxTorque = new Vector3()
-    this.bodyVelocity = new Instance('BodyVelocity', ship.Body)
-    this.bodyVelocity.P = math.huge
-    this.bodyVelocity.MaxForce = new Vector3()
-
-    ship.AimPart.ShipGui.Enabled = true
-    this.sliding = false
-    this.speed = 0
-
-    const playerGui = Players.LocalPlayer?.WaitForChild('PlayerGui')
-    if (UserInputService.TouchEnabled && playerGui) {
-      UserInputService.ModalEnabled = true
-      this.mobileGui = ship.AimPart.ShipMobileGui.Clone()
-      this.mobileGui.Parent = playerGui
-
-      const throttle = this.mobileGui.Throttle
-      throttle.Slider.MouseButton1Down.Connect(() => {
-        this.sliding = true
-        const mu = UserInputService.TouchEnded.Connect(() => {
-          this.sliding = false
-          mu.Disconnect()
-        })
-        const mouse = Players.LocalPlayer.GetMouse()
-        while (this.sliding) {
-          RunService.RenderStepped.Wait()
-          const mouseY = mouse.Y - throttle.AbsolutePosition.Y
-          const s = math.min(math.max(mouseY / throttle.AbsoluteSize.Y, 0), 1)
-          this.speed = (1 - s) * config.speed
-          throttle.Slider.Position = new UDim2(0, -10, s, -35)
-        }
-      })
-    }
+  active?: {
+    ship: Ship
+    camera: Camera
+    cameraType: Enum.CameraType
+    config: ShipConfig
   }
-
-  stopShip(ship: Ship) {
-    if (this.ship !== ship) return
-
-    this.bodyGyro?.Destroy()
-    this.bodyVelocity?.Destroy()
-    this.mobileGui?.Destroy()
-
-    ship.AimPart.ShipGui.Enabled = false
-
-    if (this.camera && this.cameraType) this.camera.CameraType = this.cameraType
-    if (UserInputService.TouchEnabled) UserInputService.ModalEnabled = false
-
-    this.mobileGui = undefined
-    this.bodyVelocity = undefined
-    this.bodyGyro = undefined
-    this.cameraType = undefined
-    this.camera = undefined
-    this.ship = undefined
-  }
+  leftDown = false
+  rightDown = false
+  upDown = false
+  downDown = false
+  forwardDown = false
+  backwardDown = false
+  riseDown = false
+  fallDown = false
+  strafeLeftDown = false
+  strafeRightDown = false
 
   onStart() {
-    let x = 0
-    let y = 0
-    let thumb1 = new Vector2()
-    let thumb2 = new Vector2()
-
     UserInputService.InputBegan.Connect((inputObject, processed) => {
-      if (this.ship && !processed) {
-        if (inputObject.UserInputType === Enum.UserInputType.MouseButton1)
-          this.ship.Shoot.FireServer()
+      if (this.active && !processed) {
+        if (inputObject.UserInputType === Enum.UserInputType.MouseButton1) {
+          this.active.ship.Shoot.FireServer()
+        } else if (inputObject.UserInputType === Enum.UserInputType.Keyboard) {
+          this.updateKeysDown(inputObject.KeyCode, true)
+        }
       }
     })
 
-    if (UserInputService.TouchEnabled) {
-      UserInputService.InputChanged.Connect((inputObject) => {
-        if (!this.ship || !this.config) return
-        if (inputObject.KeyCode === Enum.KeyCode.Thumbstick1) {
-          thumb1 = new Vector2(0, inputObject.Position.Y)
-          if (math.abs(thumb1.Y) <= 0.1) thumb1 = new Vector2(thumb1.X, 0)
-          this.speed = math.max(thumb1.Y, 0) * this.config.speed
-        } else if (inputObject.KeyCode === Enum.KeyCode.Thumbstick2) {
-          thumb2 = new Vector2(inputObject.Position.X, inputObject.Position.Y)
-          if (math.abs(thumb2.X) <= 0.1) thumb2 = new Vector2(0, thumb2.Y)
-          if (math.abs(thumb2.Y) <= 0.1) thumb2 = new Vector2(thumb2.X, 0)
+    UserInputService.InputEnded.Connect((inputObject, processed) => {
+      if (this.active && !processed) {
+        if (inputObject.UserInputType === Enum.UserInputType.Keyboard) {
+          this.updateKeysDown(inputObject.KeyCode, false)
         }
-      })
-    }
+      }
+    })
 
     for (;;) {
-      const ship = this.ship
-      const camera = this.camera
-      const config = this.config
-      const bodyVelocity = this.bodyVelocity
-      const bodyGyro = this.bodyGyro
-      const mouse = Players.LocalPlayer.GetMouse()
-      if (!ship || !camera || !config || !bodyVelocity || !bodyGyro) {
+      const ship = this.active?.ship
+      const camera = this.active?.camera
+      const config = this.active?.config
+      const body = ship?.FindFirstChild<BasePart>('Body')
+      if (!ship || !camera || !config || !body) {
         task.wait(1)
         continue
       }
-
-      const body = ship.Body
       const [deltaTime] = RunService.RenderStepped.Wait()
-
-      let mouseX = -thumb2.X
-      let mouseY = -thumb2.Y
-      if (thumb2.Magnitude <= 0 && !this.sliding) {
-        mouseX =
-          (camera.ViewportSize.X / 2 - mouse.X) / (camera.ViewportSize.X / 2)
-        mouseY =
-          (camera.ViewportSize.Y / 2 - mouse.Y) / (camera.ViewportSize.Y / 2)
-      }
-
-      y = mouseY * 1.4
-      x = (x + (mouseX / 50) * (config.turnSpeed / 10)) % (math.pi * 2)
-
-      if (UserInputService.IsKeyDown(Enum.KeyCode.W)) {
-        this.speed = math.min(this.speed + deltaTime * 100, config.speed)
-      } else if (UserInputService.IsKeyDown(Enum.KeyCode.S)) {
-        this.speed = math.max(this.speed - deltaTime * 100, 0)
-      }
-
-      const power = this.speed / config.speed
-
       camera.CoordinateFrame = camera.CoordinateFrame.Lerp(
-        new CFrame(body.Position)
-          .mul(CFrame.Angles(0, x, 0))
-          .mul(CFrame.Angles(y, 0, 0))
-          .mul(new CFrame(0, 10, 30)),
+        CFrame.lookAt(
+          body.CFrame.ToWorldSpace(new CFrame(0, 30, -100)).Position,
+          body.CFrame.ToWorldSpace(new CFrame(0, 10, 100)).Position,
+        ),
         deltaTime * 15,
       )
-
-      bodyGyro.CFrame = camera.CoordinateFrame.mul(CFrame.Angles(0, 0, mouseX))
-      bodyGyro.MaxTorque = new Vector3(power, power, power).mul(
-        config.turnSpeed,
-      )
-      bodyVelocity.Velocity = body.CFrame.LookVector.mul(config.speed)
-      bodyVelocity.MaxForce = new Vector3(1000000, 1000000, 1000000).mul(power)
-
-      if (config.gunsEnabled)
-        ship.AimPart.CFrame = body.CFrame.mul(new CFrame(0, 8, -100))
     }
+  }
+
+  startShip(ship: Ship, config: ShipConfig) {
+    if (this.active !== undefined) return
+    const camera = game.Workspace.CurrentCamera
+    if (!camera) return
+
+    this.active = {
+      ship,
+      camera,
+      cameraType: camera.CameraType,
+      config,
+    }
+
+    camera.CameraType = Enum.CameraType.Scriptable
+  }
+
+  stopShip(ship: Ship) {
+    if (this.active?.ship !== ship) return
+    if (this.active?.cameraType)
+      this.active.camera.CameraType = this.active.cameraType
+
+    this.active = undefined
+  }
+
+  updateKeysDown(keyCode: Enum.KeyCode, down: boolean) {
+    switch (keyCode) {
+      case Enum.KeyCode.A:
+        this.leftDown = down
+        break
+      case Enum.KeyCode.D:
+        this.rightDown = down
+        break
+      case Enum.KeyCode.E:
+        this.riseDown = down
+        break
+      case Enum.KeyCode.F:
+        this.strafeRightDown = down
+        break
+      case Enum.KeyCode.Q:
+        this.fallDown = down
+        break
+      case Enum.KeyCode.S:
+        this.downDown = down
+        break
+      case Enum.KeyCode.W:
+        this.upDown = down
+        break
+      case Enum.KeyCode.CapsLock:
+        this.strafeLeftDown = down
+        break
+      case Enum.KeyCode.LeftControl:
+        this.backwardDown = down
+        break
+      case Enum.KeyCode.LeftShift:
+        this.forwardDown = down
+        break
+      default:
+        return
+    }
+
+    const body = this.active?.ship.FindFirstChild<BasePart>('Body')
+    const config = this.active?.config
+    if (!body || !config) return
+
+    let velocity = new Vector3(0, 0, 0)
+    if (this.forwardDown) {
+      velocity = velocity.add(body.CFrame.LookVector.mul(-config.speed))
+    }
+    if (this.backwardDown) {
+      velocity = velocity.add(body.CFrame.LookVector.mul(config.speed))
+    }
+    if (this.riseDown) {
+      velocity = velocity.add(body.CFrame.UpVector.mul(config.speed))
+    }
+    if (this.fallDown) {
+      velocity = velocity.add(body.CFrame.UpVector.mul(-config.speed))
+    }
+    if (this.strafeLeftDown) {
+      velocity = velocity.add(body.CFrame.RightVector.mul(-config.speed))
+    }
+    if (this.strafeRightDown) {
+      velocity = velocity.add(body.CFrame.RightVector.mul(config.speed))
+    }
+
+    print('updateBodyVelocity', velocity)
+    updateBodyVelocity(body, velocity, { requireAlreadyExists: !down })
   }
 }
