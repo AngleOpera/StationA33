@@ -29,6 +29,9 @@
       "Common": {
         "$path": "assets/ReplicatedStorage/Common"
       },
+      "Items": {
+        "$path": "assets/ReplicatedStorage/Items"
+      },
       "Ships": {
         "$path": "assets/ReplicatedStorage/Ships"
       },

@@ -100,7 +100,7 @@ export const getPlayerData = (state: PlayerState): PlayerData => ({
   receiptHistory: state.receiptHistory,
 })
 
-export function getPlayerDataCurrencyKey(currency: Currency): 'credits' {
+export function getPlayerDataCurrencyKey(currency: CurrencyName): 'credits' {
   switch (currency) {
     case 'Credits':
       return 'credits'
@@ -109,7 +109,7 @@ export function getPlayerDataCurrencyKey(currency: Currency): 'credits' {
 
 export const getPlayerCurrency = (
   playerState: PlayerState | undefined,
-  currency: Currency,
+  currency: CurrencyName,
 ) => playerState?.[getPlayerDataCurrencyKey(currency)] || 0
 
 export const getPlayerGamePass = (
@@ -163,7 +163,7 @@ export const playersSlice = createProducer(initialState, {
   addPlayerCurrency: (
     state,
     userID: number,
-    currency: Currency,
+    currency: CurrencyName,
     amount: number,
   ) => {
     const playerKey = getPlayerKey(userID)

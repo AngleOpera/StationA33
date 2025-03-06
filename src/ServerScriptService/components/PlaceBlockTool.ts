@@ -1,7 +1,7 @@
 import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { ReplicatedStorage, Workspace } from '@rbxts/services'
-import { BlockPlacerTag } from 'ReplicatedStorage/shared/constants/tags'
+import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import { PlayerService } from 'ServerScriptService/services/PlayerService'
 
 // Workspace Models holders: BuildingModel IgnoreModelForMouse
@@ -12,9 +12,9 @@ import { PlayerService } from 'ServerScriptService/services/PlayerService'
   else return 0
 }*/
 
-@Component({ tag: BlockPlacerTag })
-export class BlockPlacerComponent
-  extends BaseComponent<BlockPlacerAttributes, BlockPlacer>
+@Component({ tag: PlaceBlockToolTag })
+export class PlaceBlockToolComponent
+  extends BaseComponent<PlaceBlockToolAttributes, PlaceBlockTool>
   implements OnStart
 {
   constructor(private playerService: PlayerService) {
@@ -74,7 +74,7 @@ end)*/
 
   onStart() {
     const placeSound = Workspace.Audio.BlockPlaced
-    const block = ReplicatedStorage.Common.PlaceBlockBlock
+    // const block = ReplicatedStorage.Common.PlaceBlockBlock
     // const baseplate = Workspace.Map.Baseplate
     /*const minY = (baseplate.Size.Y + 3) / 2 + baseplate.Position.Y
     const baseplateSizeX = baseplate.Size.X
@@ -101,22 +101,24 @@ end)*/
 			player:Kick("Stop exploiting! AAA")
 			return false
 		end]]*/
-          const clonedBlock = block.Clone()
+          const clonedModel = ReplicatedStorage.Items.Conveyor.Clone() // block.Clone()
           const clonedSound = placeSound.Clone()
-          clonedBlock.Name = 'Block'
-          clonedBlock.SetAttribute('CanFloat', this.attributes.CanFloat)
-          if (this.attributes.IsColorRandom)
-            clonedBlock.BrickColor = BrickColor.random()
-          else clonedBlock.Color = this.attributes.Color
-          const material = Enum.Material.GetEnumItems().find(
-            (x) => x.Name === this.attributes.Material,
-          )
-          if (material) clonedBlock.Material = material
-          clonedBlock.CFrame = previewCframe
-          clonedSound.Parent = clonedBlock
-          clonedBlock.Parent =
-            this.playerService.getPlayerSpace(player).PlacedBlocks
-          clonedSound.Play()
+          clonedModel.SetAttribute('CanFloat', this.attributes.CanFloat)
+          const clonedBlock = clonedModel.PrimaryPart
+          if (clonedBlock) {
+            if (this.attributes.IsColorRandom)
+              clonedBlock.BrickColor = BrickColor.random()
+            else clonedBlock.Color = this.attributes.Color
+            const material = Enum.Material.GetEnumItems().find(
+              (x) => x.Name === this.attributes.Material,
+            )
+            if (material) clonedBlock.Material = material
+            clonedModel.PivotTo(previewCframe)
+            clonedSound.Parent = clonedModel
+            clonedModel.Parent =
+              this.playerService.getPlayerSpace(player).PlacedBlocks
+            clonedSound.Play()
+          }
         },
         () => {
           player.Kick('Stop exploiting ZZZ!')

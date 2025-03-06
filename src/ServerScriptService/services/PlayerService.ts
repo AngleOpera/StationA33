@@ -193,18 +193,26 @@ export class PlayerService implements OnInit {
   }
 
   private createRespawnHandler(player: Player) {
-    player.CharacterAdded.Connect((characterModel) => {
-      const humanoid = (characterModel as PlayerCharacter).Humanoid
-      humanoid.Died.Connect(() =>
-        this.handleKO(humanoid, player.UserId, player.Name),
+    if (player.Character)
+      task.defer(() =>
+        this.handleRespawn(player, player.Character as PlayerCharacter),
       )
+    player.CharacterAdded.Connect((characterModel) =>
+      this.handleRespawn(player, characterModel as PlayerCharacter),
+    )
+  }
 
-      const backpack = player?.FindFirstChild<Backpack>('Backpack')
-      if (backpack) {
-        setupTool(ReplicatedStorage.Tools.PlaceBlock.Clone()).Parent = backpack
-        setupTool(ReplicatedStorage.Tools.BreakBlock.Clone()).Parent = backpack
-      }
-    })
+  public handleRespawn(player: Player, characterModel: PlayerCharacter) {
+    const humanoid = (characterModel as PlayerCharacter).Humanoid
+    humanoid.Died.Connect(() =>
+      this.handleKO(humanoid, player.UserId, player.Name),
+    )
+
+    const backpack = player?.FindFirstChild<Backpack>('Backpack')
+    if (backpack) {
+      setupTool(ReplicatedStorage.Tools.PlaceBlock.Clone()).Parent = backpack
+      setupTool(ReplicatedStorage.Tools.BreakBlock.Clone()).Parent = backpack
+    }
   }
 
   public handleKO(

@@ -19,7 +19,7 @@ export const selectPlayerState = (userID: number) => (state: SharedState) =>
   getPlayerState(state.players, userID)
 
 export const selectPlayerCurrency =
-  (userID: number, currency: Currency) => (state: SharedState) =>
+  (userID: number, currency: CurrencyName) => (state: SharedState) =>
     getPlayerCurrency(getPlayerState(state.players, userID), currency)
 
 export const selectPlayerGuideEnabled =

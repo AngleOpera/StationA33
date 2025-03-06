@@ -16,11 +16,20 @@ export const USER_NAME = Players.LocalPlayer
   ? Players.LocalPlayer.Name
   : '(server)'
 
+export const CURRENCY_NAMES: CurrencyName[] = ['Credits' as const]
+
 export type InventoryItemName = keyof typeof inventoryConstants
+
+export interface InventoryItemDescription {
+  name: string
+  description: string
+  price: number
+  image: string
+}
 
 export const INVENTORY = inventoryConstants as Record<
   InventoryItemName,
-  InventoryItem
+  InventoryItemDescription
 >
 
 export const PLOT_NAMES: PlotName[] = [

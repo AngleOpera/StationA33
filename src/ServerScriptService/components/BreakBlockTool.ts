@@ -1,12 +1,12 @@
 import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Workspace } from '@rbxts/services'
-import { BlockBreakerTag } from 'ReplicatedStorage/shared/constants/tags'
+import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import { PlayerService } from 'ServerScriptService/services/PlayerService'
 
-@Component({ tag: BlockBreakerTag })
-export class BlockBreakerComponent
-  extends BaseComponent<{}, BlockBreaker>
+@Component({ tag: BreakBlockToolTag })
+export class BreakBlockToolComponent
+  extends BaseComponent<{}, BreakBlockTool>
   implements OnStart
 {
   constructor(private playerService: PlayerService) {

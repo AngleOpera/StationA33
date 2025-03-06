@@ -1,4 +1,4 @@
-interface BlockBreaker extends Tool {
+interface BreakBlockTool extends Tool {
   BreakBlock: RemoteFunction
 }
 
@@ -6,23 +6,24 @@ interface BlockBreakerAttributes {
   MaxDistance: number
 }
 
-interface BlockPlacer extends Tool {
+interface PlaceBlockTool extends Tool {
   PlaceBlock: RemoteFunction
 }
 
-interface BlockPlacerAttributes {
+interface PlaceBlockToolAttributes {
   CanFloat: boolean
   Color: Color3
+  ItemName: string
   IsColorRandom: boolean
   Material: string
   MaxDistance: number
 }
 
+type CurrencyName = 'Credits'
+
 interface Door extends BasePart {
   ClickDetector: ClickDetector
 }
-
-type Currency = 'Credits'
 
 interface Instance {
   FindFirstChild<X = Instance>(
@@ -36,12 +37,7 @@ interface Instance {
   WaitForChild<X = Instance>(this: Instance, childName: string | number): X
 }
 
-interface InventoryItem {
-  name: string
-  description: string
-  price: number
-  image: string
-}
+interface InventoryItem extends Model {}
 
 interface Leaderboard extends Model {
   Leaderboard: Part & {
@@ -97,12 +93,16 @@ interface ReplicatedStorage extends Instance {
     }
     Plot: Plot
   }
+  Items: Folder &
+    Record<string, InventoryItem> & {
+      Conveyor: InventoryItem
+    }
   Ships: Folder & {
     OlReliable: Ship
   }
   Tools: Folder & {
-    BreakBlock: BlockBreaker
-    PlaceBlock: BlockPlacer
+    BreakBlock: BreakBlockTool
+    PlaceBlock: PlaceBlockTool
   }
 }
 

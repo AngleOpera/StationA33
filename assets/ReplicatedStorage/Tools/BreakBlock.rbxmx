@@ -5,7 +5,6 @@
       <BinaryString name="AttributesSerialize">AQAAAAsAAABNYXhEaXN0YW5jZQYAAAAAAAAyQA==</BinaryString>
       <bool name="CanBeDropped">false</bool>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-      <bool name="DefinesCapabilities">false</bool>
       <bool name="Enabled">true</bool>
       <CoordinateFrame name="Grip">
         <X>0</X>
@@ -21,6 +20,7 @@
         <R21>0</R21>
         <R22>1</R22>
       </CoordinateFrame>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <token name="LevelOfDetail">0</token>
       <bool name="ManualActivationOnly">false</bool>
       <CoordinateFrame name="ModelMeshCFrame">
@@ -47,13 +47,15 @@
       <bool name="NeedsPivotMigration">false</bool>
       <Ref name="PrimaryPart">null</Ref>
       <bool name="RequiresHandle">false</bool>
+      <bool name="DefinesCapabilities">false</bool>
       <float name="ScaleFactor">1</float>
       <int64 name="SourceAssetId">-1</int64>
-      <BinaryString name="Tags">QmxvY2tCcmVha2Vy</BinaryString>
-      <Content name="TextureId">
+      <BinaryString name="Tags">QnJlYWtCbG9ja1Rvb2w=</BinaryString>
+      <ContentId name="TextureId">
         <url>http://www.roblox.com/asset/?id=17727613224</url>
-      </Content>
+      </ContentId>
       <string name="ToolTip"></string>
+      <UniqueId name="UniqueId">37458f10d8993f8f07dac03000000390</UniqueId>
       <OptionalCoordinateFrame name="WorldPivotData">
         <CFrame>
           <X>0</X>
@@ -76,9 +78,11 @@
         <string name="Name">BreakBlock</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <bool name="DefinesCapabilities">false</bool>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
+        <UniqueId name="UniqueId">37458f10d8993f8f07dac03000000391</UniqueId>
       </Properties>
     </Item>
   </Item>

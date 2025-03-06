@@ -2,10 +2,9 @@
   <Item class="Tool" referent="0">
     <Properties>
       <string name="Name">PlaceBlock</string>
-      <BinaryString name="AttributesSerialize">BQAAAAgAAABDYW5GbG9hdAMBBQAAAENvbG9yDwAAgD8AAIA/AACAPw0AAABJc0NvbG9yUmFuZG9tAwEIAAAATWF0ZXJpYWwCBQAAAFNsYXRlCwAAAE1heERpc3RhbmNlBgAAAAAAADJA</BinaryString>
+      <BinaryString name="AttributesSerialize">BgAAAAgAAABDYW5GbG9hdAMBBQAAAENvbG9yDwAAgD8AAIA/AACAPw0AAABJc0NvbG9yUmFuZG9tAwEIAAAASXRlbU5hbWUCCAAAAENvbnZleW9yCAAAAE1hdGVyaWFsAgUAAABTbGF0ZQsAAABNYXhEaXN0YW5jZQYAAAAAAAAyQA==</BinaryString>
       <bool name="CanBeDropped">false</bool>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-      <bool name="DefinesCapabilities">false</bool>
       <bool name="Enabled">true</bool>
       <CoordinateFrame name="Grip">
         <X>0</X>
@@ -21,6 +20,7 @@
         <R21>0</R21>
         <R22>1</R22>
       </CoordinateFrame>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <token name="LevelOfDetail">0</token>
       <bool name="ManualActivationOnly">false</bool>
       <CoordinateFrame name="ModelMeshCFrame">
@@ -47,13 +47,15 @@
       <bool name="NeedsPivotMigration">false</bool>
       <Ref name="PrimaryPart">null</Ref>
       <bool name="RequiresHandle">false</bool>
+      <bool name="DefinesCapabilities">false</bool>
       <float name="ScaleFactor">1</float>
       <int64 name="SourceAssetId">-1</int64>
-      <BinaryString name="Tags">QmxvY2tQbGFjZXI=</BinaryString>
-      <Content name="TextureId">
+      <BinaryString name="Tags">UGxhY2VCbG9ja1Rvb2w=</BinaryString>
+      <ContentId name="TextureId">
         <url>http://www.roblox.com/asset/?id=17727608459</url>
-      </Content>
+      </ContentId>
       <string name="ToolTip"></string>
+      <UniqueId name="UniqueId">37458f10d8993f8f07dac03000000392</UniqueId>
       <OptionalCoordinateFrame name="WorldPivotData">
         <CFrame>
           <X>0</X>
@@ -76,9 +78,11 @@
         <string name="Name">PlaceBlock</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <bool name="DefinesCapabilities">false</bool>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
+        <UniqueId name="UniqueId">37458f10d8993f8f07dac03000000393</UniqueId>
       </Properties>
     </Item>
   </Item>
