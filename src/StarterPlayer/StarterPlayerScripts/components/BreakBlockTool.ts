@@ -10,6 +10,10 @@ export class BreakBlockToolComponent
   extends BaseComponent<BlockBreakerAttributes, BreakBlockTool>
   implements OnStart
 {
+  connection: RBXScriptConnection | undefined
+  target: Model | undefined
+  invoking = false
+
   constructor(protected placeBlockController: PlaceBlockController) {
     super()
   }
@@ -25,10 +29,6 @@ export class BreakBlockToolComponent
     const tool = this.instance
     const red = Color3.fromRGB(255, 0, 0)
 
-    let connection: RBXScriptConnection | undefined
-    let targetToDestory: BasePart | undefined
-    let canUse = true
-
     const mouse = Players.LocalPlayer.GetMouse()
     mouse.TargetFilter = previewBlockFolder
 
@@ -37,38 +37,44 @@ export class BreakBlockToolComponent
       const humanoid = character.Humanoid
 
       selectionBox.Color3 = red
-      connection = RunService.RenderStepped.Connect((_deltaTime) => {
-        const mouseHit = mouse.Hit
+
+      this.connection = RunService.RenderStepped.Connect((_deltaTime) => {
+        if (!mouse.Target) return
+        const targetParent = mouse.Target?.Parent
         if (
-          character.PrimaryPart &&
-          mouseHit.Position.sub(character.PrimaryPart.Position).Magnitude <=
-            this.attributes.MaxDistance &&
-          humanoid.Health > 0 &&
-          mouse.Target &&
-          mouse.Target.Parent === placedBlocksFolder
+          humanoid.Health <= 0 ||
+          !character.PrimaryPart ||
+          !targetParent ||
+          targetParent.Parent !== placedBlocksFolder ||
+          !targetParent.IsA('Model') ||
+          mouse.Hit.Position.sub(character.PrimaryPart.Position).Magnitude >
+            this.attributes.MaxDistance
         ) {
-          previewBlock.CFrame = mouse.Target.CFrame
-          previewBlock.Parent = previewBlockFolder
-          targetToDestory = mouse.Target
-        } else {
           previewBlock.Parent = previewBlockParent
-          targetToDestory = undefined
+          this.target = undefined
+          return
         }
+
+        this.target = targetParent
+        previewBlock.CFrame = targetParent.GetPivot()
+        previewBlock.Parent = previewBlockFolder
       })
     })
 
     tool.Unequipped.Connect(() => {
-      connection?.Disconnect()
+      this.connection?.Disconnect()
+      this.connection = undefined
+      this.target = undefined
       previewBlock.Parent = previewBlockParent
     })
 
     tool.Activated.Connect(() => {
-      if (!canUse || !targetToDestory) return
-      canUse = false
-      Functions.breakBlock.invoke(targetToDestory)
+      if (!this.target || this.invoking) return
+      this.invoking = true
+      Functions.breakBlock.invoke(this.target)
       previewBlock.Parent = previewBlockParent
-      targetToDestory = undefined
-      canUse = true
+      this.target = undefined
+      this.invoking = false
     })
   }
 }

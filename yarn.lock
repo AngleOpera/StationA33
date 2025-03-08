@@ -150,10 +150,33 @@
   resolved "https://registry.yarnpkg.com/@rbxts/datastructures/-/datastructures-1.0.12.tgz#baff78cfe988faab1939496e84bdf41e95786e83"
   integrity sha512-rurHtR4sOnecF5ZCEU9XxGXVV1clYF3dblc/ChWABFGZKmJ3i9pnEpvqZ3VjwaJl8HWuIE0+rrFv2XaNsgAkEA==
 
+"@rbxts/deep-equal@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@rbxts/deep-equal/-/deep-equal-0.8.1.tgz#be738d4cb2e92683adc7f1578925e7e78e078177"
+  integrity sha512-Gy+OcPn3qbBKNc6niwnvKgCRFoYZcadDTtRS2BoVEWjZDtIR9yz/fX0froS0aaNEyq4vsxAAiGPf/BIEy70O9A==
+  dependencies:
+    "@rbxts/object-utils" "^1.0.4"
+    "@rbxts/rust-classes" "^0.12.0"
+    "@rbxts/services" "^1.5.4"
+    "@rbxts/t" "^3.1.1"
+
 "@rbxts/device@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@rbxts/device/-/device-0.1.2.tgz#ae1202b4ce1771e61829f449d69a35c044dd48db"
   integrity sha512-2VcMSEr+sUVHo7+gCDa7XVPzpTt5wC58QxINgar1XrTZ6QhZXyNyDbuOY9I8bKqKc4H2aXrjtkN2l3V7mKpIkw==
+
+"@rbxts/expect@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@rbxts/expect/-/expect-2.0.1.tgz#3dc6b4f94cda8e63a542499612635801071a8d47"
+  integrity sha512-RubN//+z9TNihlHmYh27PKbIv50lo1d38PTJik1jMMzZyjt2yJC1ZV8R5+g1PjZEfgnhTeNYQNAVn2P6RztPeQ==
+  dependencies:
+    "@rbxts/deep-equal" "^0.8.1"
+    "@rbxts/object-utils" "^1.0.4"
+    "@rbxts/reverse-array" "^1.0.3"
+    "@rbxts/rust-classes" "^0.12.0-dev-b01f73c"
+    "@rbxts/services" "^1.5.4"
+    "@rbxts/string-utils" "^1.0.3"
+    "@rbxts/t" "^3.1.1"
 
 "@rbxts/fastcast@^13.2.0-ts.2":
   version "13.2.0-ts.2"
@@ -324,15 +347,22 @@
   resolved "https://registry.yarnpkg.com/@rbxts/reflex/-/reflex-4.3.1.tgz#4c0bcca8024cd647b5caa0cfd1085188b0f5ac3b"
   integrity sha512-S5MbEpHKeRh9NWhwGJ789WbUsmlAlpQziWaNK4+kz1EpaaQ7uHQMZAuN1DYl4+QkqmOSuPlj04COwmArBGWH1Q==
 
+"@rbxts/reverse-array@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@rbxts/reverse-array/-/reverse-array-1.0.3.tgz#84bd25e812b6ee217214706efa065f2aa79bf4dc"
+  integrity sha512-dHm/p72kdwwsza+pDSR/78QOeg/p94D6NVbHtwURLSZyAMsObX9R/ux//CF5bpCNDniwz3+8CrIGm6P4WvvNCw==
+  dependencies:
+    "@rbxts/testez" "^0.3.1-ts.7"
+
 "@rbxts/ripple@*", "@rbxts/ripple@^0.9.1":
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/@rbxts/ripple/-/ripple-0.9.3.tgz#b61e4c8e88fdc12b87912cea344065bbbc7319f8"
   integrity sha512-GmwjQl7a8pvGPGQYLmaAcf2RBPpneOL5P1+U8CzTHt9tBhCdk0TEJ/MQoTv9JnHD62RMBE1jogQBvuGgl9VXAg==
 
-"@rbxts/ripple@^0.8.1":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@rbxts/ripple/-/ripple-0.8.2.tgz#9949cb46ff30bd5475556e152d77b17dcc779494"
-  integrity sha512-1F+yA8ugw0LEDBerQfIiIdUDoOfwz8O86GkH+sJkBViC/zJWDCZdrlzcdk7G7adePqkeBRfPp89g/4dUzZ4JQQ==
+"@rbxts/rust-classes@^0.12.0", "@rbxts/rust-classes@^0.12.0-dev-b01f73c":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@rbxts/rust-classes/-/rust-classes-0.12.0.tgz#5d4be4003abd90aa62adbd2f0b2665009bd7df20"
+  integrity sha512-Ibk532/9tHswqU9AdJlLGDjb3fD+tisI0WzTvzsbFcndcdRfEmpBqXC0JZ+4+lIfSERJmL4zRXZQNN//nJ4rmw==
 
 "@rbxts/services@^1.1.4", "@rbxts/services@^1.1.5", "@rbxts/services@^1.5.1", "@rbxts/services@^1.5.4", "@rbxts/services@^1.5.5":
   version "1.5.5"
@@ -356,6 +386,11 @@
   resolved "https://registry.yarnpkg.com/@rbxts/simplepath/-/simplepath-2.2.1-ts.2.tgz#437d00cc557cb058a047263649d897411e730f16"
   integrity sha512-53GTFIMeIkq/q4A5vSdG96agKm+EtabtsZ0r8LxXNjkLxLUiqzNnRc3rA11D2OqXNLHLwvweqhePg7s2Ol6+RA==
 
+"@rbxts/string-utils@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@rbxts/string-utils/-/string-utils-1.0.3.tgz#109c5a18d059447005fdf6fae40aa13cf452d91b"
+  integrity sha512-nsZsPdGsrsBdwLg7qQ5RGHoVhfvK+U3GvZ/6S+7KufqaFrbHWk2lufESob/C3xYf5sAeXgTJKWUnDJknYBGTIQ==
+
 "@rbxts/t@^2.1.4":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@rbxts/t/-/t-2.2.1.tgz#19b8be095a503bc2835bd70bf8cd45cb9d958ca7"
@@ -370,6 +405,11 @@
   version "0.4.2-ts.0"
   resolved "https://registry.yarnpkg.com/@rbxts/testez/-/testez-0.4.2-ts.0.tgz#4475183d317182ac7099bffee6492ffcb7bcaf0b"
   integrity sha512-8Q+OG9ddTD2P3aARCuRKpPqUBvuifgSnHvQMZ6jBMqUzxhIysnb0l4c3vnnaQnvdyZ1OW9tKxcdEHMGTb67uOw==
+
+"@rbxts/testez@^0.3.1-ts.7":
+  version "0.3.1-ts.7"
+  resolved "https://registry.yarnpkg.com/@rbxts/testez/-/testez-0.3.1-ts.7.tgz#a5bb2e0640123c007655329f264e9ee4fcafb565"
+  integrity sha512-DkIlRFdMODHjJPEYJT/cPYv2ZQzSqAufF4XAsqrx7zFg8OVAkSHY5aGChGoPNrZo0PM4zz9bw46ZIVqLfcM05Q==
 
 "@rbxts/topbar-components@^1.0.2":
   version "1.0.2"

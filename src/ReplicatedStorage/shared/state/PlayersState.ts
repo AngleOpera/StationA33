@@ -5,7 +5,7 @@ import {
   InventoryItemName,
   PLOT_NAMES,
 } from 'ReplicatedStorage/shared/constants/core'
-import { PlacementMap } from 'ReplicatedStorage/shared/utils/placement'
+import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
 
 export enum GamePass {
   CoolGun = '1',
@@ -40,7 +40,7 @@ export interface PlayerData {
   readonly credits: number
   readonly inventory: Partial<Record<InventoryItemName, number>>
   readonly settings: PlayerSettings
-  readonly placement: Record<PlotLocation, PlacementMap>
+  readonly placement: Record<PlotLocation, MeshMap>
   readonly gamePasses: Partial<PlayerGamePasses>
   readonly products: Partial<PlayerProducts>
   readonly receiptHistory: string[]

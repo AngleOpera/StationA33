@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@rbxts/compiler-types": "^3.0.0-types.0",
+    "@rbxts/expect": "^2.0.1",
     "@rbxts/testez": "0.4.2-ts.0",
     "@rbxts/types": "^1.0.839",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
@@ -60,7 +61,6 @@
     "@rbxts/react-reflex": "^0.3.4",
     "@rbxts/react-roblox": "^0.3.1",
     "@rbxts/reflex": "^4.3.1",
-    "@rbxts/ripple": "^0.8.1",
     "@rbxts/services": "^1.5.4",
     "@rbxts/set-timeout": "^1.1.2",
     "@rbxts/simplepath": "^2.2.1-ts.2",

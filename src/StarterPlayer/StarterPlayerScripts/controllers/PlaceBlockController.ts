@@ -23,6 +23,9 @@ export class PlaceBlockController implements OnStart {
         if (inputObject.UserInputType === Enum.UserInputType.Keyboard) {
           switch (inputObject.KeyCode) {
             case Enum.KeyCode.R:
+              if (this.activePlaceBlockTool) {
+                this.activePlaceBlockTool.rotate()
+              }
               break
           }
         }

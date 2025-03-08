@@ -21,10 +21,14 @@ export const CURRENCY_NAMES: CurrencyName[] = ['Credits' as const]
 export type InventoryItemName = keyof typeof inventoryConstants
 
 export interface InventoryItemDescription {
-  name: string
+  id: number
+  name: InventoryItemName
   description: string
   price: number
   image: string
+  X: number
+  Y: number
+  Z: number
 }
 
 export const INVENTORY = inventoryConstants as Record<

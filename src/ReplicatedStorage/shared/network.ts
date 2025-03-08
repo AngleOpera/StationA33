@@ -5,15 +5,19 @@ import {
 } from '@flamework/networking/out/events/types'
 import { BroadcastAction } from '@rbxts/reflex'
 import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
-import { PlacementLocation } from 'ReplicatedStorage/shared/utils/placement'
+import { MeshRotation } from 'ReplicatedStorage/shared/utils/mesh'
 
 interface ServerEvents {
   start: () => void
 }
 
 interface ServerFunctions {
-  placeBlock: (itemName: InventoryItemName, location: PlacementLocation) => void
-  breakBlock: (x: BasePart) => void
+  placeBlock: (
+    itemName: InventoryItemName,
+    midpoint: Vector3,
+    rotation: MeshRotation,
+  ) => void
+  breakBlock: (x: Model) => void
 }
 
 interface ClientEvents {
