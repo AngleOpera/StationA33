@@ -1,21 +1,12 @@
-interface BreakBlockTool extends Tool {
-  BreakBlock: RemoteFunction
-}
+interface BreakBlockTool extends Tool {}
 
 interface BlockBreakerAttributes {
   MaxDistance: number
 }
 
-interface PlaceBlockTool extends Tool {
-  PlaceBlock: RemoteFunction
-}
+interface PlaceBlockTool extends Tool {}
 
 interface PlaceBlockToolAttributes {
-  CanFloat: boolean
-  Color: Color3
-  ItemName: string
-  IsColorRandom: boolean
-  Material: string
   MaxDistance: number
 }
 
@@ -80,6 +71,8 @@ interface Plot extends Model {
   // ShipSpawner: ShipSpawner
   SpawnLocation: SpawnLocation
 }
+
+type PlotLocation = 'Earth'
 
 type PlotName = 'Plot1' | 'Plot2' | 'Plot3' | 'Plot4'
 

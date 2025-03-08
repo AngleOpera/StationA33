@@ -91,7 +91,7 @@ export class TransactionService implements OnStart {
     this.logger.Info(
       `Player ${player.Name} purchased developer product ${receiptInfo.ProductId}`,
     )
-    store.purchaseDeveloperProduct(
+    store.setPurchasedDeveloperProduct(
       player.UserId,
       product,
       receiptInfo.PurchaseId,

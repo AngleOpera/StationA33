@@ -262,9 +262,9 @@
         <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
-          <X>128</X>
+          <X>132</X>
           <Y>1</Y>
-          <Z>128</Z>
+          <Z>132</Z>
         </Vector3>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
@@ -292,8 +292,8 @@
           </Color3>
           <token name="Face">1</token>
           <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-          <float name="OffsetStudsU">-0.6</float>
-          <float name="OffsetStudsV">-0.4</float>
+          <float name="OffsetStudsU">0</float>
+          <float name="OffsetStudsV">0</float>
           <bool name="DefinesCapabilities">false</bool>
           <int64 name="SourceAssetId">-1</int64>
           <float name="StudsPerTileU">6</float>

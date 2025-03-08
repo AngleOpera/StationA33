@@ -81,9 +81,9 @@
       <bool name="DefinesCapabilities">false</bool>
       <token name="shape">1</token>
       <Vector3 name="size">
-        <X>128</X>
+        <X>132</X>
         <Y>1</Y>
-        <Z>128</Z>
+        <Z>132</Z>
       </Vector3>
       <int64 name="SourceAssetId">-1</int64>
       <BinaryString name="Tags"></BinaryString>

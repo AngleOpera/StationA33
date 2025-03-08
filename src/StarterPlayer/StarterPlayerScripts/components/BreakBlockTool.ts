@@ -2,38 +2,40 @@ import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
 import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
-import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
+import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
+import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
 
 @Component({ tag: BreakBlockToolTag })
 export class BreakBlockToolComponent
   extends BaseComponent<BlockBreakerAttributes, BreakBlockTool>
   implements OnStart
 {
-  constructor(protected playerController: PlayerController) {
+  constructor(protected placeBlockController: PlaceBlockController) {
     super()
   }
 
   onStart() {
-    const playerSpace = this.playerController.getPlayerSpace()
-    const buildingModel = playerSpace.PlacedBlocks
-    const ignoreModelForMouse = playerSpace.PlaceBlockPreview
+    const { placedBlocksFolder, previewBlockFolder } =
+      this.placeBlockController.getFolders()
+
     const previewBlock = ReplicatedStorage.Common.PlaceBlockPreview
     const previewBlockParent = previewBlock.Parent
     const selectionBox = previewBlock.SelectionBox
 
     const tool = this.instance
     const red = Color3.fromRGB(255, 0, 0)
-    const character = Players.LocalPlayer.Character as PlayerCharacter
-    const humanoid = character.Humanoid
 
     let connection: RBXScriptConnection | undefined
     let targetToDestory: BasePart | undefined
     let canUse = true
 
     const mouse = Players.LocalPlayer.GetMouse()
-    mouse.TargetFilter = ignoreModelForMouse
+    mouse.TargetFilter = previewBlockFolder
 
     tool.Equipped.Connect(() => {
+      const character = Players.LocalPlayer.Character as PlayerCharacter
+      const humanoid = character.Humanoid
+
       selectionBox.Color3 = red
       connection = RunService.RenderStepped.Connect((_deltaTime) => {
         const mouseHit = mouse.Hit
@@ -43,10 +45,10 @@ export class BreakBlockToolComponent
             this.attributes.MaxDistance &&
           humanoid.Health > 0 &&
           mouse.Target &&
-          mouse.Target.Parent === buildingModel
+          mouse.Target.Parent === placedBlocksFolder
         ) {
           previewBlock.CFrame = mouse.Target.CFrame
-          previewBlock.Parent = ignoreModelForMouse
+          previewBlock.Parent = previewBlockFolder
           targetToDestory = mouse.Target
         } else {
           previewBlock.Parent = previewBlockParent
@@ -63,7 +65,7 @@ export class BreakBlockToolComponent
     tool.Activated.Connect(() => {
       if (!canUse || !targetToDestory) return
       canUse = false
-      this.instance.BreakBlock.InvokeServer(targetToDestory)
+      Functions.breakBlock.invoke(targetToDestory)
       previewBlock.Parent = previewBlockParent
       targetToDestory = undefined
       canUse = true

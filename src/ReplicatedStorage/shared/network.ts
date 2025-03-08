@@ -4,12 +4,17 @@ import {
   ServerHandler,
 } from '@flamework/networking/out/events/types'
 import { BroadcastAction } from '@rbxts/reflex'
+import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
+import { PlacementLocation } from 'ReplicatedStorage/shared/utils/placement'
 
 interface ServerEvents {
   start: () => void
 }
 
-interface ServerFunctions {}
+interface ServerFunctions {
+  placeBlock: (itemName: InventoryItemName, location: PlacementLocation) => void
+  breakBlock: (x: BasePart) => void
+}
 
 interface ClientEvents {
   dispatch: (actions: Array<BroadcastAction>) => void

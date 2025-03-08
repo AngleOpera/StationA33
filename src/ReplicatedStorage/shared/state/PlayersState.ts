@@ -5,6 +5,7 @@ import {
   InventoryItemName,
   PLOT_NAMES,
 } from 'ReplicatedStorage/shared/constants/core'
+import { PlacementMap } from 'ReplicatedStorage/shared/utils/placement'
 
 export enum GamePass {
   CoolGun = '1',
@@ -27,10 +28,6 @@ export type PlayerProducts = {
   readonly [product in Product]: ProductData
 }
 
-export type PlayeInventory = {
-  readonly [product in Product]: ProductData
-}
-
 export interface GamePassData {
   active: boolean
 }
@@ -43,6 +40,7 @@ export interface PlayerData {
   readonly credits: number
   readonly inventory: Partial<Record<InventoryItemName, number>>
   readonly settings: PlayerSettings
+  readonly placement: Record<PlotLocation, PlacementMap>
   readonly gamePasses: Partial<PlayerGamePasses>
   readonly products: Partial<PlayerProducts>
   readonly receiptHistory: string[]
@@ -71,6 +69,9 @@ export const defaultPlayerSettings: PlayerSettings = {
 export const defaultPlayerData: PlayerData = {
   credits: 0,
   inventory: {},
+  placement: {
+    Earth: {},
+  },
   settings: defaultPlayerSettings,
   gamePasses: {},
   products: {},
@@ -93,7 +94,8 @@ const initialState: Players = {}
 
 export const getPlayerData = (state: PlayerState): PlayerData => ({
   credits: state.credits,
-  inventory: {},
+  inventory: state.inventory,
+  placement: state.placement,
   settings: state.settings,
   gamePasses: state.gamePasses,
   products: state.products,
@@ -160,28 +162,44 @@ export const playersSlice = createProducer(initialState, {
     [getPlayerKey(userID)]: undefined,
   }),
 
-  addPlayerCurrency: (
+  transactPlayerCurrency: (
     state,
     userID: number,
     currency: CurrencyName,
-    amount: number,
+    delta: number,
   ) => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
     const currencyField = getPlayerDataCurrencyKey(currency)
     const playerCurrency = playerState?.[currencyField] || 0
-    if (!playerState || (amount < 0 && playerCurrency < math.abs(amount)))
+    if (!playerState || (delta < 0 && playerCurrency < math.abs(delta)))
       return state
     return {
       ...state,
       [playerKey]: {
         ...playerState,
-        [currencyField]: math.max(0, playerCurrency + (amount || 0)),
+        [currencyField]: math.max(0, playerCurrency + (delta || 0)),
       },
     }
   },
 
-  purchaseDeveloperProduct: (
+  setGamePassOwned: (state, userID: number, gamePassId: GamePass) => {
+    const playerKey = getPlayerKey(userID)
+    const playerState = state[playerKey]
+    if (!playerState || playerState.gamePasses[gamePassId]?.active) return state
+    return {
+      ...state,
+      [playerKey]: {
+        ...playerState,
+        gamePasses: {
+          ...playerState.gamePasses,
+          [gamePassId]: { active: true },
+        },
+      },
+    }
+  },
+
+  setPurchasedDeveloperProduct: (
     state,
     userId: number,
     productId: Product,
@@ -205,22 +223,6 @@ export const playersSlice = createProducer(initialState, {
           },
         },
         receiptHistory,
-      },
-    }
-  },
-
-  setGamePassOwned: (state, userID: number, gamePassId: GamePass) => {
-    const playerKey = getPlayerKey(userID)
-    const playerState = state[playerKey]
-    if (!playerState || playerState.gamePasses[gamePassId]?.active) return state
-    return {
-      ...state,
-      [playerKey]: {
-        ...playerState,
-        gamePasses: {
-          ...playerState.gamePasses,
-          [gamePassId]: { active: true },
-        },
       },
     }
   },

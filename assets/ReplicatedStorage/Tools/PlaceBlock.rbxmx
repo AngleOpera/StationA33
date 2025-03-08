@@ -2,7 +2,7 @@
   <Item class="Tool" referent="0">
     <Properties>
       <string name="Name">PlaceBlock</string>
-      <BinaryString name="AttributesSerialize">BgAAAAgAAABDYW5GbG9hdAMBBQAAAENvbG9yDwAAgD8AAIA/AACAPw0AAABJc0NvbG9yUmFuZG9tAwEIAAAASXRlbU5hbWUCCAAAAENvbnZleW9yCAAAAE1hdGVyaWFsAgUAAABTbGF0ZQsAAABNYXhEaXN0YW5jZQYAAAAAAAAyQA==</BinaryString>
+      <BinaryString name="AttributesSerialize">AQAAAAsAAABNYXhEaXN0YW5jZQYAAAAAAAAwQA==</BinaryString>
       <bool name="CanBeDropped">false</bool>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
       <bool name="Enabled">true</bool>
@@ -73,18 +73,6 @@
         </CFrame>
       </OptionalCoordinateFrame>
     </Properties>
-    <Item class="RemoteFunction" referent="1">
-      <Properties>
-        <string name="Name">PlaceBlock</string>
-        <BinaryString name="AttributesSerialize"></BinaryString>
-        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-        <bool name="DefinesCapabilities">false</bool>
-        <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
-        <UniqueId name="UniqueId">37458f10d8993f8f07dac03000000393</UniqueId>
-      </Properties>
-    </Item>
   </Item>
   <SharedStrings>
     <SharedString md5="rxNJufX5oaagQE3qNtzJSQ=="></SharedString>

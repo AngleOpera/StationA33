@@ -18,6 +18,7 @@
         "Brightness": 3.135266065597534,
         "GlobalShadows": true,
         "Outlines": false,
+        "Technology": "Compatibility",
         "TimeOfDay": "06:15:00"
       },
       "$path": "assets/Lighting"

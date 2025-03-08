@@ -44,7 +44,7 @@
     "@rbxts/signal" "^1.0.3"
     "@rbxts/t" "^2.1.4"
 
-"@flamework/core@^1.2.4":
+"@flamework/core@^1.2.3", "@flamework/core@^1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@flamework/core/-/core-1.2.4.tgz#020fa6cf2e963f13b00fdd356da7e60aad373a33"
   integrity sha512-ND3RxRqDkX1diA7oTQI3Z7Dw1xQQP5wgWoK8X/ppav0KT/jcdqFx1Lwrn06nX2AYdvw1vUoZv834lc4xQUOgyA==
@@ -115,10 +115,20 @@
   resolved "https://registry.yarnpkg.com/@rbxts/abbreviate/-/abbreviate-3.0.4.tgz#66b7eac6a241965687f28ee5765eb70ab9937011"
   integrity sha512-sf1T7D64AC/ZO76pn/bGIFduViD58d52ZD80W+UvbKI0kuH1qhzZkDZiFSmJHT8Dn7zzf3Dbn/7IWB2Rsax4Ww==
 
+"@rbxts/altmake@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@rbxts/altmake/-/altmake-0.1.5.tgz#19f948fac51d6addde57f603bb2cf51784b628b2"
+  integrity sha512-hUgwB5BciLTbXIet98nPZcXugrsFjGuJojMQF0kHX/jqqOdNc15zllTOyzk7FUuOQAg+ECjVw/hERfM/VZe5Tw==
+
 "@rbxts/behavior-tree-5@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@rbxts/behavior-tree-5/-/behavior-tree-5-1.0.0.tgz#bb40782d84f4a2f8bc103fa964811e2817ad7f24"
   integrity sha512-Lgn4mG3TfbGjO3MVyu3eTNgiiO5HQi21FvL/RT0bEcXHaKd/Xa9xqqBMyaNMnBpuC9IGeFQi4FTY6TyaUAPd1g==
+
+"@rbxts/camera-shaker@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@rbxts/camera-shaker/-/camera-shaker-1.0.8.tgz#b51a1a17a5dbaaa4ab6cd6e6d76d99ec78f13a78"
+  integrity sha512-OhmjnBt12QZg+gLEtTRwh0afkaVEtuNm6jRSqK8jTK8cT/FDY1reO5vVBZzfF3avTqA4IPEEVDhG/F9TV+0PJg==
 
 "@rbxts/cmdr@^1.12.1":
   version "1.12.1"
@@ -152,10 +162,35 @@
   dependencies:
     "@rbxts/compiler-types" "^1.0.0-types.0"
 
+"@rbxts/flamecs@^0.1.0-rc.11":
+  version "0.1.0-rc.11"
+  resolved "https://registry.yarnpkg.com/@rbxts/flamecs/-/flamecs-0.1.0-rc.11.tgz#126fb114bbe0811bd30af8619f88bfde620f7b8b"
+  integrity sha512-OJ77b2O3syUWkTHCFQS2a3ROLx7CmXtRJO77wuyI/aekiAb4yIbBS2UAHnrBY2ocXjFAh7TOAxBalY33uj22Nw==
+  dependencies:
+    "@flamework/core" "^1.2.3"
+    "@rbxts/jecs" "github:Ukendio/jecs"
+    rbxts-transformer-flamework "^1.2.3"
+
 "@rbxts/flipper@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@rbxts/flipper/-/flipper-2.0.1.tgz#25bd840441055da419c234a9d045309e40ac3ad2"
   integrity sha512-kxb5AZizP05XSmo3waS/QkcfNMD5b6HX4gGwyHOyBow260R5MIT4L/ZUPLvleXXyb9b67X4NVmHoac1tPXOLNA==
+
+"@rbxts/janitor@^1.15.4-ts.0":
+  version "1.15.4-ts.0"
+  resolved "https://registry.yarnpkg.com/@rbxts/janitor/-/janitor-1.15.4-ts.0.tgz#82370ab137ec524da10201cc6cd203a27a59c935"
+  integrity sha512-xPDNoVWkkDd06JoJ35dC2059Rfzue/URxkkN5ND+eogkVel2e5tZB1WCHLlpbJMQiF4gsfg1RGFgFqHHp9wdzg==
+
+"@rbxts/jecs@github:Ukendio/jecs":
+  version "0.5.5"
+  resolved "https://codeload.github.com/Ukendio/jecs/tar.gz/a703e2c3615a9eabfd1e3f0a6be9667041dbe7fe"
+
+"@rbxts/lerp-functions@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@rbxts/lerp-functions/-/lerp-functions-1.0.2.tgz#8aa70ea5243fdf82bbc2de1b0c954c8528e91f7b"
+  integrity sha512-ZNcy/VTyAmCX8Pgc/w4ij6Tf7Ez4e3S44s91cdgQBt347Xkxxu1G2phI/CLJvIXRWNA2hRz8898KBYqq1kXKfA==
+  dependencies:
+    "@rbxts/types" "^1.0.227"
 
 "@rbxts/lightning-beams@^1.1.0-ts.2":
   version "1.1.0-ts.2"
@@ -169,7 +204,7 @@
   dependencies:
     "@rbxts/message-templates" "^0.3.1"
 
-"@rbxts/maid@^1.0.0-ts.1":
+"@rbxts/maid@^1.0.0-ts.1", "@rbxts/maid@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@rbxts/maid/-/maid-1.1.0.tgz#ef4c4ea915d80f2e7baacb7e9ea037f3e2549bd6"
   integrity sha512-bVWXZ0p2M3OJzPzvN5fY0T4s37ezUMY7EX31Xspp7Ds4C/K9yE4MHMRXjtlNvsYVPmoc5tdhAbpZY02Veix5lg==
@@ -178,6 +213,16 @@
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@rbxts/matchmakingservice/-/matchmakingservice-1.0.5.tgz#40208cf81970db2a10738074d0f88885875577fa"
   integrity sha512-bSwXs40nVAwTnNthIDj8T6qEn9rAXJ6or62x1gWX/n87ZOk8rE9OMyqn3LP3Ots8cMkYPkRJ/qlEeWG8k6M5EA==
+
+"@rbxts/melody@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@rbxts/melody/-/melody-0.3.4.tgz#e9eea7f27005cd4c2392414dde6c0675100f14cd"
+  integrity sha512-3q9s9FUl705xEJdKLhQkNcPBxr7h7qBNLXXv9WbVptEafIkuYqZr3rYgMa+xVz8h+YSdIQAkMEIyCBRTu+QQ2g==
+  dependencies:
+    "@rbxts/altmake" "^0.1.5"
+    "@rbxts/janitor" "^1.15.4-ts.0"
+    "@rbxts/lerp-functions" "^1.0.2"
+    "@rbxts/services" "^1.5.1"
 
 "@rbxts/message-templates@^0.3.1":
   version "0.3.2"
@@ -208,6 +253,17 @@
     "@rbxts/services" "^1.5.4"
     "@rbxts/set-timeout" "^1.1.2"
 
+"@rbxts/pretty-react-hooks@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@rbxts/pretty-react-hooks/-/pretty-react-hooks-0.6.2.tgz#26b0cd6b3f7c36f5fc845f45e89a1e0f8651d9bc"
+  integrity sha512-r2qG31eWldcreg1nLzITE9L9fwTEB1wgXk0lpLfRj2FPxMlsGxy+ck5exXCV0UuGnI+ZZdmvHPETiQRpX5yfSw==
+  dependencies:
+    "@rbxts/react" "*"
+    "@rbxts/react-roblox" "*"
+    "@rbxts/ripple" "*"
+    "@rbxts/services" "^1.5.1"
+    "@rbxts/set-timeout" "^1.1.2"
+
 "@rbxts/profileservice@^1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@rbxts/profileservice/-/profileservice-1.4.2.tgz#eb02964cc0fa6fa14b7be58c295803e375073f99"
@@ -223,6 +279,14 @@
   resolved "https://registry.yarnpkg.com/@rbxts/react-reflex/-/react-reflex-0.3.6.tgz#8bc651e39a55e7c57e2b2c71aad1c2ac97c1f089"
   integrity sha512-NlXWbQfSeYHiG1HAXQKIfWlWFhlaluaPrN3qRd8GZEjxNQ9esucmBxehi/6YO7pwcuCatbGdVQEOyVoyP2lfSw==
 
+"@rbxts/react-roblox@*":
+  version "17.2.3"
+  resolved "https://registry.yarnpkg.com/@rbxts/react-roblox/-/react-roblox-17.2.3.tgz#b470a09e196e60f4ead166f31a11e0d679ea5505"
+  integrity sha512-YgS+C3tf92iM1NTK1f6R2O2G8+nbcKFnblA0mTs2Nt878OsWLgxhnhkCBZ6wYv+yeDGD9/sssKHZ6s2LzUWTrQ==
+  dependencies:
+    "@rbxts/react" "17.2.3"
+    "@rbxts/react-vendor" "17.2.3"
+
 "@rbxts/react-roblox@^0.3.1":
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/@rbxts/react-roblox/-/react-roblox-0.3.6.tgz#2d777a571cdd0c556f4a45e9ea922684dd6da0e3"
@@ -236,6 +300,18 @@
   resolved "https://registry.yarnpkg.com/@rbxts/react-vendor/-/react-vendor-0.3.6.tgz#4a493e74d648cc88aab0b192c16449698ebc3010"
   integrity sha512-q3HilP6ZNHSgWW0lwka+Ft4Iq+fnPBppOeQhGua1XCtM2hEqhmUmME8DI1UlnaK/aGzdYW1bWC7YfHZhHGsIeA==
 
+"@rbxts/react-vendor@17.2.3":
+  version "17.2.3"
+  resolved "https://registry.yarnpkg.com/@rbxts/react-vendor/-/react-vendor-17.2.3.tgz#709436d311ca0f32311b8d9be7c3542380219b69"
+  integrity sha512-dWCiVelvTK6h920geaFH/OQ5zoWHyhyqyfH51hKx2/iVZ6OiiyNVJ5UqEIkJMG4HsJ8JnkTORizV3+MtQ41BtA==
+
+"@rbxts/react@*", "@rbxts/react@17.2.3":
+  version "17.2.3"
+  resolved "https://registry.yarnpkg.com/@rbxts/react/-/react-17.2.3.tgz#8434c29e900ebb82341c40f52a3fcb3ec781dfc8"
+  integrity sha512-IoOB8e2W8MxT0MKWFf0Ls0vT61ImYL6ctHQgz5+oazma6z8bqFtJjgPxOuy6jmMSuyfBe7rYp/muou0kIjZT+Q==
+  dependencies:
+    "@rbxts/react-vendor" "17.2.3"
+
 "@rbxts/react@0.3.6", "@rbxts/react@^0.3.1":
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/@rbxts/react/-/react-0.3.6.tgz#9ab6811db1de490270ff9cc6ac598a3d36413c03"
@@ -248,12 +324,17 @@
   resolved "https://registry.yarnpkg.com/@rbxts/reflex/-/reflex-4.3.1.tgz#4c0bcca8024cd647b5caa0cfd1085188b0f5ac3b"
   integrity sha512-S5MbEpHKeRh9NWhwGJ789WbUsmlAlpQziWaNK4+kz1EpaaQ7uHQMZAuN1DYl4+QkqmOSuPlj04COwmArBGWH1Q==
 
+"@rbxts/ripple@*", "@rbxts/ripple@^0.9.1":
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/@rbxts/ripple/-/ripple-0.9.3.tgz#b61e4c8e88fdc12b87912cea344065bbbc7319f8"
+  integrity sha512-GmwjQl7a8pvGPGQYLmaAcf2RBPpneOL5P1+U8CzTHt9tBhCdk0TEJ/MQoTv9JnHD62RMBE1jogQBvuGgl9VXAg==
+
 "@rbxts/ripple@^0.8.1":
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@rbxts/ripple/-/ripple-0.8.2.tgz#9949cb46ff30bd5475556e152d77b17dcc779494"
   integrity sha512-1F+yA8ugw0LEDBerQfIiIdUDoOfwz8O86GkH+sJkBViC/zJWDCZdrlzcdk7G7adePqkeBRfPp89g/4dUzZ4JQQ==
 
-"@rbxts/services@^1.1.4", "@rbxts/services@^1.1.5", "@rbxts/services@^1.5.1", "@rbxts/services@^1.5.4":
+"@rbxts/services@^1.1.4", "@rbxts/services@^1.1.5", "@rbxts/services@^1.5.1", "@rbxts/services@^1.5.4", "@rbxts/services@^1.5.5":
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/@rbxts/services/-/services-1.5.5.tgz#11b67060c5494ecbcf4cf479ec966a726ccc6e5b"
   integrity sha512-Hu7QH2ecefS60zpakKG3T2vgABydoOJqpSG7nXr59wFAbPk/cA+OcsntYPHUWyHAat0VFGZ5jNZLTLdiqfssvg==
@@ -289,6 +370,23 @@
   version "0.4.2-ts.0"
   resolved "https://registry.yarnpkg.com/@rbxts/testez/-/testez-0.4.2-ts.0.tgz#4475183d317182ac7099bffee6492ffcb7bcaf0b"
   integrity sha512-8Q+OG9ddTD2P3aARCuRKpPqUBvuifgSnHvQMZ6jBMqUzxhIysnb0l4c3vnnaQnvdyZ1OW9tKxcdEHMGTb67uOw==
+
+"@rbxts/topbar-components@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@rbxts/topbar-components/-/topbar-components-1.0.2.tgz#6e5b6ac5fef39b27a3ded67c41a2f0722845d32f"
+  integrity sha512-BSYx0rmP77y76rDdv48D+qXxZZtx5Q1tnBXD7atyR1GrG9Sg/20YRLGySdmjYgMsJk2+bOxxWnJ0u2aFPwFU9Q==
+  dependencies:
+    "@rbxts/melody" "^0.3.4"
+    "@rbxts/object-utils" "^1.0.4"
+    "@rbxts/pretty-react-hooks" "^0.6.2"
+    "@rbxts/ripple" "^0.9.1"
+    "@rbxts/services" "^1.5.5"
+    "@rbxts/t" "^3.1.1"
+
+"@rbxts/types@^1.0.227":
+  version "1.0.840"
+  resolved "https://registry.yarnpkg.com/@rbxts/types/-/types-1.0.840.tgz#9852397dd058eddf1afcc1d1c003d5688a411529"
+  integrity sha512-xvWTl1/hellqMBW1UB49JYRPVmitfkyd/xBNYaY+35+Vtn3Y3pXB/U0+y5wHfzQNi78XpPzyIyo8ker27UCWhw==
 
 "@rbxts/types@^1.0.839":
   version "1.0.839"
