@@ -1,91 +1,78 @@
-import React from '@rbxts/react'
+import { useAsync } from '@rbxts/pretty-react-hooks'
+import React, { useCallback, useEffect, useMemo, useRef } from '@rbxts/react'
 import { useSelector } from '@rbxts/react-reflex'
+import { ReplicatedStorage } from '@rbxts/services'
 import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
 import { palette } from 'ReplicatedStorage/shared/constants/palette'
 import { fonts } from 'StarterPlayer/StarterPlayerScripts/fonts'
+import { useController } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useController'
 import { useRem } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useRem'
 import { selectIsPageOpen } from 'StarterPlayer/StarterPlayerScripts/store'
 import { MENU_PAGE } from 'StarterPlayer/StarterPlayerScripts/store/MenuState'
-/*
-export function InventoryItemViewport(props: { name: InventoryItemName }) {
-const model = useMemo(() =>)
 
+export function InventoryItem(props: {
+  name: InventoryItemName
+  cameraDepth?: number
+  cameraFov?: number
+  onClick: (name: InventoryItemName) => void
+}) {
+  const viewportRef = useRef<ViewportFrame>()
+  const camera = useMemo(() => new Instance('Camera'), [])
+  const worldModel = useMemo(() => new Instance('WorldModel'), [])
+  const [model] = useAsync(
+    async () => ReplicatedStorage.Items[props.name].Clone(),
+    [props.name],
+  )
 
-}
+  useEffect(() => {
+    if (model) model.Parent = worldModel
+  }, [model, worldModel])
 
-function setDefaultCameraView(
-  camera: Camera,
-  model: Model,
-  cameraDepth = 0,
-): void {
-  const [modelCF] = model.GetBoundingBox()
+  useEffect(() => {
+    worldModel.Parent = viewportRef.current
+  }, [worldModel, viewportRef])
 
-  const radius = model.GetExtentsSize().Magnitude / 2
-  const halfFov = math.rad(camera.FieldOfView) / 2
-  const depth = radius / math.tan(halfFov) + cameraDepth
-  camera.CFrame = camera.CFrame.sub(camera.CFrame.Position)
-    .add(modelCF.Position)
-    .add(camera.CFrame.Position.sub(modelCF.Position).Unit.mul(depth))
-}
-
-export default function ObjectViewport({
-  Object,
-  Depth,
-  Rotation,
-  children,
-}: ObjectViewportProps) {
-  Rotation ??= new CFrame()
-  const model = !t.nil(Object) ? Object.Clone() : Make('Model', {})
-  const viewportCamera = Make('Camera', {})
-  setDefaultCameraView(viewportCamera, model, Depth)
-
-  effect(() => {
-    const noRotation = CFrame.new(model.GetPivot().Position)
-    model.PivotTo(noRotation.mul(read(Rotation)))
-  })
+  useEffect(() => {
+    if (!model) return
+    const pivot = model.GetPivot()
+    camera.CFrame = CFrame.lookAt(
+      pivot.mul(new CFrame(-6, 6, -6)).Position,
+      pivot.Position,
+    )
+  }, [camera, model])
 
   return (
-    <viewportframe
-      CurrentCamera={viewportCamera}
-      Size={UDim2.fromScale(0.5, 0.5)}
-    >
-      {viewportCamera}
-      {model}
-      {children}
-    </viewportframe>
+    <imagebutton BackgroundTransparency={0.7}>
+      <viewportframe
+        Size={new UDim2(1.0, 0, 1.0, 0)}
+        ref={viewportRef}
+        CurrentCamera={camera}
+        BackgroundTransparency={0.7}
+      >
+        <uicorner CornerRadius={new UDim(0.3)} />
+        <textlabel
+          Text={props.name}
+          Font={Enum.Font.FredokaOne}
+          Position={new UDim2(0.25, 0, 0.8, 0)}
+          Size={new UDim2(0.5, 0, 0.2, 0)}
+          TextColor3={palette.text}
+          BackgroundTransparency={1}
+          ZIndex={5}
+        />
+      </viewportframe>
+    </imagebutton>
   )
 }
-
-/**
-
-export default function ObjectViewport({
-  Object,
-  Depth,
-  Rotation,
-  children,
-}: ObjectViewportProps) {
-  Rotation ??= 0
-  const model = !t.nil(Object) ? Object.Clone() : Make('Model', {})
-  const viewportCamera = Make('Camera', {})
-  setDefaultCameraView(viewportCamera, model, Depth)
-  model.PivotTo(
-    model.GetPivot().mul(CFrame.fromEulerAnglesXYZ(0, read(Rotation), 0)),
-  )
-
-  return (
-    <viewportframe CurrentCamera={viewportCamera} Size={UDim2.fromScale(1, 1)}>
-      {viewportCamera}
-      {model}
-      {children}
-    </viewportframe>
-  )
-     *
- * @param param0
- */
 
 export function InventoryMenu() {
   const rem = useRem()
+  const controller = useController()
   const opened = useSelector(selectIsPageOpen(MENU_PAGE.Inventory))
+  const selectItem = useCallback(
+    (name: InventoryItemName) => controller.placeBlockController?.setItem(name),
+    [controller],
+  )
+
   return (
     opened && (
       <screengui>
@@ -138,25 +125,13 @@ export function InventoryMenu() {
               VerticalScrollBarInset={Enum.ScrollBarInset.Always}
               BackgroundTransparency={1}
               BorderSizePixel={0}
-              ClipsDescendants={false}
+              ClipsDescendants={true}
               Selectable={false}
               Size={new UDim2(0.8, 0, 0.8, 0)}
             >
-              <uigridlayout>
-                <viewportframe>
-                  <camera>
-                    <imagelabel
-                      Image="rbxassetid://613887973"
-                      ImageTransparency={0.15}
-                      BackgroundTransparency={1}
-                      Size={new UDim2(1, 0, 1, 0)}
-                      ZIndex={-1}
-                    >
-                      <uicorner CornerRadius={new UDim(0.3)} />
-                    </imagelabel>
-                  </camera>
-                </viewportframe>
-              </uigridlayout>
+              <uigridlayout CellSize={new UDim2(0.25, 0, 0.15, 0)} />
+              <InventoryItem name="Conveyor" onClick={selectItem} />
+              <InventoryItem name="Sawmill" onClick={selectItem} />
             </scrollingframe>
           </frame>
         </frame>

@@ -4,6 +4,7 @@ import { UserInputService } from '@rbxts/services'
 import {
   INVENTORY,
   InventoryItemDescription,
+  InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolComponent } from 'StarterPlayer/StarterPlayerScripts/components/PlaceBlockTool'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
@@ -22,6 +23,15 @@ export class PlaceBlockController implements OnStart {
 
   getItem() {
     return this.item
+  }
+
+  setItem(name: InventoryItemName) {
+    const item = INVENTORY[name]
+    if (!item) {
+      this.logger.Error(`PlaceBlockController.setItem: Item ${name} unknown`)
+      return
+    }
+    this.item = item
   }
 
   equipPlaceBlockTool(tool?: PlaceBlockToolComponent) {
