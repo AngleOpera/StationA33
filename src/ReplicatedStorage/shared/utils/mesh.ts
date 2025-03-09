@@ -1,20 +1,91 @@
 import Object from '@rbxts/object-utils'
 import { Workspace } from '@rbxts/services'
+import { padEnd } from '@rbxts/string-utils'
+import { base58ToInt, intToBase58 } from 'ReplicatedStorage/shared/utils/base58'
+
+export type EncodedMeshMidpoint = string
+export type EncodedMeshData = string
+export type MeshMap = Record<EncodedMeshMidpoint, EncodedMeshData>
+
+export type MeshStartpoint = Vector3 & { readonly _mesh_start?: unique symbol }
+export type MeshEndpoint = Vector3 & { readonly _mesh_end?: unique symbol }
+export type MeshMidpoint = Vector3 & { readonly _mesh_mid?: unique symbol }
+export type MeshRotation = Vector3 & { readonly _mesh_rot?: unique symbol }
 
 export interface MeshData {
   readonly blockId: number
+  readonly width: number
+  readonly length: number
+  readonly height: number
   readonly rotation: MeshRotation
 }
 
-export type MeshMidPoint = Vector3 & { readonly _mesh_mid?: unique symbol }
-export type MeshStartPoint = Vector3 & { readonly _mesh_start?: unique symbol }
-export type MeshRotation = Vector3 & { readonly _mesh_rot?: unique symbol }
-export type MeshMap = Record<string, string>
+export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
+export const coordinateEncodingLength = 2
+export const maxEncodedCoordinate = math.pow(58, coordinateEncodingLength) - 1
 
-export const blockSize = 3
+export function encodeMeshMidPoint(
+  midpoint: MeshMidpoint,
+): EncodedMeshMidpoint {
+  if (
+    midpoint.X < 0 ||
+    midpoint.Y < 0 ||
+    midpoint.Z < 0 ||
+    midpoint.X > maxEncodedCoordinate ||
+    midpoint.Y > maxEncodedCoordinate ||
+    midpoint.Z > maxEncodedCoordinate
+  ) {
+    throw `Invalid midpoint: ${midpoint}`
+  }
+  const encodedX = intToBase58(midpoint.X)
+  const encodedY = intToBase58(midpoint.Y)
+  const encodedZ = intToBase58(midpoint.Z)
+  print(
+    'd000d',
+    encodedX,
+    encodedY,
+    encodedZ,
+    padEnd(encodedX, coordinateEncodingLength, '_'),
+    padEnd(encodedY, coordinateEncodingLength, '_'),
+    padEnd(encodedZ, coordinateEncodingLength, '_'),
+  )
+  return (
+    (encodedX.size() < coordinateEncodingLength
+      ? padEnd(encodedX, coordinateEncodingLength, '_')
+      : encodedX) +
+    (encodedY.size() < coordinateEncodingLength
+      ? padEnd(encodedY, coordinateEncodingLength, '_')
+      : encodedY) +
+    (encodedZ.size() < coordinateEncodingLength
+      ? padEnd(encodedZ, coordinateEncodingLength, '_')
+      : encodedZ)
+  )
+}
+
+export function decodeMeshMidPoint(encoded: EncodedMeshMidpoint): MeshMidpoint {
+  if (encoded.size() !== 3 * coordinateEncodingLength) {
+    throw `Invalid encoded midpoint: ${encoded}`
+  }
+  return new Vector3(
+    base58ToInt(encoded.sub(1, coordinateEncodingLength)),
+    base58ToInt(
+      encoded.sub(coordinateEncodingLength + 1, 2 * coordinateEncodingLength),
+    ),
+    base58ToInt(
+      encoded.sub(
+        2 * coordinateEncodingLength + 1,
+        3 * coordinateEncodingLength,
+      ),
+    ),
+  )
+}
 
 export function getLowerCorner(position: Vector3, size: Vector3): Vector3 {
   return position.sub(size.div(2))
+}
+
+export function getUpperCorner(position: Vector3, size: Vector3): Vector3 {
+  return position.add(size.div(2))
 }
 
 export function getPartLowerCorner(part: BasePart): Vector3 {
@@ -23,33 +94,54 @@ export function getPartLowerCorner(part: BasePart): Vector3 {
 
 export function getMeshMidpointFromWorldPosition(
   position: Vector3,
-  size: Vector3,
   baseplate: BasePart,
-): Vector3 {
+): MeshMidpoint {
   const baseplateCorner = getPartLowerCorner(baseplate)
-  return position
-    .sub(baseplateCorner)
-    .div(blockSize)
-    .Floor()
-    .add(
-      new Vector3(
-        size.X % 2 ? blockSize / 2 : 0,
-        size.Y % 2 ? blockSize / 2 : 0,
-        size.Z % 2 ? blockSize / 2 : 0,
-      ),
-    )
+  return position.sub(baseplateCorner).div(gridSpacing).Floor()
+}
+
+export function getMeshStartpointEndpointFromMidpointSize(
+  midpoint: MeshMidpoint,
+  size: Vector3,
+): {
+  startPoint: MeshStartpoint
+  endPoint: MeshEndpoint
+} {
+  const unquantizedMidpoint = new Vector3(
+    midpoint.X + (size.X % 2 ? gridSpacing / 2 : 0),
+    midpoint.Y + (size.Y % 2 ? gridSpacing / 2 : 0),
+    midpoint.Z + (size.Z % 2 ? gridSpacing / 2 : 0),
+  )
+  const lowerCorner = getLowerCorner(unquantizedMidpoint, size)
+  const upperCorner = getUpperCorner(unquantizedMidpoint, size)
+  const startPoint = lowerCorner.Floor()
+  const endPoint = upperCorner.Floor()
+  if (startPoint.sub(lowerCorner).Magnitude > 0.01) {
+    throw `Invalid startPoint ${startPoint} for midpoint and size: ${midpoint}, ${size}`
+  }
+  if (endPoint.sub(upperCorner).Magnitude > 0.01) {
+    throw `Invalid endPoint ${endPoint} for midpoint and size: ${midpoint}, ${size}`
+  }
+  return { startPoint, endPoint }
 }
 
 export function getCFrameFromMeshMidpoint(
-  midpoint: MeshMidPoint,
+  midpoint: MeshMidpoint,
   rotation: MeshRotation,
   baseplate: BasePart,
+  size: Vector3,
 ): CFrame {
   return baseplate.CFrame.ToWorldSpace(
     new CFrame(
-      midpoint.X * blockSize + -baseplate.Size.X / 2,
-      (baseplate.Size.Y + blockSize) / 2,
-      midpoint.Z * blockSize + -baseplate.Size.Z / 2,
+      midpoint.X * gridSpacing -
+        baseplate.Size.X / 2 +
+        (size.X % 2 ? gridSpacing / 2 : 0),
+      midpoint.Y * gridSpacing -
+        baseplate.Size.Y / 2 +
+        (size.Y % 2 ? gridSpacing / 2 : 0),
+      midpoint.Z * gridSpacing -
+        baseplate.Size.Z / 2 +
+        (size.Z % 2 ? gridSpacing / 2 : 0),
     ).mul(CFrame.Angles(0, math.rad(90 * rotation.Y), 0)),
   )
 }
@@ -118,15 +210,13 @@ export class GreedyMeshing {
     ey: number,
     name: string | undefined,
   ): GreedyMeshData {
-    let l = 0
-    let w = 0
-    let h = 0
-    l = math.sqrt((sx - ex) ^ 2) + (l !== -1 ? 4 : 0)
-    w = math.sqrt((sz - ez) ^ 2) + (w !== -1 ? 4 : 0)
-    h = math.sqrt((sy - ey) ^ 2) + (h !== -1 ? 4 : 0)
+    const l = math.sqrt(math.pow(sx - ex, 2))
+    const h = math.sqrt(math.pow(sy - ey, 2))
+    const w = math.sqrt(math.pow(sz - ez, 2))
     const midpointx = (sx + ex) / 2
-    const midpointz = (sz + ez) / 2
     const midpointy = (sy + ey) / 2
+    const midpointz = (sz + ez) / 2
+
     return {
       name: name ?? '',
       startx: sx,
@@ -289,7 +379,7 @@ export class GreedyMeshing {
     const ssy = starty
     let lastx, lastz, lasty
 
-    for (const v of Workspace.GetChildren<BasePart>()) {
+    for (const v of this.TargetFolder.GetChildren<BasePart>()) {
       old = old + 1
       D3[v.Position.X] = D3[v.Position.X] || {}
       D3[v.Position.X][v.Position.Y] = D3[v.Position.X][v.Position.Y] || {}
@@ -396,11 +486,8 @@ export class GreedyMeshing {
     this.visualizeBlocks()
 
     /*
-	workspace["3D Done"].ChildAdded:Connect(function()
-		if #workspace["3D Done"]:GetChildren() == #workspace.Planet:GetChildren() then
-			TargetFolder:ClearAllChildren()
-		end
-	end)
+     workspace:WaitForChild(OutputFolderName).ChildAdded:Connect(function()
+              if #workspace:FindFirstChild(OutputFolderName):GetChildren() == #TargetFolder:GetChildren() then
   */
   }
 }

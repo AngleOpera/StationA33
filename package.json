@@ -39,6 +39,7 @@
     "@flamework/core": "^1.2.4",
     "@flamework/networking": "^1.2.4",
     "@rbxts/abbreviate": "^3.0.4",
+    "@rbxts/array-utils": "^1.0.1",
     "@rbxts/behavior-tree-5": "^1.0.0",
     "@rbxts/camera-shaker": "^1.0.8",
     "@rbxts/cmdr": "^1.12.1",
@@ -64,6 +65,7 @@
     "@rbxts/services": "^1.5.4",
     "@rbxts/set-timeout": "^1.1.2",
     "@rbxts/simplepath": "^2.2.1-ts.2",
+    "@rbxts/string-utils": "^1.0.3",
     "@rbxts/t": "^3.1.1",
     "@rbxts/topbar-components": "^1.0.2"
   }

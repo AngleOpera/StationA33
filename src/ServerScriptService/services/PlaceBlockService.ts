@@ -37,6 +37,7 @@ export class PlaceBlockService implements OnStart {
           location,
           rotation,
           playerSpace.Plot.Baseplate,
+          new Vector3(item.X, item.Y, item.Z),
         ),
       )
       clonedSound.Parent = clonedModel

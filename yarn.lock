@@ -120,6 +120,11 @@
   resolved "https://registry.yarnpkg.com/@rbxts/altmake/-/altmake-0.1.5.tgz#19f948fac51d6addde57f603bb2cf51784b628b2"
   integrity sha512-hUgwB5BciLTbXIet98nPZcXugrsFjGuJojMQF0kHX/jqqOdNc15zllTOyzk7FUuOQAg+ECjVw/hERfM/VZe5Tw==
 
+"@rbxts/array-utils@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@rbxts/array-utils/-/array-utils-1.0.1.tgz#7b988298ddca0d3f0cdd22394e74e6ca18c747f2"
+  integrity sha512-oMh58yhRgbwpbbglhI/aIzkxXpcRLDMXpVVpo6fZTZRiiB0GLyBYjEjcS+9oiDXp0RXOvRxtpDK7YoW6yU/j2g==
+
 "@rbxts/behavior-tree-5@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@rbxts/behavior-tree-5/-/behavior-tree-5-1.0.0.tgz#bb40782d84f4a2f8bc103fa964811e2817ad7f24"

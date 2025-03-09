@@ -7,10 +7,10 @@ import {
 } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
-  blockSize,
   getCFrameFromMeshMidpoint,
   getMeshMidpointFromWorldPosition,
-  MeshMidPoint,
+  gridSpacing,
+  MeshMidpoint,
   MeshRotation,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
@@ -23,7 +23,7 @@ export class PlaceBlockToolComponent
 {
   item: InventoryItemDescription = INVENTORY['Conveyor']
   connection: RBXScriptConnection | undefined
-  block: MeshMidPoint | undefined
+  block: MeshMidpoint | undefined
   rotation: MeshRotation = new Vector3(0, 0, 0)
   preview: BasePart | Model | undefined
   invoking = false
@@ -69,10 +69,9 @@ export class PlaceBlockToolComponent
           this.block = getMeshMidpointFromWorldPosition(
             new Vector3(
               math.floor(mouse.Hit.X) + 0.5,
-              (baseplate.Size.Y + blockSize) / 2 + baseplate.Position.Y,
+              (baseplate.Size.Y + gridSpacing) / 2 + baseplate.Position.Y,
               math.floor(mouse.Hit.Z) + 0.5,
             ),
-            new Vector3(this.item.X, this.item.Y, this.item.Z),
             baseplate,
           )
         } else if (
@@ -93,7 +92,12 @@ export class PlaceBlockToolComponent
             )?.Clone() ||
             ReplicatedStorage.Common.PlaceBlockPreview.Clone()
           this.preview.PivotTo(
-            getCFrameFromMeshMidpoint(this.block, this.rotation, baseplate),
+            getCFrameFromMeshMidpoint(
+              this.block,
+              this.rotation,
+              baseplate,
+              new Vector3(this.item.X, this.item.Y, this.item.Z),
+            ),
           )
           this.preview.Parent = previewBlockFolder
         }
