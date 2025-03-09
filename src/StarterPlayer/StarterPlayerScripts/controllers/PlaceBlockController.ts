@@ -1,11 +1,18 @@
 import { Controller, OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import { UserInputService } from '@rbxts/services'
+import {
+  INVENTORY,
+  InventoryItemDescription,
+} from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolComponent } from 'StarterPlayer/StarterPlayerScripts/components/PlaceBlockTool'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
+import { store } from 'StarterPlayer/StarterPlayerScripts/store'
+import { MENU_PAGE } from 'StarterPlayer/StarterPlayerScripts/store/MenuState'
 
 @Controller({})
 export class PlaceBlockController implements OnStart {
+  item: InventoryItemDescription = INVENTORY['Conveyor']
   activePlaceBlockTool?: PlaceBlockToolComponent
 
   constructor(
@@ -13,19 +20,31 @@ export class PlaceBlockController implements OnStart {
     protected logger: Logger,
   ) {}
 
+  getItem() {
+    return this.item
+  }
+
   equipPlaceBlockTool(tool?: PlaceBlockToolComponent) {
     this.activePlaceBlockTool = tool
+    store.setMenuPage(MENU_PAGE.Inventory)
   }
 
   onStart() {
     UserInputService.InputBegan.Connect((inputObject, processed) => {
-      if (this.activePlaceBlockTool && !processed) {
+      if (this.activePlaceBlockTool) {
         if (inputObject.UserInputType === Enum.UserInputType.Keyboard) {
           switch (inputObject.KeyCode) {
+            case Enum.KeyCode.Escape:
+              store.setMenuOpen(false)
+              break
             case Enum.KeyCode.R:
-              if (this.activePlaceBlockTool) {
+              if (this.activePlaceBlockTool && !processed) {
                 this.activePlaceBlockTool.rotate()
               }
+              break
+            case Enum.KeyCode.V:
+            case Enum.KeyCode.X:
+              if (!processed) store.setMenuOpen(false)
               break
           }
         }

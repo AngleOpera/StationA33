@@ -3,7 +3,7 @@ import { createProducer } from '@rbxts/reflex'
 import { Players } from '@rbxts/services'
 import {
   InventoryItemName,
-  PLOT_NAMES,
+  PLOT_NAME,
 } from 'ReplicatedStorage/shared/constants/core'
 import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
 
@@ -135,7 +135,7 @@ export const playersSlice = createProducer(initialState, {
       seenPlotNames.add(player.plotName)
     }
     let plotName: PlotName | undefined
-    for (const name of PLOT_NAMES) {
+    for (const name of PLOT_NAME) {
       if (!seenPlotNames.has(name)) {
         plotName = name
         break

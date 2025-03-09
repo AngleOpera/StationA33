@@ -1,10 +1,6 @@
 import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
-import {
-  INVENTORY,
-  InventoryItemDescription,
-} from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
   getCFrameFromMeshMidpoint,
@@ -21,9 +17,8 @@ export class PlaceBlockToolComponent
   extends BaseComponent<PlaceBlockToolAttributes, PlaceBlockTool>
   implements OnStart
 {
-  item: InventoryItemDescription = INVENTORY['Conveyor']
   connection: RBXScriptConnection | undefined
-  block: MeshMidpoint | undefined
+  midpoint: MeshMidpoint | undefined
   rotation: MeshRotation = new Vector3(0, 0, 0)
   preview: BasePart | Model | undefined
   invoking = false
@@ -37,7 +32,7 @@ export class PlaceBlockToolComponent
   }
 
   clear() {
-    this.block = undefined
+    this.midpoint = undefined
     this.preview?.Destroy()
     this.preview = undefined
   }
@@ -56,7 +51,9 @@ export class PlaceBlockToolComponent
       mouse.TargetFilter = previewBlockFolder
 
       this.connection = RunService.RenderStepped.Connect((_deltaTime) => {
+        const item = this.placeBlockController.getItem()
         if (
+          !item ||
           !character.PrimaryPart ||
           humanoid.Health <= 0 ||
           mouse.Hit.Position.sub(character.PrimaryPart.Position).Magnitude >
@@ -66,7 +63,7 @@ export class PlaceBlockToolComponent
           return
         }
         if (mouse.Target === baseplate) {
-          this.block = getMeshMidpointFromWorldPosition(
+          this.midpoint = getMeshMidpointFromWorldPosition(
             new Vector3(
               math.floor(mouse.Hit.X) + 0.5,
               (baseplate.Size.Y + gridSpacing) / 2 + baseplate.Position.Y,
@@ -84,19 +81,19 @@ export class PlaceBlockToolComponent
           this.clear()
           return
         }
-        if (this.block) {
+        if (this.midpoint) {
           this.preview =
             this.preview ||
             ReplicatedStorage.Items?.FindFirstChild<Model>(
-              this.item.name,
+              item.name,
             )?.Clone() ||
             ReplicatedStorage.Common.PlaceBlockPreview.Clone()
           this.preview.PivotTo(
             getCFrameFromMeshMidpoint(
-              this.block,
+              this.midpoint,
               this.rotation,
               baseplate,
-              new Vector3(this.item.X, this.item.Y, this.item.Z),
+              new Vector3(item.width, item.height, item.length),
             ),
           )
           this.preview.Parent = previewBlockFolder
@@ -108,15 +105,16 @@ export class PlaceBlockToolComponent
       this.placeBlockController.equipPlaceBlockTool(undefined)
       this.connection?.Disconnect()
       this.connection = undefined
-      this.block = undefined
+      this.midpoint = undefined
       this.preview?.Destroy()
       this.preview = undefined
     })
 
     this.instance.Activated.Connect(() => {
-      if (this.block && !this.invoking) {
+      const item = this.placeBlockController.getItem()
+      if (item && this.midpoint && !this.invoking) {
         this.invoking = true
-        Functions.placeBlock.invoke(this.item.name, this.block, this.rotation)
+        Functions.placeBlock.invoke(item.name, this.midpoint, this.rotation)
         this.invoking = false
       }
     })

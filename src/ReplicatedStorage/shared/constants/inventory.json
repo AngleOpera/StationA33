@@ -5,9 +5,9 @@
     "description": "Moves items from one place to another",
     "price": 100,
     "image": "rbxassetid://0",
-    "X": 1,
-    "Y": 1,
-    "Z": 1
+    "width": 1,
+    "height": 1,
+    "length": 1
   },
   "Drill": {
     "id": 2,
@@ -15,9 +15,9 @@
     "description": "Mines ores from the ground",
     "price": 200,
     "image": "rbxassetid://0",
-    "X": 4,
-    "Y": 1,
-    "Z": 4
+    "width": 4,
+    "height": 1,
+    "length": 4
   },
   "Furnace": {
     "id": 3,
@@ -25,9 +25,9 @@
     "description": "Smelts ores into bars",
     "price": 300,
     "image": "rbxassetid://0",
-    "X": 2,
-    "Y": 1,
-    "Z": 3
+    "width": 2,
+    "height": 1,
+    "length": 3
   },
   "Sawmill": {
     "id": 4,
@@ -35,9 +35,9 @@
     "description": "Cuts logs into planks",
     "price": 400,
     "image": "rbxassetid://0",
-    "X": 3,
-    "Y": 1,
-    "Z": 3
+    "width": 3,
+    "height": 1,
+    "length": 3
   },
   "Workbench": {
     "id": 5,
@@ -45,8 +45,8 @@
     "description": "Crafts items from resources",
     "price": 500,
     "image": "rbxassetid://0",
-    "X": 4,
-    "Y": 1,
-    "Z": 4
+    "width": 4,
+    "height": 1,
+    "length": 4
   }
 }

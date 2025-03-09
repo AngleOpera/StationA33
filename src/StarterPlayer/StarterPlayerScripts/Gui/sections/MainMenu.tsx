@@ -4,9 +4,10 @@ import { palette } from 'ReplicatedStorage/shared/constants/palette'
 import { fonts } from 'StarterPlayer/StarterPlayerScripts/fonts'
 import { useRem } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useRem'
 import {
-  selectIsMenuOpen,
+  selectIsPageOpen,
   store,
 } from 'StarterPlayer/StarterPlayerScripts/store'
+import { MENU_PAGE } from 'StarterPlayer/StarterPlayerScripts/store/MenuState'
 
 export function MainButton(props: {
   Text: string
@@ -44,7 +45,7 @@ export function MainButton(props: {
 
 export function MainMenu() {
   const rem = useRem()
-  const opened = useSelector(selectIsMenuOpen)
+  const opened = useSelector(selectIsPageOpen(MENU_PAGE.Main))
   return (
     opened && (
       <screengui>

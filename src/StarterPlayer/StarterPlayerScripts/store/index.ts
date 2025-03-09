@@ -40,8 +40,8 @@ export const selectIsMenuOpen = (state: RootState) => {
   return state.menu.open
 }
 
-export const selectIsPage = (page: MenuPage) => {
-  return (state: RootState) => state.menu.page === page
+export const selectIsPageOpen = (page: MenuPage) => {
+  return (state: RootState) => state.menu.open && state.menu.page === page
 }
 
 export const selectMenuTransition = (state: RootState) => {
