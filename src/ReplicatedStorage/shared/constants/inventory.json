@@ -1,6 +1,17 @@
 {
-  "Conveyor": {
+  "Grass": {
     "id": 1,
+    "name": "Grass",
+    "description": "Grass",
+    "price": 0,
+    "image": "rbxassetid://0",
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "stackable": true
+  },
+  "Conveyor": {
+    "id": 2,
     "name": "Conveyor",
     "description": "Moves items from one place to another",
     "price": 100,
@@ -9,28 +20,8 @@
     "height": 1,
     "length": 1
   },
-  "Drill": {
-    "id": 2,
-    "name": "Drill",
-    "description": "Mines ores from the ground",
-    "price": 200,
-    "image": "rbxassetid://0",
-    "width": 4,
-    "height": 1,
-    "length": 4
-  },
-  "Furnace": {
-    "id": 3,
-    "name": "Furnace",
-    "description": "Smelts ores into bars",
-    "price": 300,
-    "image": "rbxassetid://0",
-    "width": 2,
-    "height": 1,
-    "length": 3
-  },
   "Sawmill": {
-    "id": 4,
+    "id": 3,
     "name": "Sawmill",
     "description": "Cuts logs into planks",
     "price": 400,
@@ -38,15 +29,5 @@
     "width": 3,
     "height": 1,
     "length": 3
-  },
-  "Workbench": {
-    "id": 5,
-    "name": "Assembler",
-    "description": "Crafts items from resources",
-    "price": 500,
-    "image": "rbxassetid://0",
-    "width": 4,
-    "height": 1,
-    "length": 4
   }
 }

@@ -78,7 +78,43 @@ export class PlaceBlockToolComponent
           mouse.Target.Parent &&
           mouse.Target.Parent === placedBlocksFolder
         ) {
-          /* */
+          const mouseSurface = mouse.TargetSurface
+          if (mouseSurface === Enum.NormalId.Left)
+            this.midpoint = getMeshMidpointFromWorldPosition(
+              mouse.Target.CFrame.ToWorldSpace(new CFrame(-gridSpacing, 0, 0))
+                .Position,
+              baseplate,
+            )
+          else if (mouseSurface === Enum.NormalId.Right)
+            this.midpoint = getMeshMidpointFromWorldPosition(
+              mouse.Target.CFrame.ToWorldSpace(new CFrame(gridSpacing, 0, 0))
+                .Position,
+              baseplate,
+            )
+          else if (mouseSurface === Enum.NormalId.Bottom)
+            this.midpoint = getMeshMidpointFromWorldPosition(
+              mouse.Target.CFrame.ToWorldSpace(new CFrame(0, -gridSpacing, 0))
+                .Position,
+              baseplate,
+            )
+          else if (mouseSurface === Enum.NormalId.Top)
+            this.midpoint = getMeshMidpointFromWorldPosition(
+              mouse.Target.CFrame.ToWorldSpace(new CFrame(0, gridSpacing, 0))
+                .Position,
+              baseplate,
+            )
+          else if (mouseSurface === Enum.NormalId.Front)
+            this.midpoint = getMeshMidpointFromWorldPosition(
+              mouse.Target.CFrame.ToWorldSpace(new CFrame(0, 0, -gridSpacing))
+                .Position,
+              baseplate,
+            )
+          else
+            this.midpoint = getMeshMidpointFromWorldPosition(
+              mouse.Target.CFrame.ToWorldSpace(new CFrame(0, 0, gridSpacing))
+                .Position,
+              baseplate,
+            )
         } else {
           this.clear()
           return
@@ -98,9 +134,9 @@ export class PlaceBlockToolComponent
           this.preview.PivotTo(
             getCFrameFromMeshMidpoint(
               this.midpoint,
+              new Vector3(item.width, item.height, item.length),
               this.rotation,
               baseplate,
-              new Vector3(item.width, item.height, item.length),
             ),
           )
           this.preview.Parent = previewBlockFolder

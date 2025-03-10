@@ -2,7 +2,10 @@ import { useAsync } from '@rbxts/pretty-react-hooks'
 import React, { useCallback, useEffect, useMemo, useRef } from '@rbxts/react'
 import { useSelector } from '@rbxts/react-reflex'
 import { ReplicatedStorage } from '@rbxts/services'
-import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
+import {
+  INVENTORY_NAMES,
+  InventoryItemName,
+} from 'ReplicatedStorage/shared/constants/core'
 import { palette } from 'ReplicatedStorage/shared/constants/palette'
 import { fonts } from 'StarterPlayer/StarterPlayerScripts/fonts'
 import { useController } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useController'
@@ -139,8 +142,9 @@ export function InventoryMenu() {
               Size={new UDim2(0.8, 0, 0.8, 0)}
             >
               <uigridlayout CellSize={new UDim2(0.25, 0, 0.15, 0)} />
-              <InventoryItem name="Conveyor" onClick={selectItem} />
-              <InventoryItem name="Sawmill" onClick={selectItem} />
+              {INVENTORY_NAMES.map((name) => (
+                <InventoryItem key={name} name={name} onClick={selectItem} />
+              ))}
             </scrollingframe>
           </frame>
         </frame>

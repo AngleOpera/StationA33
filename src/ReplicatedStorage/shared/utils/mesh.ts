@@ -1,7 +1,9 @@
 import Object from '@rbxts/object-utils'
 import { Workspace } from '@rbxts/services'
-import { padEnd } from '@rbxts/string-utils'
-import { base58ToInt, intToBase58 } from 'ReplicatedStorage/shared/utils/base58'
+import {
+  decodeBase58Array,
+  encodeBase58Array,
+} from 'ReplicatedStorage/shared/utils/base58'
 
 export type EncodedMeshMidpoint = string
 export type EncodedMeshData = string
@@ -17,67 +19,42 @@ export interface MeshData {
   readonly width: number
   readonly length: number
   readonly height: number
-  readonly rotation: MeshRotation
+  readonly rotation: Vector3
 }
 
 export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
 export const coordinateEncodingLength = 2
-export const maxEncodedCoordinate = math.pow(58, coordinateEncodingLength) - 1
 
 export function encodeMeshMidPoint(
   midpoint: MeshMidpoint,
 ): EncodedMeshMidpoint {
-  if (
-    midpoint.X < 0 ||
-    midpoint.Y < 0 ||
-    midpoint.Z < 0 ||
-    midpoint.X > maxEncodedCoordinate ||
-    midpoint.Y > maxEncodedCoordinate ||
-    midpoint.Z > maxEncodedCoordinate
-  ) {
-    throw `Invalid midpoint: ${midpoint}`
-  }
-  const encodedX = intToBase58(midpoint.X)
-  const encodedY = intToBase58(midpoint.Y)
-  const encodedZ = intToBase58(midpoint.Z)
-  print(
-    'd000d',
-    encodedX,
-    encodedY,
-    encodedZ,
-    padEnd(encodedX, coordinateEncodingLength, '_'),
-    padEnd(encodedY, coordinateEncodingLength, '_'),
-    padEnd(encodedZ, coordinateEncodingLength, '_'),
+  return encodeBase58Array(
+    [midpoint.X, midpoint.Y, midpoint.Z],
+    coordinateEncodingLength,
   )
-  return (
-    (encodedX.size() < coordinateEncodingLength
-      ? padEnd(encodedX, coordinateEncodingLength, '_')
-      : encodedX) +
-    (encodedY.size() < coordinateEncodingLength
-      ? padEnd(encodedY, coordinateEncodingLength, '_')
-      : encodedY) +
-    (encodedZ.size() < coordinateEncodingLength
-      ? padEnd(encodedZ, coordinateEncodingLength, '_')
-      : encodedZ)
+}
+
+export function encodeMeshData(data: MeshData): EncodedMeshData {
+  return encodeBase58Array(
+    [data.blockId, data.width, data.length, data.height, data.rotation.Y],
+    coordinateEncodingLength,
   )
 }
 
 export function decodeMeshMidPoint(encoded: EncodedMeshMidpoint): MeshMidpoint {
-  if (encoded.size() !== 3 * coordinateEncodingLength) {
-    throw `Invalid encoded midpoint: ${encoded}`
+  const decoded = decodeBase58Array(encoded, 3, coordinateEncodingLength)
+  return new Vector3(decoded[0], decoded[1], decoded[2])
+}
+
+export function decodeMeshData(encoded: EncodedMeshData): MeshData {
+  const decoded = decodeBase58Array(encoded, 5, coordinateEncodingLength)
+  return {
+    blockId: decoded[0],
+    width: decoded[1] || 1,
+    length: decoded[2] || 1,
+    height: decoded[3] || 1,
+    rotation: new Vector3(0, decoded[4] & 3, 0),
   }
-  return new Vector3(
-    base58ToInt(encoded.sub(1, coordinateEncodingLength)),
-    base58ToInt(
-      encoded.sub(coordinateEncodingLength + 1, 2 * coordinateEncodingLength),
-    ),
-    base58ToInt(
-      encoded.sub(
-        2 * coordinateEncodingLength + 1,
-        3 * coordinateEncodingLength,
-      ),
-    ),
-  )
 }
 
 export function getLowerCorner(position: Vector3, size: Vector3): Vector3 {
@@ -100,17 +77,29 @@ export function getMeshMidpointFromWorldPosition(
   return position.sub(baseplateCorner).div(gridSpacing).Floor()
 }
 
+export function getMeshMidpointSizeFromStartpointEndpoint(
+  startPoint: MeshStartpoint,
+  endPoint: MeshEndpoint,
+  _rotation: Vector3,
+): { midpoint: MeshMidpoint; size: Vector3 } {
+  return {
+    midpoint: startPoint.add(endPoint).div(2).Floor(),
+    size: endPoint.sub(startPoint).Abs().Floor(),
+  }
+}
+
 export function getMeshStartpointEndpointFromMidpointSize(
   midpoint: MeshMidpoint,
   size: Vector3,
+  _rotation: Vector3,
 ): {
   startPoint: MeshStartpoint
   endPoint: MeshEndpoint
 } {
   const unquantizedMidpoint = new Vector3(
-    midpoint.X + (size.X % 2 ? gridSpacing / 2 : 0),
-    midpoint.Y + (size.Y % 2 ? gridSpacing / 2 : 0),
-    midpoint.Z + (size.Z % 2 ? gridSpacing / 2 : 0),
+    midpoint.X + (size.X % 2 ? 0.5 : 0),
+    midpoint.Y + (size.Y % 2 ? 0.5 : 0),
+    midpoint.Z + (size.Z % 2 ? 0.5 : 0),
   )
   const lowerCorner = getLowerCorner(unquantizedMidpoint, size)
   const upperCorner = getUpperCorner(unquantizedMidpoint, size)
@@ -127,9 +116,9 @@ export function getMeshStartpointEndpointFromMidpointSize(
 
 export function getCFrameFromMeshMidpoint(
   midpoint: MeshMidpoint,
+  size: Vector3,
   rotation: MeshRotation,
   baseplate: BasePart,
-  size: Vector3,
 ): CFrame {
   return baseplate.CFrame.ToWorldSpace(
     new CFrame(

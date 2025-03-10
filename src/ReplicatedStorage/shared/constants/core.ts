@@ -1,4 +1,5 @@
 import { Device } from '@rbxts/device'
+import Object from '@rbxts/object-utils'
 import { Players, RunService } from '@rbxts/services'
 import { $NODE_ENV } from 'rbxts-transform-env'
 import inventoryConstants from 'ReplicatedStorage/shared/constants/inventory.json'
@@ -33,12 +34,15 @@ export interface InventoryItemDescription {
   width: number
   height: number
   length: number
+  stackable?: boolean
 }
 
 export const INVENTORY = inventoryConstants as Record<
   InventoryItemName,
   InventoryItemDescription
 >
+
+export const INVENTORY_NAMES: InventoryItemName[] = Object.keys(INVENTORY)
 
 export const PLOT_NAME: PlotName[] = [
   'Plot1' as const,

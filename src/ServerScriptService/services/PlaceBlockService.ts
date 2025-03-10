@@ -1,8 +1,16 @@
 import { OnStart, Service } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import { ReplicatedStorage, Workspace } from '@rbxts/services'
-import { INVENTORY } from 'ReplicatedStorage/shared/constants/core'
-import { getCFrameFromMeshMidpoint } from 'ReplicatedStorage/shared/utils/mesh'
+import {
+  INVENTORY,
+  InventoryItemName,
+} from 'ReplicatedStorage/shared/constants/core'
+import {
+  encodeMeshData,
+  encodeMeshMidPoint,
+  getCFrameFromMeshMidpoint,
+  gridSpacing,
+} from 'ReplicatedStorage/shared/utils/mesh'
 import { Functions } from 'ServerScriptService/network'
 import { PlayerService } from 'ServerScriptService/services/PlayerService'
 
@@ -14,37 +22,9 @@ export class PlaceBlockService implements OnStart {
   ) {}
 
   onStart() {
-    Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) => {
-      const item = INVENTORY[itemName]
-      if (!item) {
-        this.logger.Error(
-          `PlaceBlockService.placeBlock: Item ${itemName} unknown`,
-        )
-      }
-      const templateModel =
-        ReplicatedStorage.Items.FindFirstChild<Model>(itemName)
-      if (!templateModel) {
-        this.logger.Error(
-          `PlaceBlockService.placeBlock: Item ${itemName} not found`,
-        )
-        return
-      }
-      const clonedModel = templateModel.Clone()
-      const playerSpace = this.playerService.getPlayerSpace(player)
-      const clonedSound = Workspace.Audio.BlockPlaced.Clone()
-      clonedModel.PivotTo(
-        getCFrameFromMeshMidpoint(
-          midpoint,
-          rotation,
-          playerSpace.Plot.Baseplate,
-          new Vector3(item.width, item.height, item.length),
-        ),
-      )
-      clonedSound.Parent = clonedModel
-      clonedModel.Parent = playerSpace.PlacedBlocks
-      clonedSound.Play()
-    })
-
+    Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) =>
+      this.handlePlaceBlock(player, itemName, midpoint, rotation),
+    )
     Functions.breakBlock.setCallback((player, target) => {
       const playerSpace = this.playerService.getPlayerSpace(player)
       if (!typeIs(target, 'Instance') || !target.IsA('Part')) return
@@ -58,5 +38,75 @@ export class PlaceBlockService implements OnStart {
       clonedSound.Play()
       target.Destroy()
     })
+  }
+
+  handlePlaceBlock(
+    player: Player,
+    itemName: InventoryItemName,
+    midpoint: Vector3,
+    rotation: Vector3,
+  ) {
+    const item = INVENTORY[itemName]
+    if (!item) {
+      this.logger.Error(
+        `PlaceBlockService.placeBlock: Item ${itemName} unknown`,
+      )
+      return
+    }
+    const templateModel =
+      ReplicatedStorage.Items.FindFirstChild<Model>(itemName)
+    if (!templateModel) {
+      this.logger.Error(
+        `PlaceBlockService.placeBlock: Item ${itemName} not found`,
+      )
+      return
+    }
+
+    const playerSpace = this.playerService.getPlayerSpace(player)
+    const clonedModel = templateModel.Clone()
+    const bounding = new Instance('Part')
+    bounding.Name = 'Bounding'
+    bounding.Size = new Vector3(
+      gridSpacing * item.width,
+      gridSpacing * item.height,
+      gridSpacing * item.length,
+    )
+    bounding.Anchored = true
+    bounding.CanCollide = false
+    bounding.Transparency = 1.0
+    bounding.Parent = clonedModel
+    clonedModel.PivotTo(
+      getCFrameFromMeshMidpoint(
+        midpoint,
+        new Vector3(item.width, item.height, item.length),
+        rotation,
+        playerSpace.Plot.Baseplate,
+      ),
+    )
+
+    const touchingParts = bounding.GetTouchingParts()
+    if (touchingParts.size() > 0) {
+      this.logger.Warn(
+        `PlaceBlockService.placeBlock: Item ${itemName} intersects with existing mesh`,
+      )
+      clonedModel.Destroy()
+      return
+    }
+
+    const encodedMidpoint = encodeMeshMidPoint(midpoint)
+    const encodedMeshData = encodeMeshData({
+      blockId: item.id,
+      width: item.width,
+      height: item.height,
+      length: item.length,
+      rotation,
+    })
+    print('state update', encodedMidpoint, encodedMeshData)
+
+    const clonedSound = Workspace.Audio.BlockPlaced.Clone()
+    clonedSound.Parent = clonedModel
+    clonedModel.Name = encodedMidpoint
+    clonedModel.Parent = playerSpace.PlacedBlocks
+    clonedSound.Play()
   }
 }
