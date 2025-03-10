@@ -1,0 +1,34 @@
+<roblox version="4">
+  <Item class="MaterialVariant" referent="0">
+    <Properties>
+      <string name="Name">PlasmaFromAStar 3</string>
+      <BinaryString name="AttributesSerialize"></BinaryString>
+      <token name="BaseMaterial">256</token>
+      <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+      <Content name="ColorMap">
+        <url>rbxtemp://78</url>
+      </Content>
+      <PhysicalProperties name="CustomPhysicalProperties">
+        <CustomPhysics>false</CustomPhysics>
+      </PhysicalProperties>
+      <bool name="DefinesCapabilities">false</bool>
+      <token name="MaterialPattern">0</token>
+      <Content name="MetalnessMap">
+        <url>rbxtemp://80</url>
+      </Content>
+      <Content name="NormalMap">
+        <url>rbxtemp://77</url>
+      </Content>
+      <Content name="RoughnessMap">
+        <url>rbxtemp://81</url>
+      </Content>
+      <int64 name="SourceAssetId">-1</int64>
+      <float name="StudsPerTile">10</float>
+      <BinaryString name="Tags"></BinaryString>
+      <Content name="TexturePack">
+        <null>
+        </null>
+      </Content>
+    </Properties>
+  </Item>
+</roblox>

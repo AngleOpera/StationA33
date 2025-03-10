@@ -1,6 +1,7 @@
 import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
+import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
   getCFrameFromMeshMidpoint,
@@ -20,6 +21,7 @@ export class PlaceBlockToolComponent
   connection: RBXScriptConnection | undefined
   midpoint: MeshMidpoint | undefined
   rotation: MeshRotation = new Vector3(0, 0, 0)
+  item: InventoryItemDescription | undefined
   preview: BasePart | Model | undefined
   invoking = false
 
@@ -82,6 +84,11 @@ export class PlaceBlockToolComponent
           return
         }
         if (this.midpoint) {
+          if (this.item !== item) {
+            this.item = item
+            this.preview?.Destroy()
+            this.preview = undefined
+          }
           this.preview =
             this.preview ||
             ReplicatedStorage.Items?.FindFirstChild<Model>(
@@ -106,15 +113,20 @@ export class PlaceBlockToolComponent
       this.connection?.Disconnect()
       this.connection = undefined
       this.midpoint = undefined
+      this.item = undefined
       this.preview?.Destroy()
       this.preview = undefined
     })
 
-    this.instance.Activated.Connect(() => {
+    this.instance.Activated.Connect(async () => {
       const item = this.placeBlockController.getItem()
       if (item && this.midpoint && !this.invoking) {
         this.invoking = true
-        Functions.placeBlock.invoke(item.name, this.midpoint, this.rotation)
+        await Functions.placeBlock.invoke(
+          item.name,
+          this.midpoint,
+          this.rotation,
+        )
         this.invoking = false
       }
     })

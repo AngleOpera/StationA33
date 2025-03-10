@@ -7,7 +7,10 @@ import { palette } from 'ReplicatedStorage/shared/constants/palette'
 import { fonts } from 'StarterPlayer/StarterPlayerScripts/fonts'
 import { useController } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useController'
 import { useRem } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useRem'
-import { selectIsPageOpen } from 'StarterPlayer/StarterPlayerScripts/store'
+import {
+  selectIsPageOpen,
+  store,
+} from 'StarterPlayer/StarterPlayerScripts/store'
 import { MENU_PAGE } from 'StarterPlayer/StarterPlayerScripts/store/MenuState'
 
 export function InventoryItem(props: {
@@ -42,7 +45,10 @@ export function InventoryItem(props: {
   }, [camera, model])
 
   return (
-    <imagebutton BackgroundTransparency={0.7}>
+    <imagebutton
+      BackgroundTransparency={0.7}
+      Event={{ Activated: () => props.onClick(props.name) }}
+    >
       <viewportframe
         Size={new UDim2(1.0, 0, 1.0, 0)}
         ref={viewportRef}
@@ -69,7 +75,10 @@ export function InventoryMenu() {
   const controller = useController()
   const opened = useSelector(selectIsPageOpen(MENU_PAGE.Inventory))
   const selectItem = useCallback(
-    (name: InventoryItemName) => controller.placeBlockController?.setItem(name),
+    (name: InventoryItemName) => {
+      controller.placeBlockController?.setItem(name)
+      store.setMenuOpen(false)
+    },
     [controller],
   )
 

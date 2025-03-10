@@ -14,7 +14,7 @@ export class PlaceBlockService implements OnStart {
   ) {}
 
   onStart() {
-    Functions.placeBlock.setCallback((player, itemName, location, rotation) => {
+    Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) => {
       const item = INVENTORY[itemName]
       if (!item) {
         this.logger.Error(
@@ -34,7 +34,7 @@ export class PlaceBlockService implements OnStart {
       const clonedSound = Workspace.Audio.BlockPlaced.Clone()
       clonedModel.PivotTo(
         getCFrameFromMeshMidpoint(
-          location,
+          midpoint,
           rotation,
           playerSpace.Plot.Baseplate,
           new Vector3(item.width, item.height, item.length),

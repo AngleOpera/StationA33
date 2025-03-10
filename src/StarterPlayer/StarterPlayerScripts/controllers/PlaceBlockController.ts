@@ -36,7 +36,7 @@ export class PlaceBlockController implements OnStart {
 
   equipPlaceBlockTool(tool?: PlaceBlockToolComponent) {
     this.activePlaceBlockTool = tool
-    store.setMenuPage(MENU_PAGE.Inventory)
+    if (tool) store.setMenuPage(MENU_PAGE.Inventory)
   }
 
   onStart() {
