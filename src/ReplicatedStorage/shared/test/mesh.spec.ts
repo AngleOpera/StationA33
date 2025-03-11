@@ -5,9 +5,9 @@ import { padEnd } from '@rbxts/string-utils'
 import {
   coordinateEncodingLength,
   decodeMeshData,
-  decodeMeshMidPoint,
+  decodeMeshMidpoint,
   encodeMeshData,
-  encodeMeshMidPoint,
+  encodeMeshMidpoint,
   getMeshMidpointSizeFromStartpointEndpoint,
   getMeshStartpointEndpointFromMidpointSize,
   maxCoordinateValue,
@@ -16,54 +16,54 @@ import {
 export = () => {
   describe('mesh', () => {
     it('should serialize midpoints', () => {
-      const maxMidPoint = new Vector3(
+      const maxMidpoint = new Vector3(
         maxCoordinateValue,
         maxCoordinateValue,
         maxCoordinateValue,
       )
-      const maxEncodedMidPoint = padEnd('', coordinateEncodingLength * 3, 'z')
-      expect(encodeMeshMidPoint(maxMidPoint)).to.be.equal(maxEncodedMidPoint)
-      expect(decodeMeshMidPoint(maxEncodedMidPoint)).to.be.equal(maxMidPoint)
+      const maxEncodedMidpoint = padEnd('', coordinateEncodingLength * 3, 'z')
+      expect(encodeMeshMidpoint(maxMidpoint)).to.be.equal(maxEncodedMidpoint)
+      expect(decodeMeshMidpoint(maxEncodedMidpoint)).to.be.equal(maxMidpoint)
 
-      const minMidPoint = new Vector3(0, 0, 0)
-      expect(decodeMeshMidPoint(encodeMeshMidPoint(minMidPoint))).to.be.equal(
-        minMidPoint,
+      const minMidpoint = new Vector3(0, 0, 0)
+      expect(decodeMeshMidpoint(encodeMeshMidpoint(minMidpoint))).to.be.equal(
+        minMidpoint,
       )
 
-      const testMidPoint1 = new Vector3(1321, 211, 2399)
-      expect(decodeMeshMidPoint(encodeMeshMidPoint(testMidPoint1))).to.be.equal(
-        testMidPoint1,
+      const testMidpoint1 = new Vector3(1321, 211, 2399)
+      expect(decodeMeshMidpoint(encodeMeshMidpoint(testMidpoint1))).to.be.equal(
+        testMidpoint1,
       )
 
-      const testMidPoint2 = new Vector3(3, 0, 7)
-      expect(decodeMeshMidPoint(encodeMeshMidPoint(testMidPoint2))).to.be.equal(
-        testMidPoint2,
+      const testMidpoint2 = new Vector3(3, 0, 7)
+      expect(decodeMeshMidpoint(encodeMeshMidpoint(testMidpoint2))).to.be.equal(
+        testMidpoint2,
       )
 
-      const testMidPoint3 = new Vector3(3344, 51, 1024)
-      expect(decodeMeshMidPoint(encodeMeshMidPoint(testMidPoint3))).to.be.equal(
-        testMidPoint3,
+      const testMidpoint3 = new Vector3(3344, 51, 1024)
+      expect(decodeMeshMidpoint(encodeMeshMidpoint(testMidpoint3))).to.be.equal(
+        testMidpoint3,
       )
     })
 
     it('should convert midpoint and size to startpoint and endpoint', () => {
-      const testMidPoint1 = new Vector3(721, 444, 123)
+      const testMidpoint1 = new Vector3(721, 444, 123)
       const size = new Vector3(3, 4, 5)
       const rotation = new Vector3(0, 0, 0)
       const { startpoint, endpoint } =
-        getMeshStartpointEndpointFromMidpointSize(testMidPoint1, size, rotation)
+        getMeshStartpointEndpointFromMidpointSize(testMidpoint1, size, rotation)
       expect(
         getMeshMidpointSizeFromStartpointEndpoint(
           startpoint,
           endpoint,
           rotation,
         ),
-      ).to.be.equal({ midpoint: testMidPoint1, size })
+      ).to.be.equal({ midpoint: testMidpoint1, size })
 
       const size2 = new Vector3(6, 7, 8)
       const { startpoint: startpoint2, endpoint: endpoint2 } =
         getMeshStartpointEndpointFromMidpointSize(
-          testMidPoint1,
+          testMidpoint1,
           size2,
           rotation,
         )
@@ -73,7 +73,7 @@ export = () => {
           endpoint2,
           rotation,
         ),
-      ).to.be.equal({ midpoint: testMidPoint1, size: size2 })
+      ).to.be.equal({ midpoint: testMidpoint1, size: size2 })
     })
 
     it('should serialize mesh data', () => {

@@ -39,7 +39,7 @@ export function validMeshMidpoint(midpoint: Vector3): boolean {
   )
 }
 
-export function encodeMeshMidPoint(
+export function encodeMeshMidpoint(
   midpoint: MeshMidpoint,
 ): EncodedMeshMidpoint {
   return encodeBase58Array(
@@ -61,7 +61,7 @@ export function encodeMeshData(data: MeshData): EncodedMeshData {
   return encodeBase58Array(components, coordinateEncodingLength)
 }
 
-export function decodeMeshMidPoint(encoded: EncodedMeshMidpoint): MeshMidpoint {
+export function decodeMeshMidpoint(encoded: EncodedMeshMidpoint): MeshMidpoint {
   const decoded = decodeBase58Array(encoded, 3, coordinateEncodingLength)
   return new Vector3(decoded[0], decoded[1], decoded[2])
 }
@@ -173,7 +173,7 @@ export function meshMapAdd(
   midpoint: MeshMidpoint,
   data: MeshData,
 ): void {
-  meshMapAddEncoded(map, encodeMeshMidPoint(midpoint), data)
+  meshMapAddEncoded(map, encodeMeshMidpoint(midpoint), data)
 }
 
 export function meshMapAddEncoded(
@@ -190,7 +190,7 @@ export function meshMapGet(
 ): MeshData | undefined {
   return midpoint === undefined
     ? undefined
-    : meshMapGetEncoded(map, encodeMeshMidPoint(midpoint))
+    : meshMapGetEncoded(map, encodeMeshMidpoint(midpoint))
 }
 
 export function meshMapGetEncoded(
@@ -202,7 +202,7 @@ export function meshMapGetEncoded(
 }
 
 export function meshSetAdd(map: MeshSet, midpoint: MeshMidpoint): void {
-  meshSetAddEncoded(map, encodeMeshMidPoint(midpoint))
+  meshSetAddEncoded(map, encodeMeshMidpoint(midpoint))
 }
 
 export function meshSetAddEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
@@ -212,7 +212,7 @@ export function meshSetAddEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
 export function meshSetGet(map: MeshSet, midpoint?: MeshMidpoint): boolean {
   return midpoint === undefined
     ? false
-    : meshSetGetEncoded(map, encodeMeshMidPoint(midpoint))
+    : meshSetGetEncoded(map, encodeMeshMidpoint(midpoint))
 }
 
 export function meshSetGetEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
@@ -226,7 +226,7 @@ export function expandMesh(
   dir: 'x' | 'y' | 'z',
 ) {
   const included: MeshSet = { [inputEncodedMidpoint]: true }
-  const inputMidpoint = decodeMeshMidPoint(inputEncodedMidpoint)
+  const inputMidpoint = decodeMeshMidpoint(inputEncodedMidpoint)
   let currentdir = -1
   let { startpoint: sp, endpoint: ep } =
     getMeshStartpointEndpointFromMidpointSize(
@@ -339,7 +339,7 @@ export function runGreedyMeshing(parent: Instance, baseplate: BasePart) {
   while (current.Z <= ep.Z) {
     while (current.X <= ep.X) {
       while (current.Y <= ep.Y) {
-        const currentEncodedMidpoint = encodeMeshMidPoint(current)
+        const currentEncodedMidpoint = encodeMeshMidpoint(current)
         const currentData = meshMapGetEncoded(input, currentEncodedMidpoint)
         const currentSeen = meshSetGetEncoded(seen, currentEncodedMidpoint)
         const lastData = meshMapGet(input, last)

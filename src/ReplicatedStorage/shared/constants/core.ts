@@ -48,7 +48,7 @@ export const PLACE_PLOT_LOCATION = (() => {
 export type InventoryItemName = keyof typeof inventoryConstants
 
 export interface InventoryItemDescription {
-  id: number
+  blockId: number
   name: InventoryItemName
   description: string
   price: number
@@ -65,6 +65,9 @@ export const INVENTORY = inventoryConstants as Record<
 >
 
 export const INVENTORY_NAMES: InventoryItemName[] = Object.keys(INVENTORY)
+export const INVENTORY_ID = Object.fromEntries(
+  Object.values(INVENTORY).map((item) => [item.blockId, item]),
+)
 
 export const PLOT_NAME: PlotName[] = [
   'Plot1' as const,
