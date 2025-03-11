@@ -50,18 +50,18 @@ export = () => {
       const testMidPoint1 = new Vector3(721, 444, 123)
       const size = new Vector3(3, 4, 5)
       const rotation = new Vector3(0, 0, 0)
-      const { startPoint, endPoint } =
+      const { startpoint, endpoint } =
         getMeshStartpointEndpointFromMidpointSize(testMidPoint1, size, rotation)
       expect(
         getMeshMidpointSizeFromStartpointEndpoint(
-          startPoint,
-          endPoint,
+          startpoint,
+          endpoint,
           rotation,
         ),
       ).to.be.equal({ midpoint: testMidPoint1, size })
 
       const size2 = new Vector3(6, 7, 8)
-      const { startPoint: startPoint2, endPoint: endPoint2 } =
+      const { startpoint: startpoint2, endpoint: endpoint2 } =
         getMeshStartpointEndpointFromMidpointSize(
           testMidPoint1,
           size2,
@@ -69,8 +69,8 @@ export = () => {
         )
       expect(
         getMeshMidpointSizeFromStartpointEndpoint(
-          startPoint2,
-          endPoint2,
+          startpoint2,
+          endpoint2,
           rotation,
         ),
       ).to.be.equal({ midpoint: testMidPoint1, size: size2 })

@@ -76,7 +76,8 @@ export class PlaceBlockToolComponent
         } else if (
           mouse.Target &&
           mouse.Target.Parent &&
-          mouse.Target.Parent === placedBlocksFolder
+          mouse.Target.Parent.Parent &&
+          mouse.Target.Parent.Parent === placedBlocksFolder
         ) {
           const mouseSurface = mouse.TargetSurface
           if (mouseSurface === Enum.NormalId.Left)
