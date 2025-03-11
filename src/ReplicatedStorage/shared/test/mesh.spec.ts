@@ -2,24 +2,24 @@
 
 import { expect } from '@rbxts/expect'
 import { padEnd } from '@rbxts/string-utils'
-import { base58ColumnValues } from 'ReplicatedStorage/shared/utils/base58'
 import {
   coordinateEncodingLength,
+  decodeMeshData,
   decodeMeshMidPoint,
+  encodeMeshData,
   encodeMeshMidPoint,
   getMeshMidpointSizeFromStartpointEndpoint,
   getMeshStartpointEndpointFromMidpointSize,
+  maxCoordinateValue,
 } from 'ReplicatedStorage/shared/utils/mesh'
 
 export = () => {
   describe('mesh', () => {
     it('should serialize midpoints', () => {
-      const maxEncodedCoordinate =
-        base58ColumnValues[coordinateEncodingLength] - 1
       const maxMidPoint = new Vector3(
-        maxEncodedCoordinate,
-        maxEncodedCoordinate,
-        maxEncodedCoordinate,
+        maxCoordinateValue,
+        maxCoordinateValue,
+        maxCoordinateValue,
       )
       const maxEncodedMidPoint = padEnd('', coordinateEncodingLength * 3, 'z')
       expect(encodeMeshMidPoint(maxMidPoint)).to.be.equal(maxEncodedMidPoint)
@@ -74,6 +74,18 @@ export = () => {
           rotation,
         ),
       ).to.be.equal({ midpoint: testMidPoint1, size: size2 })
+    })
+
+    it('should serialize mesh data', () => {
+      const defaultBlock = {
+        blockId: 1,
+        width: 1,
+        length: 1,
+        height: 1,
+        rotation: new Vector3(0, 0, 0),
+      }
+      expect(encodeMeshData(defaultBlock)).to.be.equal('2_')
+      expect(decodeMeshData('2_')).to.be.equal(defaultBlock)
     })
   })
 }

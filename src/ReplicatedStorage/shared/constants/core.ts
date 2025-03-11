@@ -9,6 +9,11 @@ export const IS_CANARY = $NODE_ENV === 'canary'
 export const IS_STUDIO = RunService.IsStudio()
 export const IS_EDIT = IS_STUDIO && !RunService.IsRunning()
 
+export const PROFILESTORE_USER_TEMPLATE = '%d_Data'
+export const PROFILESTORE_NAME = RunService.IsStudio()
+  ? 'Testing'
+  : 'Production'
+
 export const START_PLACE_ID = IS_PROD ? 72252931528624 : 72252931528624
 
 export const USER_DEVICE = Device.GetPlatformType()
@@ -22,6 +27,23 @@ export const CURRENCY_NAME: {
 } = {
   Credits: 'Credits' as const,
 }
+
+export const CURRENCY_NAMES: CurrencyName[] = Object.keys(CURRENCY_NAME)
+
+export const PLOT_LOCATION: {
+  [name in PlotLocation]: PlotLocation
+} = {
+  Earth: 'Earth' as const,
+}
+
+export const PLACE_PLOT_LOCATION = (() => {
+  switch (game.PlaceId) {
+    case START_PLACE_ID:
+      return PLOT_LOCATION.Earth
+    default:
+      return PLOT_LOCATION.Earth
+  }
+})()
 
 export type InventoryItemName = keyof typeof inventoryConstants
 

@@ -10,34 +10,54 @@ import {
   encodeMeshMidPoint,
   getCFrameFromMeshMidpoint,
   gridSpacing,
+  MeshMap,
+  validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { Functions } from 'ServerScriptService/network'
-import { PlayerService } from 'ServerScriptService/services/PlayerService'
+
+export interface PlayerSandbox {
+  location: PlotLocation
+  mesh: Record<string, MeshMap>
+  workspace: PlayerSpace
+}
 
 @Service()
 export class PlaceBlockService implements OnStart {
-  constructor(
-    private playerService: PlayerService,
-    protected readonly logger: Logger,
-  ) {}
+  playerSandbox: Record<string, PlayerSandbox> = {}
+
+  constructor(protected readonly logger: Logger) {}
 
   onStart() {
     Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) =>
       this.handlePlaceBlock(player, itemName, midpoint, rotation),
     )
     Functions.breakBlock.setCallback((player, target) => {
-      const playerSpace = this.playerService.getPlayerSpace(player)
-      if (!typeIs(target, 'Instance') || !target.IsA('Part')) return
+      const playerSandbox = this.getPlayerSandbox(player)
+      if (!playerSandbox || !typeIs(target, 'Instance') || !target.IsA('Part'))
+        return
       const clonedSoundBlock = new Instance('Part')
       clonedSoundBlock.Size = new Vector3(3, 3, 3)
       clonedSoundBlock.CFrame = target.CFrame
       const clonedSound = Workspace.Audio.BlockBroken.Clone()
       clonedSound.Ended.Connect(() => clonedSoundBlock.Destroy())
       clonedSound.Parent = clonedSoundBlock
-      clonedSoundBlock.Parent = playerSpace.PlaceBlockPreview
+      clonedSoundBlock.Parent = playerSandbox.workspace.PlaceBlockPreview
       clonedSound.Play()
       target.Destroy()
     })
+  }
+
+  getPlayerSandbox(player: Player) {
+    return this.playerSandbox[`${player.UserId}`]
+  }
+
+  loadPlayerSandbox(player: Player, playerSandbox?: PlayerSandbox) {
+    const key = `${player.UserId}`
+    if (!playerSandbox) {
+      delete this.playerSandbox[key]
+      return
+    }
+    this.playerSandbox[key] = playerSandbox
   }
 
   handlePlaceBlock(
@@ -46,6 +66,19 @@ export class PlaceBlockService implements OnStart {
     midpoint: Vector3,
     rotation: Vector3,
   ) {
+    const playerSandbox = this.getPlayerSandbox(player)
+    if (!playerSandbox) {
+      this.logger.Warn(
+        `PlaceBlockService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
+      )
+      return
+    }
+    if (!validMeshMidpoint(midpoint)) {
+      this.logger.Warn(
+        `PlaceBlockService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
+      )
+      return
+    }
     const item = INVENTORY[itemName]
     if (!item) {
       this.logger.Error(
@@ -62,7 +95,6 @@ export class PlaceBlockService implements OnStart {
       return
     }
 
-    const playerSpace = this.playerService.getPlayerSpace(player)
     const clonedModel = templateModel.Clone()
     const bounding = new Instance('Part')
     bounding.Name = 'Bounding'
@@ -80,7 +112,7 @@ export class PlaceBlockService implements OnStart {
         midpoint,
         new Vector3(item.width, item.height, item.length),
         rotation,
-        playerSpace.Plot.Baseplate,
+        playerSandbox.workspace.Plot.Baseplate,
       ),
     )
 
@@ -106,7 +138,7 @@ export class PlaceBlockService implements OnStart {
     const clonedSound = Workspace.Audio.BlockPlaced.Clone()
     clonedSound.Parent = clonedModel
     clonedModel.Name = encodedMidpoint
-    clonedModel.Parent = playerSpace.PlacedBlocks
+    clonedModel.Parent = playerSandbox.workspace.PlacedBlocks
     clonedSound.Play()
   }
 }

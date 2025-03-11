@@ -3,12 +3,14 @@ import { OnStart } from '@flamework/core'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
 import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
+import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 import {
   getCFrameFromMeshMidpoint,
   getMeshMidpointFromWorldPosition,
   gridSpacing,
   MeshMidpoint,
   MeshRotation,
+  validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
@@ -121,17 +123,27 @@ export class PlaceBlockToolComponent
           return
         }
         if (this.midpoint) {
+          if (!validMeshMidpoint(this.midpoint)) {
+            this.clear()
+            return
+          }
           if (this.item !== item) {
             this.item = item
             this.preview?.Destroy()
             this.preview = undefined
           }
-          this.preview =
-            this.preview ||
-            ReplicatedStorage.Items?.FindFirstChild<Model>(
-              item.name,
-            )?.Clone() ||
-            ReplicatedStorage.Common.PlaceBlockPreview.Clone()
+          if (!this.preview) {
+            this.preview =
+              ReplicatedStorage.Items?.FindFirstChild<Model>(
+                item.name,
+              )?.Clone() || ReplicatedStorage.Common.PlaceBlockPreview.Clone()
+            findDescendentsWhichAre<BasePart>(this.preview, 'BasePart').forEach(
+              (part) => {
+                part.CanCollide = false
+                part.Transparency = 0.5
+              },
+            )
+          }
           this.preview.PivotTo(
             getCFrameFromMeshMidpoint(
               this.midpoint,
@@ -140,7 +152,7 @@ export class PlaceBlockToolComponent
               baseplate,
             ),
           )
-          this.preview.Parent = previewBlockFolder
+          if (!this.preview.Parent) this.preview.Parent = previewBlockFolder
         }
       })
     })

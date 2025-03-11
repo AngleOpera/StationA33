@@ -5,6 +5,10 @@ import { Events } from 'ServerScriptService/network'
 export function broadcasterMiddleware(): ProducerMiddleware {
   const broadcaster = createBroadcaster({
     producers: slices,
+    beforeDispatch: (player, action) => {
+      // print('beforeDispatch', player.UserId, action.arguments[0])
+      return action
+    },
     dispatch: (player, actions) => {
       Events.dispatch(player, actions)
     },

@@ -118,6 +118,13 @@ export function weldParts(parts: BasePart[], rootPart?: BasePart) {
   })
 }
 
+export function weldTool(tool: Tool) {
+  const handle = tool.FindFirstChild<BasePart>('Handle')
+  if (!handle) return tool
+  weldParts(findDescendentsWhichAre<BasePart>(handle, 'BasePart'), handle)
+  return tool
+}
+
 export function weldAssemblage(instance: Instance) {
   const parts = findDescendentsWhichAre<BasePart>(instance, 'BasePart', {
     includeSelf: true,

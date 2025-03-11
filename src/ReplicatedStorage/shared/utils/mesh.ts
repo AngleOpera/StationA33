@@ -1,5 +1,6 @@
 import Object from '@rbxts/object-utils'
 import {
+  base58ColumnValues,
   decodeBase58Array,
   encodeBase58Array,
 } from 'ReplicatedStorage/shared/utils/base58'
@@ -24,6 +25,19 @@ export interface MeshData {
 
 export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
 export const coordinateEncodingLength = 2
+export const maxCoordinateValue =
+  base58ColumnValues[coordinateEncodingLength] - 1
+
+export function validMeshMidpoint(midpoint: Vector3): boolean {
+  return (
+    midpoint.X >= 0 &&
+    midpoint.Y >= 0 &&
+    midpoint.Z >= 0 &&
+    midpoint.X <= maxCoordinateValue &&
+    midpoint.Y <= maxCoordinateValue &&
+    midpoint.Z <= maxCoordinateValue
+  )
+}
 
 export function encodeMeshMidPoint(
   midpoint: MeshMidpoint,
@@ -35,10 +49,16 @@ export function encodeMeshMidPoint(
 }
 
 export function encodeMeshData(data: MeshData): EncodedMeshData {
-  return encodeBase58Array(
-    [data.blockId, data.width, data.length, data.height, data.rotation.Y],
-    coordinateEncodingLength,
-  )
+  const needRotation = data.rotation.Y !== 0
+  const needHeight = data.height > 1 || needRotation
+  const needLength = data.length > 1 || needHeight
+  const needWidth = data.width > 1 || needLength
+  const components = [data.blockId]
+  if (needWidth) components.push(data.width)
+  if (needLength) components.push(data.length)
+  if (needWidth) components.push(data.height)
+  if (needRotation) components.push(data.rotation.Y)
+  return encodeBase58Array(components, coordinateEncodingLength)
 }
 
 export function decodeMeshMidPoint(encoded: EncodedMeshMidpoint): MeshMidpoint {
@@ -84,7 +104,9 @@ export function getMeshMidpointFromWorldPosition(
   position: Vector3,
   baseplate: BasePart,
 ): MeshMidpoint {
-  const baseplateCorner = getPartLowerCorner(baseplate)
+  const baseplateCorner = getPartLowerCorner(baseplate).add(
+    new Vector3(0, baseplate.Size.Y / 2, 0),
+  )
   return position.sub(baseplateCorner).div(gridSpacing).Floor()
 }
 
@@ -136,7 +158,7 @@ export function getCFrameFromMeshMidpoint(
       midpoint.X * gridSpacing -
         baseplate.Size.X / 2 +
         (size.X % 2 ? gridSpacing / 2 : 0),
-      midpoint.Y * gridSpacing -
+      midpoint.Y * gridSpacing +
         baseplate.Size.Y / 2 +
         (size.Y % 2 ? gridSpacing / 2 : 0),
       midpoint.Z * gridSpacing -
@@ -197,57 +219,62 @@ export function meshSetGetEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
   return !!map[midpoint]
 }
 
-function dosmt(olnew: MeshMap, key: string, dir: string) {
-  const o = decodeMeshMidPoint(key)
-  const info = meshMapGetEncoded(olnew, key)
-
-  const l = info?.length ?? 1
-  const w = info?.width ?? 1
-  const h = info?.height ?? 1
-  const involved = new Set([key])
+export function expandMesh(
+  map: MeshMap,
+  inputEncodedMidpoint: EncodedMeshMidpoint,
+  inputData: MeshData,
+  dir: 'x' | 'y' | 'z',
+) {
+  const included: MeshSet = { [inputEncodedMidpoint]: true }
+  const inputMidpoint = decodeMeshMidPoint(inputEncodedMidpoint)
   let currentdir = -1
-  let r = o
-
-  let { startpoint: s, endpoint: e } =
+  let { startpoint: sp, endpoint: ep } =
     getMeshStartpointEndpointFromMidpointSize(
-      o,
-      new Vector3(info?.width, info?.height, info?.length),
-      info?.rotation ?? new Vector3(0, 0, 0),
+      inputMidpoint,
+      new Vector3(inputData.width, inputData.height, inputData.length),
+      inputData.rotation,
     )
 
-  for (;;) {
-    const goback = currentdir === -1
+  for (let current = inputMidpoint; ; ) {
     if (dir === 'x') {
-      r = new Vector3(r.X + (goback ? -l : l), r.Y, r.Z)
-    } else if (dir === 'z') {
-      r = new Vector3(r.X, r.Y, r.Z + (goback ? -w : w))
+      current = new Vector3(
+        current.X + (currentdir === -1 ? -inputData.width : inputData.width),
+        current.Y,
+        current.Z,
+      )
     } else if (dir === 'y') {
-      r = new Vector3(r.X, r.Y + (goback ? -h : h), r.Z)
+      current = new Vector3(
+        current.X,
+        current.Y + (currentdir === -1 ? -inputData.height : inputData.height),
+        current.Z,
+      )
+    } else if (dir === 'z') {
+      current = new Vector3(
+        current.X,
+        current.Y,
+        current.Z + (currentdir === -1 ? -inputData.length : inputData.length),
+      )
     }
-
-    const c = meshMapGet(olnew, r)
+    const data = meshMapGet(map, current)
     if (
-      c &&
-      c.width === w &&
-      c.length === l &&
-      c.height === h &&
-      c.blockId === info?.blockId
+      data &&
+      data.width === inputData.width &&
+      data.length === inputData.length &&
+      data.height === inputData.height &&
+      data.blockId === inputData.blockId
     ) {
       const { startpoint, endpoint } =
         getMeshStartpointEndpointFromMidpointSize(
-          r,
-          new Vector3(c.width, c.height, c.length),
-          c.rotation,
+          current,
+          new Vector3(data.width, data.height, data.length),
+          data.rotation,
         )
-      if (currentdir === -1) {
-        s = startpoint
-      } else {
-        e = endpoint
-      }
-      involved.add(encodeMeshMidPoint(r))
+      if (currentdir === -1) sp = startpoint
+      else ep = endpoint
+      meshSetAdd(included, current)
     } else if (currentdir === -1) {
       currentdir = 1
-      r = o
+      current = inputMidpoint
       continue
     } else {
       break
@@ -255,82 +282,78 @@ function dosmt(olnew: MeshMap, key: string, dir: string) {
   }
 
   const { midpoint, size } = getMeshMidpointSizeFromStartpointEndpoint(
-    s,
-    e,
-    info?.rotation ?? new Vector3(0, 0, 0),
+    sp,
+    ep,
+    inputData.rotation,
   )
   return {
-    involved,
-    midpoint,
     data: {
-      blockId: info?.blockId ?? 1,
+      blockId: inputData.blockId,
       width: size.X,
       length: size.Z,
       height: size.Y,
-      rotation: info?.rotation ?? new Vector3(0, 0, 0),
+      rotation: inputData.rotation,
     },
+    included,
+    midpoint,
   }
 }
 
-function combineDimension(olnew: MeshMap, dir: string) {
-  const cc: MeshMap = {}
-  for (const key of Object.keys(olnew)) {
-    if (!olnew[key]) continue
-    const { involved, midpoint, data } = dosmt(olnew, key, dir)
-    meshMapAdd(cc, midpoint, data)
-    for (const v of Object.keys(involved)) {
-      delete olnew[v]
-    }
-    return cc
+function expandMeshes(map: MeshMap, dir: 'x' | 'y' | 'z') {
+  const out: MeshMap = {}
+  for (const [key, value] of Object.entries(map)) {
+    const { data, included, midpoint } = expandMesh(
+      map,
+      key,
+      decodeMeshData(value),
+      dir,
+    )
+    meshMapAdd(out, midpoint, data)
+    for (const v of Object.keys(included)) delete map[v]
   }
+  return out
 }
 
 export function runGreedyMeshing(parent: Instance, baseplate: BasePart) {
-  const D3: MeshMap = {}
-  const checked: MeshSet = {}
-  const mynew: MeshMap = {}
-
-  const rand = parent.GetChildren<BasePart>()[0].Position
-  let sp: Vector3 | undefined = rand
-  let ep = rand
-  let current = sp
-
-  const ss = sp
+  const seen: MeshSet = {}
+  const input: MeshMap = {}
+  const inputMidpoint = getMeshMidpointFromWorldPosition(
+    parent.GetChildren<BasePart>()[0].Position,
+    baseplate,
+  )
   let last: Vector3 | undefined
+  let sp: Vector3 | undefined = inputMidpoint
+  let ep = inputMidpoint
+  let current = inputMidpoint
 
   for (const v of parent.GetChildren<Model>()) {
     const world = v.GetPivot()
     const midpoint = getMeshMidpointFromWorldPosition(world.Position, baseplate)
     const data = getMeshDataFromModel(v)
-    meshMapAdd(D3, midpoint, data)
+    meshMapAdd(input, midpoint, data)
     sp = sp.Min(midpoint)
     ep = ep.Max(midpoint)
   }
 
+  const out: MeshMap = {}
   while (current.Z <= ep.Z) {
     while (current.X <= ep.X) {
       while (current.Y <= ep.Y) {
         const currentEncodedMidpoint = encodeMeshMidPoint(current)
-        const currentData = meshMapGetEncoded(D3, currentEncodedMidpoint)
-        const currentChecked = meshSetGetEncoded(
-          checked,
-          currentEncodedMidpoint,
-        )
-        const lastData = meshMapGet(D3, last)
-
+        const currentData = meshMapGetEncoded(input, currentEncodedMidpoint)
+        const currentSeen = meshSetGetEncoded(seen, currentEncodedMidpoint)
+        const lastData = meshMapGet(input, last)
         if (
           lastData &&
           currentData &&
-          currentChecked &&
+          currentSeen &&
           currentData !== lastData
         ) {
-          if (!meshMapGet(D3, last)) {
-            sp = current
-          }
-          meshSetAddEncoded(checked, currentEncodedMidpoint)
+          if (!meshMapGet(input, last)) sp = current
+          meshSetAddEncoded(seen, currentEncodedMidpoint)
         } else if (
           (!currentData || (lastData && lastData !== currentData)) &&
-          meshMapGet(D3, sp) &&
+          meshMapGet(input, sp) &&
           sp &&
           last
         ) {
@@ -339,7 +362,7 @@ export function runGreedyMeshing(parent: Instance, baseplate: BasePart) {
             last,
             lastData?.rotation ?? new Vector3(0, 0, 0),
           )
-          meshMapAdd(mynew, midpoint, {
+          meshMapAdd(out, midpoint, {
             ...lastData,
             blockId: lastData?.blockId ?? 1,
             width: size.X,
@@ -347,22 +370,17 @@ export function runGreedyMeshing(parent: Instance, baseplate: BasePart) {
             height: size.Y,
             rotation: lastData?.rotation ?? new Vector3(0, 0, 0),
           })
-
-          if (lastData && currentData && lastData === currentData) {
-            sp = current
-          } else {
-            sp = undefined
-          }
+          if (lastData && currentData && lastData === currentData) sp = current
+          else sp = undefined
         }
         last = current
         current = new Vector3(current.X, current.Y + 1, current.Z)
       }
-      current = new Vector3(current.X + 1, ss.Y, current.Z)
+      current = new Vector3(current.X + 1, inputMidpoint.Y, current.Z)
     }
     last = new Vector3(last?.X, last?.Y, current.Z)
-    current = new Vector3(ss.X, current.Y, current.Z + 1)
+    current = new Vector3(inputMidpoint.X, current.Y, current.Z + 1)
   }
 
-  combineDimension(mynew, 'x')
-  combineDimension(mynew, 'z')
+  return expandMeshes(expandMeshes(out, 'x'), 'z')
 }

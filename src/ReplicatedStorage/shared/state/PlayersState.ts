@@ -5,7 +5,6 @@ import {
   InventoryItemName,
   PLOT_NAME,
 } from 'ReplicatedStorage/shared/constants/core'
-import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
 
 export enum GamePass {
   CoolGun = '1',
@@ -40,7 +39,6 @@ export interface PlayerData {
   readonly credits: number
   readonly inventory: Partial<Record<InventoryItemName, number>>
   readonly settings: PlayerSettings
-  readonly placement: Record<PlotLocation, MeshMap>
   readonly gamePasses: Partial<PlayerGamePasses>
   readonly products: Partial<PlayerProducts>
   readonly receiptHistory: string[]
@@ -69,9 +67,6 @@ export const defaultPlayerSettings: PlayerSettings = {
 export const defaultPlayerData: PlayerData = {
   credits: 0,
   inventory: {},
-  placement: {
-    Earth: {},
-  },
   settings: defaultPlayerSettings,
   gamePasses: {},
   products: {},
@@ -95,7 +90,6 @@ const initialState: Players = {}
 export const getPlayerData = (state: PlayerState): PlayerData => ({
   credits: state.credits,
   inventory: state.inventory,
-  placement: state.placement,
   settings: state.settings,
   gamePasses: state.gamePasses,
   products: state.products,
@@ -162,7 +156,7 @@ export const playersSlice = createProducer(initialState, {
     [getPlayerKey(userID)]: undefined,
   }),
 
-  transactPlayerCurrency: (
+  updatePlayerCurrency: (
     state,
     userID: number,
     currency: CurrencyName,
