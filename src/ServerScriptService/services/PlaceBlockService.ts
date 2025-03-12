@@ -3,6 +3,7 @@ import { Logger } from '@rbxts/log'
 import Object from '@rbxts/object-utils'
 import { ReplicatedStorage, Workspace } from '@rbxts/services'
 import {
+  BLOCK_ATTRIBUTE,
   INVENTORY,
   INVENTORY_ID,
   InventoryItemDescription,
@@ -16,6 +17,7 @@ import {
   gridSpacing,
   MeshMap,
   meshMapAddEncoded,
+  meshMapRemoveEncoded,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { Functions } from 'ServerScriptService/network'
@@ -36,20 +38,9 @@ export class PlaceBlockService implements OnStart {
     Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) =>
       this.handlePlaceBlock(player, itemName, midpoint, rotation),
     )
-    Functions.breakBlock.setCallback((player, target) => {
-      const playerSandbox = this.getPlayerSandbox(player)
-      if (!playerSandbox || !typeIs(target, 'Instance') || !target.IsA('Part'))
-        return
-      const clonedSoundBlock = new Instance('Part')
-      clonedSoundBlock.Size = new Vector3(3, 3, 3)
-      clonedSoundBlock.CFrame = target.CFrame
-      const clonedSound = Workspace.Audio.BlockBroken.Clone()
-      clonedSound.Ended.Connect(() => clonedSoundBlock.Destroy())
-      clonedSound.Parent = clonedSoundBlock
-      clonedSoundBlock.Parent = playerSandbox.workspace.PlaceBlockPreview
-      clonedSound.Play()
-      target.Destroy()
-    })
+    Functions.breakBlock.setCallback((player, midpoint) =>
+      this.handleBreakBlock(player, midpoint),
+    )
   }
 
   getPlayerSandbox(player: Player) {
@@ -123,6 +114,47 @@ export class PlaceBlockService implements OnStart {
     clonedSound.Play()
   }
 
+  handleBreakBlock(player: Player, midpoint: Vector3) {
+    const playerSandbox = this.getPlayerSandbox(player)
+    if (!playerSandbox) {
+      this.logger.Warn(
+        `PlaceBlockService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
+      )
+      return
+    }
+    if (!validMeshMidpoint(midpoint)) {
+      this.logger.Warn(
+        `PlaceBlockService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
+      )
+      return
+    }
+    const encodedMidpoint = encodeMeshMidpoint(midpoint)
+    const target =
+      playerSandbox.workspace.PlacedBlocks.FindFirstChild<Model>(
+        encodedMidpoint,
+      )
+    if (!target) {
+      this.logger.Warn(
+        `PlaceBlockService.handleBreakBlock: Block ${encodedMidpoint} not found`,
+      )
+      return
+    }
+    meshMapRemoveEncoded(
+      playerSandbox.mesh[playerSandbox.location],
+      encodedMidpoint,
+    )
+
+    const clonedSoundBlock = new Instance('Part')
+    clonedSoundBlock.Size = new Vector3(3, 3, 3)
+    clonedSoundBlock.PivotTo(target.GetPivot())
+    const clonedSound = Workspace.Audio.BlockBroken.Clone()
+    clonedSound.Ended.Connect(() => clonedSoundBlock.Destroy())
+    clonedSound.Parent = clonedSoundBlock
+    clonedSoundBlock.Parent = playerSandbox.workspace.PlaceBlockPreview
+    clonedSound.Play()
+    target.Destroy()
+  }
+
   cloneBlock(
     playerSandbox: PlayerSandbox,
     item: InventoryItemDescription,
@@ -169,6 +201,7 @@ export class PlaceBlockService implements OnStart {
       return undefined
     }
 
+    clonedModel.SetAttribute(BLOCK_ATTRIBUTE.BlockId, item.blockId)
     return clonedModel
   }
 }

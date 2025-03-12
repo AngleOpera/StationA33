@@ -1,4 +1,5 @@
 import Object from '@rbxts/object-utils'
+import { BLOCK_ATTRIBUTE } from 'ReplicatedStorage/shared/constants/core'
 import {
   base58ColumnValues,
   decodeBase58Array,
@@ -90,9 +91,10 @@ export function getPartLowerCorner(part: BasePart): Vector3 {
 }
 
 export function getMeshDataFromModel(model: Model): MeshData {
+  const blockId = model.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
   const size = model.PrimaryPart?.Size
   return {
-    blockId: 1,
+    blockId: blockId && typeIs(blockId, 'number') ? blockId : 1,
     width: size ? math.floor(size.X / gridSpacing) : 1,
     length: size ? math.floor(size.Z / gridSpacing) : 1,
     height: size ? math.floor(size.Y / gridSpacing) : 1,
@@ -199,6 +201,13 @@ export function meshMapGetEncoded(
 ): MeshData | undefined {
   const encoded = map[midpoint]
   return encoded !== undefined ? decodeMeshData(encoded) : undefined
+}
+
+export function meshMapRemoveEncoded(
+  map: MeshMap,
+  midpoint: EncodedMeshMidpoint,
+): boolean {
+  return delete map[midpoint]
 }
 
 export function meshSetAdd(map: MeshSet, midpoint: MeshMidpoint): void {

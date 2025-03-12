@@ -104,11 +104,13 @@ export class PlayerService implements OnInit {
     const playerSelector = selectPlayerState(player.UserId)
     const playerState = playerSelector(state)
     if (!playerState) throw 'PlayerState not found'
+    this.logger.Info(`Player state loaded`, playerState)
 
     this.cleanupPlayerSpace(player)
     const playerSpace = this.createPlayerSpace(player, playerState)
     player.RespawnLocation = playerSpace.Plot.SpawnLocation
 
+    this.logger.Info('loaded mesh data', profile.Data.mesh)
     this.placeBlockService.loadPlayerSandbox(player, {
       location: PLACE_PLOT_LOCATION,
       mesh: profile.Data.mesh,

@@ -73,6 +73,13 @@ export function findDescendentsWithTag(
   return descendents
 }
 
+export function grandParentIs(
+  instance: Instance | undefined,
+  grandParent: Instance | undefined,
+) {
+  return instance && instance.Parent && instance.Parent.Parent === grandParent
+}
+
 export function setHidden(ancestor: Instance, hidden: boolean) {
   for (const descendent of ancestor.GetDescendants()) {
     if (descendent.IsA('BasePart')) {

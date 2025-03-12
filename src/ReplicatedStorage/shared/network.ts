@@ -16,7 +16,7 @@ interface ServerFunctions {
     midpoint: Vector3,
     rotation: Vector3,
   ) => void
-  breakBlock: (x: Model) => void
+  breakBlock: (midpoint: Vector3) => void
 }
 
 interface ClientEvents {

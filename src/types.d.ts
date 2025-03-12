@@ -1,3 +1,17 @@
+interface BlockAttributes {
+  BlockId: number
+}
+
+interface BlockBase {
+  Bounding?: BasePart
+}
+
+interface Block extends Model, BlockBase {}
+
+interface BlockPreview extends BasePart {
+  SelectionBox: SelectionBox
+}
+
 interface BreakBlockTool extends Tool {}
 
 interface BlockBreakerAttributes {
@@ -80,10 +94,8 @@ interface ReplicatedStorage extends Instance {
   Common: Folder & {
     Beam: Beam
     LootBox: Model
-    PlaceBlockBlock: Part
-    PlaceBlockPreview: Part & {
-      SelectionBox: SelectionBox
-    }
+    BreakBlockPreview: BlockPreview
+    PlaceBlockPreview: BlockPreview
     Plot: Plot
   }
   Items: Folder &

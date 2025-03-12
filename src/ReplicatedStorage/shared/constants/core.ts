@@ -4,6 +4,20 @@ import { Players, RunService } from '@rbxts/services'
 import { $NODE_ENV } from 'rbxts-transform-env'
 import inventoryConstants from 'ReplicatedStorage/shared/constants/inventory.json'
 
+export type InventoryItemName = keyof typeof inventoryConstants
+
+export interface InventoryItemDescription {
+  blockId: number
+  name: InventoryItemName
+  description: string
+  price: number
+  image: string
+  width: number
+  height: number
+  length: number
+  stackable?: boolean
+}
+
 export const IS_PROD = $NODE_ENV === 'production'
 export const IS_CANARY = $NODE_ENV === 'canary'
 export const IS_STUDIO = RunService.IsStudio()
@@ -21,6 +35,14 @@ export const USER_ID = Players.LocalPlayer ? Players.LocalPlayer.UserId : 0
 export const USER_NAME = Players.LocalPlayer
   ? Players.LocalPlayer.Name
   : '(server)'
+
+export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {
+  BlockId: 'BlockId',
+}
+
+export const BLOCK_CHILD: Record<keyof BlockBase, string> = {
+  Bounding: 'Bounding',
+}
 
 export const CURRENCY_NAME: {
   [name in CurrencyName]: CurrencyName
@@ -44,20 +66,6 @@ export const PLACE_PLOT_LOCATION = (() => {
       return PLOT_LOCATION.Earth
   }
 })()
-
-export type InventoryItemName = keyof typeof inventoryConstants
-
-export interface InventoryItemDescription {
-  blockId: number
-  name: InventoryItemName
-  description: string
-  price: number
-  image: string
-  width: number
-  height: number
-  length: number
-  stackable?: boolean
-}
 
 export const INVENTORY = inventoryConstants as Record<
   InventoryItemName,

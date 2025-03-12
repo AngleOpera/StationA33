@@ -3,7 +3,10 @@ import { OnStart } from '@flamework/core'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
 import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
-import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
+import {
+  findDescendentsWhichAre,
+  grandParentIs,
+} from 'ReplicatedStorage/shared/utils/instance'
 import {
   getCFrameFromMeshMidpoint,
   getMeshMidpointFromWorldPosition,
@@ -77,9 +80,7 @@ export class PlaceBlockToolComponent
           )
         } else if (
           mouse.Target &&
-          mouse.Target.Parent &&
-          mouse.Target.Parent.Parent &&
-          mouse.Target.Parent.Parent === placedBlocksFolder
+          grandParentIs(mouse.Target, placedBlocksFolder)
         ) {
           const mouseSurface = mouse.TargetSurface
           if (mouseSurface === Enum.NormalId.Left)

@@ -6,31 +6,7 @@
 
 ## Dev Setup
 
-Install [Roblox Studio](https://www.roblox.com/create), [Visual Studio Code](https://code.visualstudio.com/download), Git and git clone this repo.
-
-### Studio Plugins
-
-- Install [Hoarcekat](https://create.roblox.com/marketplace/asset/4621580428/Hoarcekat) plugin
-- Install [BTreesV5](https://create.roblox.com/store/asset/4702098000/BTreesV5) plugin
-- Install [rbxts-object-to-tree](https://www.roblox.com/library/3379119778/rbxts-object-to-tree) plugin
-
-### Install VSCode Extensions
-
-- [Rojo](https://marketplace.visualstudio.com/items?itemName=evaera.vscode-rojo)
-- [Rojo UI](https://marketplace.visualstudio.com/items?itemName=muoshuu.rojo-ui)
-- [Rojo Explorer](https://marketplace.visualstudio.com/items?itemName=Meqolo.rojo-explorer)
-- [Selene](https://marketplace.visualstudio.com/items?itemName=Kampfkarren.selene-vscode)
-- [StyLua](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.stylua)
-- [Roblox LSP](https://marketplace.visualstudio.com/items?itemName=Nightrains.robloxlsp)
-- [Roblox TS](https://marketplace.visualstudio.com/items?itemName=Roblox-TS.vscode-roblox-ts)
-- [TestEZ Companion](https://marketplace.visualstudio.com/items?itemName=tacheometrist.testez-companion)
-
-### Install Rojo and TestEZ Companion
-
-- VSCode > Command+Shift+P > `TestEZ Companion: Install Studio plugin`
-- VSCode > Command+Shift+P > `Rojo: Open Menu`
-
-Use the menu to install Rojo and Roblox Studio Plugin. Then `Click to start live syncing`.
+Install [Roblox Studio](https://www.roblox.com/create), [Visual Studio Code](https://code.visualstudio.com/download), Git, and `git clone` this repo.
 
 ### Install Aftman
 
@@ -57,3 +33,32 @@ npm install --global yarn
 ```console
 yarn && yarn build && yarn start
 ```
+
+### Install Studio Plugins
+
+- Install [Archimedes](https://create.roblox.com/store/asset/144938633/Archimedes-v319) plugin
+- Install [BTreesV5](https://create.roblox.com/store/asset/4702098000/BTreesV5) plugin
+- Install [Hoarcekat](https://create.roblox.com/marketplace/asset/4621580428/Hoarcekat) plugin
+- Install [Part to Terrain](https://create.roblox.com/store/asset/261634767/Part-to-Terrain) plugin
+- Install [rbxts-object-to-tree](https://www.roblox.com/library/3379119778/rbxts-object-to-tree) plugin
+- Install [ResizeAlign](https://create.roblox.com/store/asset/165534573/Stravant-ResizeAlign) plugin
+- Install [ThreeDText-2](https://create.roblox.com/store/asset/2273628561/ThreeDText-2) plugin
+
+### Install VSCode Extensions
+
+- [Rojo](https://marketplace.visualstudio.com/items?itemName=evaera.vscode-rojo)
+- [Rojo UI](https://marketplace.visualstudio.com/items?itemName=muoshuu.rojo-ui)
+- [Rojo Explorer](https://marketplace.visualstudio.com/items?itemName=Meqolo.rojo-explorer)
+- [Selene](https://marketplace.visualstudio.com/items?itemName=Kampfkarren.selene-vscode)
+- [StyLua](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.stylua)
+- [Roblox LSP](https://marketplace.visualstudio.com/items?itemName=Nightrains.robloxlsp)
+- [Roblox TS](https://marketplace.visualstudio.com/items?itemName=Roblox-TS.vscode-roblox-ts)
+- [TestEZ Companion](https://marketplace.visualstudio.com/items?itemName=tacheometrist.testez-companion)
+
+### Install Rojo and TestEZ Companion
+
+- VSCode > Command+Shift+P > `TestEZ Companion: Install Studio plugin`
+- VSCode > Command+Shift+P > `Rojo: Open Menu`
+
+Use the menu to install Rojo and Roblox Studio Plugin. Then `Click to start live syncing`.
+
