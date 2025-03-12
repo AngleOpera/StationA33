@@ -2,10 +2,17 @@ import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
-import { BLOCK_CHILD, TYPE } from 'ReplicatedStorage/shared/constants/core'
+import { t } from '@rbxts/t'
+import {
+  BLOCK_ATTRIBUTE,
+  INVENTORY_ID,
+  TYPE,
+} from 'ReplicatedStorage/shared/constants/core'
 import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
-import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
-import { decodeMeshMidpoint } from 'ReplicatedStorage/shared/utils/mesh'
+import {
+  decodeMeshMidpoint,
+  gridSpacing,
+} from 'ReplicatedStorage/shared/utils/mesh'
 import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
 
@@ -16,7 +23,7 @@ export class BreakBlockToolComponent
 {
   connection: RBXScriptConnection | undefined
   target: Model | undefined
-  preview: BasePart | Model | undefined
+  preview: BlockPreview | undefined
   invoking = false
 
   constructor(
@@ -60,16 +67,18 @@ export class BreakBlockToolComponent
         }
 
         this.target = targetParent
+        const targetBlockId = this.target.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
+        const targetItem = typeIs(targetBlockId, 'number')
+          ? INVENTORY_ID[targetBlockId]
+          : undefined
         if (!this.preview) {
-          this.preview =
-            this.target
-              .FindFirstChild<BasePart>(BLOCK_CHILD.Bounding)
-              ?.Clone() || ReplicatedStorage.Common.BreakBlockPreview.Clone()
-          findDescendentsWhichAre<BasePart>(this.preview, 'BasePart').forEach(
-            (part) => {
-              part.CanCollide = false
-              part.Transparency = 0.5
-            },
+          this.preview = ReplicatedStorage.Common.BreakBlockPreview.Clone()
+        }
+        if (targetItem) {
+          this.preview.Size = new Vector3(
+            targetItem.width * gridSpacing,
+            targetItem.height * gridSpacing,
+            targetItem.length * gridSpacing,
           )
         }
         this.preview.PivotTo(targetParent.GetPivot())

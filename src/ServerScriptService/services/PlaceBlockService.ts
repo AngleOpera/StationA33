@@ -145,7 +145,8 @@ export class PlaceBlockService implements OnStart {
     )
 
     const clonedSoundBlock = new Instance('Part')
-    clonedSoundBlock.Size = new Vector3(3, 3, 3)
+    clonedSoundBlock.Size = new Vector3(gridSpacing, gridSpacing, gridSpacing)
+    clonedSoundBlock.Transparency = 1
     clonedSoundBlock.PivotTo(target.GetPivot())
     const clonedSound = Workspace.Audio.BlockBroken.Clone()
     clonedSound.Ended.Connect(() => clonedSoundBlock.Destroy())

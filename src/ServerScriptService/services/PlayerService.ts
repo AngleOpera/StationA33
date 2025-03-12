@@ -94,7 +94,7 @@ export class PlayerService implements OnInit {
       return
     }
 
-    this.logger.Info(`Player loaded ${player.UserId}`)
+    this.logger.Info(`Player loaded ${player.UserId}`, profile.Data.data)
     this.profiles.set(player.UserId, profile)
     const state = store.loadPlayerData(
       player.UserId,
