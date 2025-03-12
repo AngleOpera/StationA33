@@ -2,12 +2,7 @@ import { OnInit, Service } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import ProfileService from '@rbxts/profileservice'
 import { Profile } from '@rbxts/profileservice/globals'
-import {
-  HttpService,
-  Players,
-  ReplicatedStorage,
-  Workspace,
-} from '@rbxts/services'
+import { Players, ReplicatedStorage, Workspace } from '@rbxts/services'
 import {
   PLACE_PLOT_LOCATION,
   PROFILESTORE_NAME,
@@ -75,12 +70,12 @@ export class PlayerService implements OnInit {
         player,
         profile.Data.data,
       )
-    this.logger.Info(`Player left ${player.UserId}`)
+    this.logger.Info(`Player ${player.UserId} left`)
     profile?.Release()
   }
 
   private handlePlayerJoined(player: Player) {
-    this.logger.Info(`Player joined ${player.UserId}`)
+    this.logger.Info(`Player ${player.UserId} joined`)
     const profileKey = PROFILESTORE_USER_TEMPLATE.format(player.UserId)
     const profile = this.profileStore.LoadProfileAsync(profileKey)
     if (!profile) return player.Kick()
@@ -100,7 +95,8 @@ export class PlayerService implements OnInit {
     }
 
     this.logger.Info(
-      `Player loaded ${player.UserId}: ${HttpService.JSONEncode(profile.Data.data)}`,
+      `Loaded player ${player.UserId} data {@ProfileData}`,
+      profile.Data.data,
     )
     this.profiles.set(player.UserId, profile)
     const state = store.loadPlayerData(
@@ -118,7 +114,8 @@ export class PlayerService implements OnInit {
     player.RespawnLocation = playerSpace.Plot.SpawnLocation
 
     this.logger.Info(
-      `loaded mesh data: ${HttpService.JSONEncode(profile.Data.mesh)}`,
+      `Loaded player ${player.UserId} data {@MeshData}`,
+      profile.Data.mesh,
     )
     this.placeBlockService.loadPlayerSandbox(player, {
       location: PLACE_PLOT_LOCATION,

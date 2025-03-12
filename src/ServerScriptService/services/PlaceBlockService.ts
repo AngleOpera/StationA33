@@ -54,10 +54,14 @@ export class PlaceBlockService implements OnStart {
       return
     }
     this.playerSandbox[key] = playerSandbox
+    this.loadPlayerSandboxMesh(player, playerSandbox)
+  }
+
+  loadPlayerSandboxMesh(player: Player, playerSandbox: PlayerSandbox) {
+    const placedBlocksFolder = playerSandbox.workspace.PlacedBlocks
     for (const [encodedMidpoint, encodedData] of Object.entries(
       playerSandbox.mesh[playerSandbox.location],
     )) {
-      this.logger.Info(`Loading block ${encodedMidpoint} ${encodedData}`)
       const midpoint = decodeMeshMidpoint(encodedMidpoint)
       const data = decodeMeshData(encodedData)
       const item = INVENTORY_ID[data.blockId]
@@ -67,8 +71,24 @@ export class PlaceBlockService implements OnStart {
         )
         continue
       }
-      this.cloneBlock(playerSandbox, item, midpoint, data.rotation)
+      const model = this.cloneBlock(
+        playerSandbox,
+        item,
+        midpoint,
+        data.rotation,
+      )
+      if (model) {
+        model.Name = encodedMidpoint
+        model.Parent = placedBlocksFolder
+      }
     }
+  }
+
+  reloadPlayerSandbox(player: Player) {
+    const playerSandbox = this.getPlayerSandbox(player)
+    if (!playerSandbox) return
+    playerSandbox.workspace.PlacedBlocks.ClearAllChildren()
+    this.loadPlayerSandboxMesh(player, playerSandbox)
   }
 
   handlePlaceBlock(

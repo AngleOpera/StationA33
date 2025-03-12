@@ -6,7 +6,6 @@ import { ServerScriptService } from '@rbxts/services'
 @Service()
 export class AdminService implements OnStart {
   operators = new Map<number, string>([
-    [game.CreatorId, 'GreenAppers'],
     [4771762595, 'AngleOpera'],
     [5263028589, 'CreeperFace77777'],
   ])
@@ -24,6 +23,14 @@ export class AdminService implements OnStart {
     })
   }
 
+  isAdmin(userId: number) {
+    return (
+      !game.CreatorId ||
+      (game.PrivateServerId && game.PrivateServerOwnerId === userId) ||
+      this.operators.has(userId)
+    )
+  }
+
   opUser(target: Player, source: Player) {
     this.operators.set(target.UserId, target.Name)
     this.logger.Info(`${source.Name} has op'd ${target.Name}`)
@@ -32,13 +39,5 @@ export class AdminService implements OnStart {
   deopUser(target: Player, source: Player) {
     this.operators.delete(target.UserId)
     this.logger.Info(`${source.Name} has deop'd ${target.Name}`)
-  }
-
-  isAdmin(userId: number) {
-    return (
-      !game.CreatorId ||
-      (game.PrivateServerId && game.PrivateServerOwnerId === userId) ||
-      this.operators.has(userId)
-    )
   }
 }
