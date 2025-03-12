@@ -2,7 +2,12 @@ import { OnInit, Service } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import ProfileService from '@rbxts/profileservice'
 import { Profile } from '@rbxts/profileservice/globals'
-import { Players, ReplicatedStorage, Workspace } from '@rbxts/services'
+import {
+  HttpService,
+  Players,
+  ReplicatedStorage,
+  Workspace,
+} from '@rbxts/services'
 import {
   PLACE_PLOT_LOCATION,
   PROFILESTORE_NAME,
@@ -94,7 +99,9 @@ export class PlayerService implements OnInit {
       return
     }
 
-    this.logger.Info(`Player loaded ${player.UserId}`, profile.Data.data)
+    this.logger.Info(
+      `Player loaded ${player.UserId}: ${HttpService.JSONEncode(profile.Data.data)}`,
+    )
     this.profiles.set(player.UserId, profile)
     const state = store.loadPlayerData(
       player.UserId,
@@ -110,7 +117,9 @@ export class PlayerService implements OnInit {
     const playerSpace = this.createPlayerSpace(player, playerState)
     player.RespawnLocation = playerSpace.Plot.SpawnLocation
 
-    this.logger.Info('loaded mesh data', profile.Data.mesh)
+    this.logger.Info(
+      `loaded mesh data: ${HttpService.JSONEncode(profile.Data.mesh)}`,
+    )
     this.placeBlockService.loadPlayerSandbox(player, {
       location: PLACE_PLOT_LOCATION,
       mesh: profile.Data.mesh,

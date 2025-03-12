@@ -2,7 +2,6 @@ import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
-import { t } from '@rbxts/t'
 import {
   BLOCK_ATTRIBUTE,
   INVENTORY_ID,

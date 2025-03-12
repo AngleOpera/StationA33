@@ -57,6 +57,7 @@ export class PlaceBlockService implements OnStart {
     for (const [encodedMidpoint, encodedData] of Object.entries(
       playerSandbox.mesh[playerSandbox.location],
     )) {
+      this.logger.Info(`Loading block ${encodedMidpoint} ${encodedData}`)
       const midpoint = decodeMeshMidpoint(encodedMidpoint)
       const data = decodeMeshData(encodedData)
       const item = INVENTORY_ID[data.blockId]
