@@ -196,6 +196,7 @@ export class PlaceBlockService implements OnStart {
     const clonedModel = templateModel.Clone()
     const bounding = new Instance('Part')
     bounding.Name = 'Bounding'
+    bounding.Position = clonedModel.GetPivot().Position
     bounding.Size = new Vector3(
       gridSpacing * item.width,
       gridSpacing * item.height,

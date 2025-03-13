@@ -1,11 +1,12 @@
 import { Controller, OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
-import { UserInputService } from '@rbxts/services'
+import { Players, UserInputService } from '@rbxts/services'
 import {
   INVENTORY,
   InventoryItemDescription,
   InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/instance'
 import { PlaceBlockToolComponent } from 'StarterPlayer/StarterPlayerScripts/components/PlaceBlockTool'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
 import { store } from 'StarterPlayer/StarterPlayerScripts/store'
@@ -20,24 +21,6 @@ export class PlaceBlockController implements OnStart {
     protected playerController: PlayerController,
     protected logger: Logger,
   ) {}
-
-  getItem() {
-    return this.item
-  }
-
-  setItem(name: InventoryItemName) {
-    const item = INVENTORY[name]
-    if (!item) {
-      this.logger.Error(`PlaceBlockController.setItem: Item ${name} unknown`)
-      return
-    }
-    this.item = item
-  }
-
-  equipPlaceBlockTool(tool?: PlaceBlockToolComponent) {
-    this.activePlaceBlockTool = tool
-    if (tool) store.setMenuPage(MENU_PAGE.Inventory)
-  }
 
   onStart() {
     UserInputService.InputBegan.Connect((inputObject, processed) => {
@@ -60,6 +43,30 @@ export class PlaceBlockController implements OnStart {
         }
       }
     })
+  }
+
+  handlePlaceBlockToolEquipped(tool?: PlaceBlockToolComponent) {
+    this.activePlaceBlockTool = tool
+    if (tool) store.setMenuPage(MENU_PAGE.Inventory)
+    else store.closeMenuPage(MENU_PAGE.Inventory)
+  }
+
+  unequipPlaceBlockTool() {
+    if (this.activePlaceBlockTool)
+      getCharacter(Players.LocalPlayer)?.Humanoid?.UnequipTools()
+  }
+
+  getItem() {
+    return this.item
+  }
+
+  setItem(name: InventoryItemName) {
+    const item = INVENTORY[name]
+    if (!item) {
+      this.logger.Error(`PlaceBlockController.setItem: Item ${name} unknown`)
+      return
+    }
+    this.item = item
   }
 
   getFolders() {

@@ -84,10 +84,22 @@ export function InventoryMenu() {
     },
     [controller],
   )
+  const closeMenu = useCallback(() => {
+    controller.placeBlockController?.unequipPlaceBlockTool()
+    store.setMenuOpen(false)
+  }, [])
 
   return (
     opened && (
       <screengui>
+        <frame Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1}>
+          <imagebutton
+            BackgroundTransparency={1}
+            Transparency={1}
+            Size={new UDim2(1, 0, 1, 0)}
+            Event={{ Activated: closeMenu }}
+          />
+        </frame>
         <frame
           Position={new UDim2(0.05, 0, 0.01, 0)}
           Size={new UDim2(0.9, 0, 0.9, 0)}

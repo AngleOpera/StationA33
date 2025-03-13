@@ -36,9 +36,15 @@ export interface PlayerProfile {
   mesh: Record<PlotLocation, MeshMap>
 }
 
+export interface PlayerContext {
+  player: Player
+  cleanup: Array<() => void>
+  profile?: Profile<PlayerProfile>
+}
+
 @Service()
 export class PlayerService implements OnInit {
-  private profiles = new Map<number, Profile<PlayerProfile>>()
+  private players = new Map<number, PlayerContext>()
   private profileStore = ProfileService.GetProfileStore(PROFILESTORE_NAME, {
     data: defaultPlayerData,
     mesh: { [PLACE_PLOT_LOCATION]: {} },
@@ -58,94 +64,110 @@ export class PlayerService implements OnInit {
     )
   }
 
-  public getProfile(player: Player) {
-    return this.profiles.get(player.UserId)
-  }
-
   private handlePlayerLeft(player: Player) {
-    this.cleanupPlayerSpace(player)
-    const profile = this.profiles.get(player.UserId)
-    if (profile?.Data)
+    this.logger.Info(`Player ${player.UserId} left`)
+    const playerContext = this.players.get(player.UserId)
+    if (playerContext?.profile?.Data)
       this.leaderboardService.updateDatastoresForPlayer(
         player,
-        profile.Data.data,
+        playerContext.profile.Data.data,
       )
-    this.logger.Info(`Player ${player.UserId} left`)
-    profile?.Release()
+    const cleanup = playerContext?.cleanup
+    if (cleanup) {
+      playerContext.cleanup = []
+      for (const unsubscribe of cleanup) unsubscribe()
+    }
+    playerContext?.profile?.Release()
+    store.closePlayerData(player.UserId)
+    this.players.delete(player.UserId)
+    this.placeBlockService.loadPlayerSandbox(player, undefined)
+    this.cleanupPlayerSpace(player)
   }
 
   private handlePlayerJoined(player: Player) {
     this.logger.Info(`Player ${player.UserId} joined`)
-    const profileKey = PROFILESTORE_USER_TEMPLATE.format(player.UserId)
-    const profile = this.profileStore.LoadProfileAsync(profileKey)
-    if (!profile) return player.Kick()
 
-    profile.AddUserId(player.UserId)
-    profile.Reconcile()
-    profile.ListenToRelease(() => {
-      this.logger.Info(`Releasing profile ${player.UserId}`)
-      this.profiles.delete(player.UserId)
-      store.closePlayerData(player.UserId)
+    // Setup player context
+    const playerContext: PlayerContext = {
+      player,
+      cleanup: [],
+    }
+    this.players.set(player.UserId, playerContext)
+
+    // Assign plot before the player spawns
+    const playerSelector = selectPlayerState(player.UserId)
+    let state = store.loadPlayerData(player.UserId, player.Name)
+    let playerState = playerSelector(state)
+    if (!playerState) {
       player.Kick()
-    })
-
-    if (!player.IsDescendantOf(Players)) {
-      profile.Release()
       return
     }
-
-    this.logger.Info(
-      `Loaded player ${player.UserId} data {@ProfileData}`,
-      profile.Data.data,
-    )
-    this.profiles.set(player.UserId, profile)
-    const state = store.loadPlayerData(
-      player.UserId,
-      player.Name,
-      profile.Data.data,
-    )
-    const playerSelector = selectPlayerState(player.UserId)
-    const playerState = playerSelector(state)
-    if (!playerState) throw 'PlayerState not found'
-    this.logger.Info(`Player state loaded`, playerState)
-
     this.cleanupPlayerSpace(player)
     const playerSpace = this.createPlayerSpace(player, playerState)
     player.RespawnLocation = playerSpace.Plot.SpawnLocation
 
+    // Load player data from ProfileService
+    const profileKey = PROFILESTORE_USER_TEMPLATE.format(player.UserId)
+    if (playerContext.profile) playerContext.profile.Release()
+    playerContext.profile = this.profileStore.LoadProfileAsync(profileKey)
+    if (!playerContext.profile) {
+      player.Kick()
+      return
+    }
+    playerContext.profile.AddUserId(player.UserId)
+    playerContext.profile.Reconcile()
+    playerContext.profile.ListenToRelease(() => {
+      this.logger.Info(`Releasing profile ${player.UserId}`)
+      player.Kick()
+    })
+    if (!player.IsDescendantOf(Players)) {
+      player.Kick()
+      return
+    }
+    this.logger.Info(
+      `Loaded player ${player.UserId} data {@ProfileData}`,
+      playerContext.profile.Data.data,
+    )
+
+    // Update reflex state with player data
+    state = store.loadPlayerData(
+      player.UserId,
+      player.Name,
+      playerContext.profile.Data.data,
+    )
+    playerState = playerSelector(state)
+    if (!playerState) throw 'PlayerState not found'
+    this.logger.Info(`Player state loaded`, playerState)
+
+    // Load player's placed blocks
     this.logger.Info(
       `Loaded player ${player.UserId} data {@MeshData}`,
-      profile.Data.mesh,
+      playerContext.profile.Data.mesh,
     )
     this.placeBlockService.loadPlayerSandbox(player, {
       location: PLACE_PLOT_LOCATION,
-      mesh: profile.Data.mesh,
+      mesh: playerContext.profile.Data.mesh,
       workspace: playerSpace,
     })
+
+    // Load player's game passes
     Promise.try(() =>
       this.transactionService.reloadPlayerGamePasses(player, player.UserId),
     )
 
-    const unsubscribePlayerData = store.subscribe(
-      playerSelector,
-      (playerState, previousPlayerState) => {
-        if (!playerState) return
-        profile.Data.data = getPlayerData(playerState)
+    // Update ProfileService with changes to player state
+    playerContext.cleanup.push(
+      store.subscribe(playerSelector, (playerState, previousPlayerState) => {
+        if (!playerState || !playerContext.profile) return
+        playerContext.profile.Data.data = getPlayerData(playerState)
         if (!previousPlayerState) return
-      },
+      }),
     )
 
-    const unsubscribeLeaderstats = this.createLeaderstatsHandler(
-      player,
-      playerState,
+    // Update leaderstats with changes to player state
+    playerContext.cleanup.push(
+      this.createLeaderstatsHandler(player, playerState),
     )
-
-    Players.PlayerRemoving.Connect((playerLeft) => {
-      if (playerLeft.UserId !== player.UserId) return
-      unsubscribePlayerData()
-      unsubscribeLeaderstats()
-      this.placeBlockService.loadPlayerSandbox(player, undefined)
-    })
 
     this.createRespawnHandler(player)
   }
@@ -180,7 +202,7 @@ export class PlayerService implements OnInit {
   }
 
   public handleRespawn(player: Player, characterModel: PlayerCharacter) {
-    const humanoid = (characterModel as PlayerCharacter).Humanoid
+    const humanoid = characterModel.Humanoid
     humanoid.Died.Connect(() =>
       this.handleKO(humanoid, player.UserId, player.Name),
     )

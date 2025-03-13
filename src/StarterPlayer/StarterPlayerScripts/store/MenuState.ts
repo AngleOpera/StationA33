@@ -56,6 +56,11 @@ export const menuSlice = createProducer(initialState, {
     },
   }),
 
+  closeMenuPage: (state, page: MenuPage) => ({
+    ...state,
+    open: state.page === page ? false : state.open,
+  }),
+
   setMenuOpen: (state, open: boolean) => ({
     ...state,
     open,

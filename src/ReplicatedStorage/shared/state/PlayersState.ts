@@ -119,23 +119,31 @@ export const getPlayerState = (state: Players, userID: number) =>
   state[getPlayerKey(userID)]
 
 export const playersSlice = createProducer(initialState, {
-  loadPlayerData: (state, userID: number, name: string, data: PlayerData) => {
+  loadPlayerData: (
+    state,
+    userID: number,
+    playerName: string,
+    data?: PlayerData,
+  ) => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
 
-    const seenPlotNames = new Set<PlotName>()
-    for (const [key, player] of Object.entries(state)) {
-      if (key === playerKey) continue
-      seenPlotNames.add(player.plotName)
-    }
-    let plotName: PlotName | undefined
-    for (const name of PLOT_NAME) {
-      if (!seenPlotNames.has(name)) {
-        plotName = name
-        break
+    let plotName = playerState?.plotName
+    if (!plotName) {
+      const seenPlotNames = new Set<PlotName>()
+      for (const [key, player] of Object.entries(state)) {
+        if (key === playerKey) continue
+        seenPlotNames.add(player.plotName)
       }
+
+      for (const name of PLOT_NAME) {
+        if (!seenPlotNames.has(name)) {
+          plotName = name
+          break
+        }
+      }
+      if (!plotName) throw 'No available plot'
     }
-    if (!plotName) throw 'No available plot'
 
     return {
       ...state,
@@ -144,7 +152,7 @@ export const playersSlice = createProducer(initialState, {
         ...playerState,
         ...data,
         ...defaultPlayerDetail,
-        name,
+        name: playerName,
         plotName,
         sessionStartTime: os.time(),
       },

@@ -4,7 +4,7 @@
       <string name="Name">Grass</string>
       <BinaryString name="AttributesSerialize"></BinaryString>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-      <bool name="DefinesCapabilities">false</bool>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <token name="LevelOfDetail">0</token>
       <CoordinateFrame name="ModelMeshCFrame">
         <X>0</X>
@@ -29,14 +29,16 @@
       <token name="ModelStreamingMode">0</token>
       <bool name="NeedsPivotMigration">false</bool>
       <Ref name="PrimaryPart">null</Ref>
+      <bool name="DefinesCapabilities">false</bool>
       <float name="ScaleFactor">1</float>
       <int64 name="SourceAssetId">3297467179</int64>
       <BinaryString name="Tags"></BinaryString>
+      <UniqueId name="UniqueId">7478daa70a66e49d07e2bb4000000391</UniqueId>
       <OptionalCoordinateFrame name="WorldPivotData">
         <CFrame>
-          <X>7.295334</X>
-          <Y>4.333239</Y>
-          <Z>174.90158</Z>
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
           <R00>1</R00>
           <R01>0</R01>
           <R02>0</R02>
@@ -64,9 +66,9 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>7.295334</X>
-          <Y>3.791668</Y>
-          <Z>174.90158</Z>
+          <X>0</X>
+          <Y>-0.2500062</Y>
+          <Z>0</Z>
           <R00>1</R00>
           <R01>0</R01>
           <R02>0</R02>
@@ -88,13 +90,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -128,6 +130,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>3</X>
@@ -141,6 +144,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">7478daa70a66e49d07e2bb4000000392</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -163,9 +167,9 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>7.295334</X>
-          <Y>5.291668</Y>
-          <Z>174.90158</Z>
+          <X>0</X>
+          <Y>1.2499938</Y>
+          <Z>0</Z>
           <R00>1</R00>
           <R01>0</R01>
           <R02>0</R02>
@@ -187,13 +191,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -227,6 +231,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>3</X>
@@ -240,6 +245,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">7478daa70a66e49d07e2bb4000000393</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>

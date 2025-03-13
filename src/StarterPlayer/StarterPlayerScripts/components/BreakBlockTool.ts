@@ -8,6 +8,7 @@ import {
   TYPE,
 } from 'ReplicatedStorage/shared/constants/core'
 import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshMidpoint,
   gridSpacing,
@@ -43,8 +44,8 @@ export class BreakBlockToolComponent
       this.placeBlockController.getFolders()
 
     this.instance.Equipped.Connect(() => {
-      const character = Players.LocalPlayer.Character as PlayerCharacter
-      const humanoid = character.Humanoid
+      const character = getCharacter(Players.LocalPlayer)
+      const humanoid = character?.Humanoid
 
       const mouse = Players.LocalPlayer.GetMouse()
       mouse.TargetFilter = previewBlockFolder
@@ -53,8 +54,9 @@ export class BreakBlockToolComponent
         if (!mouse.Target) return
         const targetParent = mouse.Target?.Parent
         if (
-          !character.PrimaryPart ||
+          !humanoid ||
           humanoid.Health <= 0 ||
+          !character?.PrimaryPart ||
           !targetParent ||
           !targetParent.IsA(TYPE.Model) ||
           targetParent.Parent !== placedBlocksFolder ||

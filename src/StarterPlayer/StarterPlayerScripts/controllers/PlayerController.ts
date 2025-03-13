@@ -9,6 +9,7 @@ import {
   Workspace,
 } from '@rbxts/services'
 import { USER_DEVICE } from 'ReplicatedStorage/shared/constants/core'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/instance'
 import { ShooterComponent } from 'StarterPlayer/StarterPlayerScripts/components/Shooter'
 
 @Controller({})
@@ -53,7 +54,7 @@ export class PlayerController implements OnStart {
       if (inputObject.KeyCode === Enum.KeyCode.LeftShift) {
         // Sprint started
         const player = Players.LocalPlayer
-        const humanoid = (player.Character as PlayerCharacter)?.Humanoid
+        const humanoid = getCharacter(player)?.Humanoid
         const camera = game.Workspace.CurrentCamera
         if (humanoid && humanoid.WalkSpeed > 0)
           humanoid.WalkSpeed = this.runSpeed
@@ -71,7 +72,7 @@ export class PlayerController implements OnStart {
       if (inputObject.KeyCode === Enum.KeyCode.LeftShift) {
         // Sprint stopped
         const player = Players.LocalPlayer
-        const humanoid = (player.Character as PlayerCharacter)?.Humanoid
+        const humanoid = getCharacter(player)?.Humanoid
         const camera = game.Workspace.CurrentCamera
         if (humanoid && humanoid.WalkSpeed > 0)
           humanoid.WalkSpeed = this.walkSpeed

@@ -5,6 +5,7 @@ import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/cor
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
   findDescendentsWhichAre,
+  getCharacter,
   grandParentIs,
 } from 'ReplicatedStorage/shared/utils/instance'
 import {
@@ -49,10 +50,10 @@ export class PlaceBlockToolComponent
       this.placeBlockController.getFolders()
 
     this.instance.Equipped.Connect(() => {
-      this.placeBlockController.equipPlaceBlockTool(this)
+      this.placeBlockController.handlePlaceBlockToolEquipped(this)
 
-      const character = Players.LocalPlayer.Character as PlayerCharacter
-      const humanoid = character.Humanoid
+      const character = getCharacter(Players.LocalPlayer)
+      const humanoid = character?.Humanoid
 
       const mouse = Players.LocalPlayer.GetMouse()
       mouse.TargetFilter = previewBlockFolder
@@ -61,6 +62,7 @@ export class PlaceBlockToolComponent
         const item = this.placeBlockController.getItem()
         if (
           !item ||
+          !humanoid ||
           !character.PrimaryPart ||
           humanoid.Health <= 0 ||
           mouse.Hit.Position.sub(character.PrimaryPart.Position).Magnitude >
@@ -159,7 +161,7 @@ export class PlaceBlockToolComponent
     })
 
     this.instance.Unequipped.Connect(() => {
-      this.placeBlockController.equipPlaceBlockTool(undefined)
+      this.placeBlockController.handlePlaceBlockToolEquipped(undefined)
       this.connection?.Disconnect()
       this.connection = undefined
       this.midpoint = undefined
