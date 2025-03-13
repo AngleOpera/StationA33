@@ -18,6 +18,7 @@ import { MENU_PAGE } from 'StarterPlayer/StarterPlayerScripts/store/MenuState'
 
 export function InventoryItem(props: {
   name: InventoryItemName
+  rem: (size: number) => number
   cameraDepth?: number
   cameraFov?: number
   onClick: (name: InventoryItemName) => void
@@ -42,7 +43,7 @@ export function InventoryItem(props: {
     if (!model) return
     const pivot = model.GetPivot()
     camera.CFrame = CFrame.lookAt(
-      pivot.mul(new CFrame(-6, 6, -6)).Position,
+      pivot.mul(new CFrame(-3, 3, -3)).Position,
       pivot.Position,
     )
   }, [camera, model])
@@ -52,6 +53,8 @@ export function InventoryItem(props: {
       BackgroundTransparency={0.7}
       Event={{ Activated: () => props.onClick(props.name) }}
     >
+      <uicorner CornerRadius={new UDim(0.3)} />
+      <uistroke Color={palette.text} Thickness={1} />
       <viewportframe
         Size={new UDim2(1.0, 0, 1.0, 0)}
         ref={viewportRef}
@@ -61,13 +64,16 @@ export function InventoryItem(props: {
         <uicorner CornerRadius={new UDim(0.3)} />
         <textlabel
           Text={props.name}
+          TextSize={props.rem(2)}
           Font={Enum.Font.FredokaOne}
           Position={new UDim2(0.25, 0, 0.8, 0)}
           Size={new UDim2(0.5, 0, 0.2, 0)}
           TextColor3={palette.text}
           BackgroundTransparency={1}
           ZIndex={5}
-        />
+        >
+          <uistroke Color={palette.black} Thickness={1} />
+        </textlabel>
       </viewportframe>
     </imagebutton>
   )
@@ -133,7 +139,7 @@ export function InventoryMenu() {
             />
             <textlabel
               Text="Inventory"
-              TextSize={rem(5)}
+              TextSize={rem(2.5)}
               AutomaticSize="XY"
               BackgroundTransparency={1}
               FontFace={fonts.inter.regular}
@@ -153,10 +159,25 @@ export function InventoryMenu() {
               Selectable={false}
               Size={new UDim2(0.8, 0, 0.8, 0)}
             >
-              <uigridlayout CellSize={new UDim2(0.25, 0, 0.15, 0)} />
-              {INVENTORY_NAMES.map((name) => (
-                <InventoryItem key={name} name={name} onClick={selectItem} />
-              ))}
+              <frame Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1}>
+                <uipadding
+                  PaddingTop={new UDim(0.01, 0)}
+                  PaddingLeft={new UDim(0.02, 0)}
+                  PaddingRight={new UDim(0.02, 0)}
+                />
+                <uigridlayout
+                  CellPadding={new UDim2(0.02, 0, 0.015, 0)}
+                  CellSize={new UDim2(0.15, 0, 0.09, 0)}
+                />
+                {INVENTORY_NAMES.map((name) => (
+                  <InventoryItem
+                    key={name}
+                    name={name}
+                    rem={rem}
+                    onClick={selectItem}
+                  />
+                ))}
+              </frame>
             </scrollingframe>
           </frame>
         </frame>

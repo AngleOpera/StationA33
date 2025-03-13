@@ -10,8 +10,74 @@
     "length": 1,
     "stackable": true
   },
-  "Conveyor": {
+  "Stone": {
     "blockId": 2,
+    "name": "Stone",
+    "description": "Stone",
+    "price": 0,
+    "image": "rbxassetid://0",
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "stackable": true
+  },
+  "Planks": {
+    "blockId": 3,
+    "name": "Planks",
+    "description": "Planks",
+    "price": 0,
+    "image": "rbxassetid://0",
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "stackable": true
+  },
+  "Bricks": {
+    "blockId": 4,
+    "name": "Bricks",
+    "description": "Bricks",
+    "price": 0,
+    "image": "rbxassetid://0",
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "stackable": true
+  },
+  "Glass": {
+    "blockId": 5,
+    "name": "Glass",
+    "description": "Glass",
+    "price": 0,
+    "image": "rbxassetid://0",
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "stackable": true
+  },
+  "Ice": {
+    "blockId": 6,
+    "name": "Ice",
+    "description": "Ice",
+    "price": 0,
+    "image": "rbxassetid://0",
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "stackable": true
+  },
+  "Carpet": {
+    "blockId": 7,
+    "name": "Carpet",
+    "description": "Carpet",
+    "price": 0,
+    "image": "rbxassetid://0",
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "stackable": true
+  },
+  "Conveyor": {
+    "blockId": 8,
     "name": "Conveyor",
     "description": "Moves items from one place to another",
     "price": 100,
@@ -21,7 +87,7 @@
     "length": 1
   },
   "Sawmill": {
-    "blockId": 3,
+    "blockId": 9,
     "name": "Sawmill",
     "description": "Cuts logs into planks",
     "price": 400,
