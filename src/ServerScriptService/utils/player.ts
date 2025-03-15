@@ -36,6 +36,16 @@ export function takeDamage(
   humanoid.TakeDamage(damage)
 }
 
+export function isSameTeam(player1: Player, player2: Player) {
+  return (
+    player1 &&
+    player2 &&
+    !player1.Neutral &&
+    !player2.Neutral &&
+    player1.TeamColor === player2.TeamColor
+  )
+}
+
 export function forEveryPlayer(
   joinFunc: PlayerReceivingFunction,
   leaveFunc?: PlayerReceivingFunction,

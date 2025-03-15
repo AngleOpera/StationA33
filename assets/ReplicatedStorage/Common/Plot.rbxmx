@@ -80,9 +80,9 @@
           <R21>0</R21>
           <R22>1</R22>
         </CoordinateFrame>
-        <bool name="CanCollide">true</bool>
-        <bool name="CanQuery">true</bool>
-        <bool name="CanTouch">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CanTouch">false</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <bool name="CastShadow">true</bool>
         <string name="CollisionGroup">Default</string>
@@ -148,7 +148,7 @@
         <float name="TopParamB">0.5</float>
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
-        <float name="Transparency">0</float>
+        <float name="Transparency">1</float>
         <UniqueId name="UniqueId">0f4a47e465bc20ad07d7ba9400000386</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
@@ -156,31 +156,8 @@
           <Z>0</Z>
         </Vector3>
       </Properties>
-      <Item class="Decal" referent="2">
-        <Properties>
-          <string name="Name">Decal</string>
-          <BinaryString name="AttributesSerialize"></BinaryString>
-          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <Color3 name="Color3">
-            <R>1</R>
-            <G>1</G>
-            <B>1</B>
-          </Color3>
-          <token name="Face">1</token>
-          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-          <bool name="DefinesCapabilities">false</bool>
-          <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
-          <ContentId name="Texture">
-            <url>rbxasset://textures/SpawnLocation.png</url>
-          </ContentId>
-          <float name="Transparency">0</float>
-          <UniqueId name="UniqueId">0f4a47e465bc20ad07d7ba9400000387</UniqueId>
-          <int name="ZIndex">1</int>
-        </Properties>
-      </Item>
     </Item>
-    <Item class="Part" referent="3">
+    <Item class="Part" referent="2">
       <Properties>
         <string name="Name">Baseplate</string>
         <bool name="Anchored">true</bool>
@@ -280,7 +257,7 @@
           <Z>0</Z>
         </Vector3>
       </Properties>
-      <Item class="Texture" referent="4">
+      <Item class="Texture" referent="3">
         <Properties>
           <string name="Name">Texture</string>
           <BinaryString name="AttributesSerialize"></BinaryString>

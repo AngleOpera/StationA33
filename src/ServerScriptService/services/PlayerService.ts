@@ -209,6 +209,7 @@ export class PlayerService implements OnInit {
 
     const backpack = player?.FindFirstChild<Backpack>('Backpack')
     if (backpack) {
+      ReplicatedStorage.Tools.PickAxe.Clone().Parent = backpack
       weldTool(ReplicatedStorage.Tools.PlaceBlock.Clone()).Parent = backpack
       weldTool(ReplicatedStorage.Tools.BreakBlock.Clone()).Parent = backpack
     }

@@ -86,7 +86,7 @@ interface Plot extends Model {
   SpawnLocation: SpawnLocation
 }
 
-type PlotLocation = 'Earth'
+type PlotLocation = 'Acraos' | 'Apeace' | 'Earth'
 
 type PlotName = 'Plot1' | 'Plot2' | 'Plot3' | 'Plot4'
 
@@ -106,6 +106,9 @@ interface ReplicatedStorage extends Instance {
     OlReliable: Ship
   }
   Tools: Folder & {
+    PickAxe: Tool & {
+      Handle: BasePart
+    }
     BreakBlock: BreakBlockTool
     PlaceBlock: PlaceBlockTool
   }
@@ -146,6 +149,17 @@ interface Shooter extends Tool {
     GunFirePoint: Attachment
     ImpactParticle: ParticleEmitter
   }
+}
+
+interface Swinger extends Tool {
+  Handle: BasePart & {
+    Sheath?: Sound
+    Unsheath?: Sound
+  }
+}
+
+interface SwingerAttributes {
+  AnimationId?: number
 }
 
 interface Workspace extends Instance {

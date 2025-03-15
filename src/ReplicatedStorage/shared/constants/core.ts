@@ -55,15 +55,16 @@ export const CURRENCY_NAMES: CurrencyName[] = Object.keys(CURRENCY_NAME)
 export const PLOT_LOCATION: {
   [name in PlotLocation]: PlotLocation
 } = {
+  Acraos: 'Acraos' as const,
+  Apeace: 'Apeace' as const,
   Earth: 'Earth' as const,
 }
 
 export const PLACE_PLOT_LOCATION = (() => {
   switch (game.PlaceId) {
     case START_PLACE_ID:
-      return PLOT_LOCATION.Earth
     default:
-      return PLOT_LOCATION.Earth
+      return PLOT_LOCATION.Apeace
   }
 })()
 
