@@ -11,4 +11,5 @@ ScriptContext.Error.Connect((message, stack) => {
 Modding.registerDependency<Logger>((ctor) => Log.ForContext(ctor))
 Flamework.addPaths('src/ServerScriptService/components')
 Flamework.addPaths('src/ServerScriptService/services')
+Flamework.addPaths('src/ReplicatedStorage/shared/services')
 Flamework.ignite()

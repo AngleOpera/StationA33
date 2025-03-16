@@ -151,6 +151,13 @@ interface Shooter extends Tool {
   }
 }
 
+interface SpawnerAttributes {
+  MinDelay?: number
+  MaxDelay?: number
+  MaxTotal?: number
+  SpawnHeight?: number
+}
+
 interface Swinger extends Tool {
   Handle: BasePart & {
     Sheath?: Sound

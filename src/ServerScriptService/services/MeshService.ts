@@ -29,7 +29,7 @@ export interface PlayerSandbox {
 }
 
 @Service()
-export class PlaceBlockService implements OnStart {
+export class MeshService implements OnStart {
   playerSandbox: Record<string, PlayerSandbox> = {}
 
   constructor(protected readonly logger: Logger) {}
@@ -67,7 +67,7 @@ export class PlaceBlockService implements OnStart {
       const item = INVENTORY_ID[data.blockId]
       if (!item) {
         this.logger.Warn(
-          `PlaceBlockService.loadPlayerSandbox: Unknown item ${data.blockId}`,
+          `MeshService.loadPlayerSandbox: Unknown item ${data.blockId}`,
         )
         continue
       }
@@ -100,21 +100,19 @@ export class PlaceBlockService implements OnStart {
     const playerSandbox = this.getPlayerSandbox(player)
     if (!playerSandbox) {
       this.logger.Warn(
-        `PlaceBlockService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
+        `MeshService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
       )
       return
     }
     if (!validMeshMidpoint(midpoint)) {
       this.logger.Warn(
-        `PlaceBlockService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
+        `MeshService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
       )
       return
     }
     const item = INVENTORY[itemName]
     if (!item) {
-      this.logger.Error(
-        `PlaceBlockService.placeBlock: Item ${itemName} unknown`,
-      )
+      this.logger.Error(`MeshService.placeBlock: Item ${itemName} unknown`)
       return undefined
     }
 
@@ -139,13 +137,13 @@ export class PlaceBlockService implements OnStart {
     const playerSandbox = this.getPlayerSandbox(player)
     if (!playerSandbox) {
       this.logger.Warn(
-        `PlaceBlockService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
+        `MeshService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
       )
       return
     }
     if (!validMeshMidpoint(midpoint)) {
       this.logger.Warn(
-        `PlaceBlockService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
+        `MeshService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
       )
       return
     }
@@ -156,7 +154,7 @@ export class PlaceBlockService implements OnStart {
       )
     if (!target) {
       this.logger.Warn(
-        `PlaceBlockService.handleBreakBlock: Block ${encodedMidpoint} not found`,
+        `MeshService.handleBreakBlock: Block ${encodedMidpoint} not found`,
       )
       return
     }
@@ -187,9 +185,7 @@ export class PlaceBlockService implements OnStart {
       item.name,
     )
     if (!templateModel) {
-      this.logger.Error(
-        `PlaceBlockService.cloneBlock: Item ${item.name} not found`,
-      )
+      this.logger.Error(`MeshService.cloneBlock: Item ${item.name} not found`)
       return undefined
     }
 
@@ -218,7 +214,7 @@ export class PlaceBlockService implements OnStart {
     const touchingParts = bounding.GetTouchingParts()
     if (touchingParts.size() > 0) {
       this.logger.Warn(
-        `PlaceBlockService.cloneBlock: Item ${item.name} intersects with existing mesh`,
+        `MeshService.cloneBlock: Item ${item.name} intersects with existing mesh`,
       )
       clonedModel.Destroy()
       return undefined

@@ -6,4 +6,5 @@ Modding.registerDependency<Logger>((ctor) => Log.ForContext(ctor))
 
 Flamework.addPaths('src/StarterPlayer/StarterPlayerScripts/components')
 Flamework.addPaths('src/StarterPlayer/StarterPlayerScripts/controllers')
+Flamework.addPaths('src/ReplicatedStorage/shared/services')
 Flamework.ignite()

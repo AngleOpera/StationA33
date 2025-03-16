@@ -44,7 +44,7 @@
     "@rbxts/signal" "^1.0.3"
     "@rbxts/t" "^2.1.4"
 
-"@flamework/core@^1.2.3", "@flamework/core@^1.2.4":
+"@flamework/core@^1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@flamework/core/-/core-1.2.4.tgz#020fa6cf2e963f13b00fdd356da7e60aad373a33"
   integrity sha512-ND3RxRqDkX1diA7oTQI3Z7Dw1xQQP5wgWoK8X/ppav0KT/jcdqFx1Lwrn06nX2AYdvw1vUoZv834lc4xQUOgyA==
@@ -190,15 +190,6 @@
   dependencies:
     "@rbxts/compiler-types" "^1.0.0-types.0"
 
-"@rbxts/flamecs@^0.1.0-rc.11":
-  version "0.1.0-rc.11"
-  resolved "https://registry.yarnpkg.com/@rbxts/flamecs/-/flamecs-0.1.0-rc.11.tgz#126fb114bbe0811bd30af8619f88bfde620f7b8b"
-  integrity sha512-OJ77b2O3syUWkTHCFQS2a3ROLx7CmXtRJO77wuyI/aekiAb4yIbBS2UAHnrBY2ocXjFAh7TOAxBalY33uj22Nw==
-  dependencies:
-    "@flamework/core" "^1.2.3"
-    "@rbxts/jecs" "github:Ukendio/jecs"
-    rbxts-transformer-flamework "^1.2.3"
-
 "@rbxts/flipper@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@rbxts/flipper/-/flipper-2.0.1.tgz#25bd840441055da419c234a9d045309e40ac3ad2"
@@ -209,9 +200,10 @@
   resolved "https://registry.yarnpkg.com/@rbxts/janitor/-/janitor-1.15.4-ts.0.tgz#82370ab137ec524da10201cc6cd203a27a59c935"
   integrity sha512-xPDNoVWkkDd06JoJ35dC2059Rfzue/URxkkN5ND+eogkVel2e5tZB1WCHLlpbJMQiF4gsfg1RGFgFqHHp9wdzg==
 
-"@rbxts/jecs@github:Ukendio/jecs":
+"@rbxts/jecs@^0.5.5":
   version "0.5.5"
-  resolved "https://codeload.github.com/Ukendio/jecs/tar.gz/a703e2c3615a9eabfd1e3f0a6be9667041dbe7fe"
+  resolved "https://registry.yarnpkg.com/@rbxts/jecs/-/jecs-0.5.5.tgz#7411b5e42f7b3a27ea82c0121650fe5285505a7f"
+  integrity sha512-cpk70pT1KTl6KBx/YbyRUrjYRrXlIoL8+w98M95sTc4gD9moemGVe2wSBW+f9rM/iIXgempAsOK8Ag0RcBkH+Q==
 
 "@rbxts/lerp-functions@^1.0.2":
   version "1.0.2"
@@ -271,6 +263,11 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@rbxts/partcache/-/partcache-1.1.1.tgz#d73b219eb3c16080f6f389d2c4b58082652fcf6c"
   integrity sha512-EsLQeginnwXdxvLtqerGMQAa8XvOtAnPnW4T5SH6bSXsJjrLMyWXoyrSfNk5CjgFJn8v7rq0nYFsnCTmO18kiA==
+
+"@rbxts/planck@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@rbxts/planck/-/planck-0.2.5.tgz#8eccf0ce9087fef9c4c84e43838a75f554b5957b"
+  integrity sha512-3iKYHJYwPhigQhx4mwH3ary5SoLZjwAbwd4X0dkkViRig2487ZcERmz32lW3KM1iR8ApkdAV62jXstDYdUsPoA==
 
 "@rbxts/pretty-react-hooks@^0.4.2":
   version "0.4.2"

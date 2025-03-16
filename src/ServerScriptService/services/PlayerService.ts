@@ -23,7 +23,7 @@ import {
 import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
 import { Events } from 'ServerScriptService/network'
 import { LeaderboardService } from 'ServerScriptService/services/LeaderboardService'
-import { PlaceBlockService } from 'ServerScriptService/services/PlaceBlockService'
+import { MeshService } from 'ServerScriptService/services/MeshService'
 import { TransactionService } from 'ServerScriptService/services/TransactionService'
 import { store } from 'ServerScriptService/store'
 import {
@@ -33,7 +33,7 @@ import {
 
 export interface PlayerProfile {
   data: PlayerData
-  mesh: Record<PlotLocation, MeshMap>
+  mesh: Partial<Record<PlotLocation, MeshMap>>
 }
 
 export interface PlayerContext {
@@ -52,7 +52,7 @@ export class PlayerService implements OnInit {
 
   constructor(
     protected readonly logger: Logger,
-    protected readonly placeBlockService: PlaceBlockService,
+    protected readonly placeBlockService: MeshService,
     protected readonly leaderboardService: LeaderboardService,
     protected readonly transactionService: TransactionService,
   ) {}
