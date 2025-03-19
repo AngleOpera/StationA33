@@ -9,6 +9,7 @@ import {
   InventoryItemDescription,
   InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshData,
   decodeMeshMidpoint,
@@ -123,7 +124,11 @@ export class MeshService implements OnStart {
     meshMapAddEncoded(
       playerSandbox.mesh[playerSandbox.location],
       encodedMidpoint,
-      { ...item, rotation },
+      {
+        ...item,
+        rotation,
+        size: getItemVector3(item.size),
+      },
     )
 
     const clonedSound = Workspace.Audio.BlockPlaced.Clone()
@@ -191,13 +196,10 @@ export class MeshService implements OnStart {
 
     const clonedModel = templateModel.Clone()
     const bounding = new Instance('Part')
+    const size = getItemVector3(item.size)
     bounding.Name = 'Bounding'
     bounding.Position = clonedModel.GetPivot().Position
-    bounding.Size = new Vector3(
-      gridSpacing * item.width,
-      gridSpacing * item.height,
-      gridSpacing * item.length,
-    )
+    bounding.Size = size.mul(gridSpacing)
     bounding.Anchored = true
     bounding.CanCollide = false
     bounding.Transparency = 1.0
@@ -205,7 +207,7 @@ export class MeshService implements OnStart {
     clonedModel.PivotTo(
       getCFrameFromMeshMidpoint(
         midpoint,
-        new Vector3(item.width, item.height, item.length),
+        size,
         rotation,
         playerSandbox.workspace.Plot.Baseplate,
       ),

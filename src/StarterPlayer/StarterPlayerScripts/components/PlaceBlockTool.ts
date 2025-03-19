@@ -6,6 +6,7 @@ import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
   findDescendentsWhichAre,
   getCharacter,
+  getItemVector3,
   grandParentIs,
 } from 'ReplicatedStorage/shared/utils/instance'
 import {
@@ -150,7 +151,7 @@ export class PlaceBlockToolComponent
           this.preview.PivotTo(
             getCFrameFromMeshMidpoint(
               this.midpoint,
-              new Vector3(item.width, item.height, item.length),
+              getItemVector3(item.size),
               this.rotation,
               baseplate,
             ),

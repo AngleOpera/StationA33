@@ -3,6 +3,8 @@ import { CollectionService } from '@rbxts/services'
 export const getCharacter = (player: Player) =>
   player.Character as PlayerCharacter | undefined
 
+export const getItemVector3 = (v: ItemVector3) => new Vector3(v[0], v[1], v[2])
+
 export function createAnimation(name: string, id: number, parent: Instance) {
   const anim = new Instance('Animation')
   anim.Name = name

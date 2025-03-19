@@ -1,3 +1,7 @@
+export function roundVector3(v: Vector3) {
+  return new Vector3(math.round(v.X), math.round(v.Y), math.round(v.Z))
+}
+
 export function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t
 }

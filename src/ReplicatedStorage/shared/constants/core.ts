@@ -9,12 +9,13 @@ export type InventoryItemName = keyof typeof inventoryConstants
 export interface InventoryItemDescription {
   blockId: number
   name: InventoryItemName
-  description: string
-  price: number
-  image: string
-  width: number
-  height: number
-  length: number
+  size: ItemVector3
+  description?: string
+  image?: string
+  input?: ItemVector3[]
+  parent?: string
+  output?: ItemVector3[]
+  price?: number
   stackable?: boolean
 }
 
@@ -54,6 +55,10 @@ export const CURRENCY_NAME: {
 
 export const CURRENCY_NAMES: CurrencyName[] = Object.keys(CURRENCY_NAME)
 
+export const ENTITY_ATTRIBUTE: Record<keyof EntityAttributes, string> = {
+  EntityId: 'EntityId',
+}
+
 export const PLOT_LOCATION: {
   [name in PlotLocation]: PlotLocation
 } = {
@@ -75,7 +80,10 @@ export const INVENTORY = inventoryConstants as Record<
   InventoryItemDescription
 >
 
-export const INVENTORY_NAMES: InventoryItemName[] = Object.keys(INVENTORY)
+export const INVENTORY_NAMES: InventoryItemName[] = Object.values(INVENTORY)
+  .filter((x) => !x.parent)
+  .map((item) => item.name)
+
 export const INVENTORY_ID = Object.fromEntries(
   Object.values(INVENTORY).map((item) => [item.blockId, item]),
 )

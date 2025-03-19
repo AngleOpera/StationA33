@@ -8,7 +8,10 @@ import {
   TYPE,
 } from 'ReplicatedStorage/shared/constants/core'
 import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
-import { getCharacter } from 'ReplicatedStorage/shared/utils/instance'
+import {
+  getCharacter,
+  getItemVector3,
+} from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshMidpoint,
   gridSpacing,
@@ -76,11 +79,7 @@ export class BreakBlockToolComponent
           this.preview = ReplicatedStorage.Common.BreakBlockPreview.Clone()
         }
         if (targetItem) {
-          this.preview.Size = new Vector3(
-            targetItem.width * gridSpacing,
-            targetItem.height * gridSpacing,
-            targetItem.length * gridSpacing,
-          )
+          this.preview.Size = getItemVector3(targetItem.size).mul(gridSpacing)
         }
         this.preview.PivotTo(targetParent.GetPivot())
         if (!this.preview.Parent) this.preview.Parent = previewBlockFolder

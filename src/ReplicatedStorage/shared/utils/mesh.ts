@@ -5,6 +5,7 @@ import {
   decodeBase58Array,
   encodeBase58Array,
 } from 'ReplicatedStorage/shared/utils/base58'
+import { roundVector3 } from 'ReplicatedStorage/shared/utils/math'
 
 export type EncodedMeshMidpoint = string
 export type EncodedMeshData = string
@@ -18,9 +19,7 @@ export type MeshRotation = Vector3 & { readonly _mesh_rot?: unique symbol }
 
 export interface MeshData {
   readonly blockId: number
-  readonly width: number
-  readonly length: number
-  readonly height: number
+  readonly size: Vector3
   readonly rotation: Vector3
 }
 
@@ -51,13 +50,13 @@ export function encodeMeshMidpoint(
 
 export function encodeMeshData(data: MeshData): EncodedMeshData {
   const needRotation = data.rotation.Y !== 0
-  const needHeight = data.height > 1 || needRotation
-  const needLength = data.length > 1 || needHeight
-  const needWidth = data.width > 1 || needLength
+  const needHeight = data.size.Y > 1 || needRotation
+  const needLength = data.size.Z > 1 || needHeight
+  const needWidth = data.size.X > 1 || needLength
   const components = [data.blockId]
-  if (needWidth) components.push(data.width)
-  if (needLength) components.push(data.length)
-  if (needWidth) components.push(data.height)
+  if (needWidth) components.push(data.size.X)
+  if (needLength) components.push(data.size.Z)
+  if (needHeight) components.push(data.size.Y)
   if (needRotation) components.push(data.rotation.Y)
   return encodeBase58Array(components, coordinateEncodingLength)
 }
@@ -71,9 +70,7 @@ export function decodeMeshData(encoded: EncodedMeshData): MeshData {
   const decoded = decodeBase58Array(encoded, 5, coordinateEncodingLength)
   return {
     blockId: decoded[0],
-    width: decoded[1] || 1,
-    length: decoded[2] || 1,
-    height: decoded[3] || 1,
+    size: new Vector3(decoded[1] || 1, decoded[3] || 1, decoded[2] || 1),
     rotation: new Vector3(0, decoded[4] & 3, 0),
   }
 }
@@ -95,9 +92,11 @@ export function getMeshDataFromModel(model: Model): MeshData {
   const size = model.PrimaryPart?.Size
   return {
     blockId: blockId && typeIs(blockId, 'number') ? blockId : 1,
-    width: size ? math.floor(size.X / gridSpacing) : 1,
-    length: size ? math.floor(size.Z / gridSpacing) : 1,
-    height: size ? math.floor(size.Y / gridSpacing) : 1,
+    size: new Vector3(
+      size ? math.floor(size.X / gridSpacing) : 1,
+      size ? math.floor(size.Y / gridSpacing) : 1,
+      size ? math.floor(size.Z / gridSpacing) : 1,
+    ),
     rotation: new Vector3(0, 0, 0),
   }
 }
@@ -115,26 +114,37 @@ export function getMeshMidpointFromWorldPosition(
 export function getMeshMidpointSizeFromStartpointEndpoint(
   startpoint: MeshStartpoint,
   endpoint: MeshEndpoint,
-  _rotation: Vector3,
+  rotation: Vector3,
 ): { midpoint: MeshMidpoint; size: Vector3 } {
+  const size = getRotatedMeshSize(
+    endpoint
+      .sub(startpoint)
+      .Abs()
+      .Floor()
+      .add(new Vector3(1, 1, 1)),
+    rotation,
+  )
   return {
     midpoint: startpoint.add(endpoint).div(2).Floor(),
-    size: endpoint.sub(startpoint).Abs().Floor(),
+    size,
   }
 }
 
 export function getMeshStartpointEndpointFromMidpointSize(
   midpoint: MeshMidpoint,
-  size: Vector3,
-  _rotation: Vector3,
+  unrotatedSize: Vector3,
+  rotation: Vector3,
 ): {
   startpoint: MeshStartpoint
   endpoint: MeshEndpoint
 } {
-  const unquantizedMidpoint = new Vector3(
-    midpoint.X + (size.X % 2 ? 0.5 : 0),
-    midpoint.Y + (size.Y % 2 ? 0.5 : 0),
-    midpoint.Z + (size.Z % 2 ? 0.5 : 0),
+  const size = getRotatedMeshSize(unrotatedSize, rotation)
+  const unquantizedMidpoint = midpoint.add(
+    new Vector3(
+      size.X % 2 ? 0.5 : 1,
+      size.Y % 2 ? 0.5 : 1,
+      size.Z % 2 ? 0.5 : 1,
+    ),
   )
   const lowerCorner = getLowerCorner(unquantizedMidpoint, size)
   const upperCorner = getUpperCorner(unquantizedMidpoint, size)
@@ -146,7 +156,10 @@ export function getMeshStartpointEndpointFromMidpointSize(
   if (endpoint.sub(upperCorner).Magnitude > 0.01) {
     throw `Invalid endPoint ${endpoint} for midpoint and size: ${midpoint}, ${size}`
   }
-  return { startpoint, endpoint }
+  return {
+    startpoint,
+    endpoint: endpoint.sub(new Vector3(1, 1, 1)),
+  }
 }
 
 export function getCFrameFromMeshMidpoint(
@@ -166,8 +179,32 @@ export function getCFrameFromMeshMidpoint(
       midpoint.Z * gridSpacing -
         baseplate.Size.Z / 2 +
         (size.Z % 2 ? gridSpacing / 2 : 0),
-    ).mul(CFrame.Angles(0, math.rad(90 * rotation.Y), 0)),
+    ).mul(CFrame.Angles(0, math.rad(90 * -rotation.Y), 0)),
   )
+}
+
+export function getRotatedMeshPoint(
+  v: MeshStartpoint | MeshEndpoint | MeshMidpoint,
+  rotation: MeshRotation,
+) {
+  if (!rotation.Y) return v
+  const angle = math.rad(90 * rotation.Y)
+  const sinAngle = math.sin(angle)
+  const cosAngle = math.cos(angle)
+  return new Vector3(
+    math.round(v.X * cosAngle - v.Z * sinAngle),
+    math.round(v.Y),
+    math.round(v.X * sinAngle + v.Z * cosAngle),
+  )
+}
+
+export function getRotatedMeshSize(
+  size: Vector3,
+  rotation: MeshRotation,
+): Vector3 {
+  return rotation.Y
+    ? roundVector3(getRotatedMeshPoint(size, rotation).Abs())
+    : size
 }
 
 export function meshMapAdd(
@@ -230,57 +267,58 @@ export function meshSetGetEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
 
 export function expandMesh(
   map: MeshMap,
-  inputEncodedMidpoint: EncodedMeshMidpoint,
+  seen: MeshSet,
+  inputMidpoint: MeshMidpoint,
   inputData: MeshData,
   dir: 'x' | 'y' | 'z',
-) {
-  const included: MeshSet = { [inputEncodedMidpoint]: true }
-  const inputMidpoint = decodeMeshMidpoint(inputEncodedMidpoint)
-  let currentdir = -1
+): { data: MeshData; midpoint: MeshMidpoint } {
   let { startpoint: sp, endpoint: ep } =
     getMeshStartpointEndpointFromMidpointSize(
       inputMidpoint,
-      new Vector3(inputData.width, inputData.height, inputData.length),
+      inputData.size,
       inputData.rotation,
     )
 
-  for (let current = inputMidpoint; ; ) {
+  for (let current = inputMidpoint, currentdir = -1; ; ) {
     if (dir === 'x') {
       current = new Vector3(
-        current.X + (currentdir === -1 ? -inputData.width : inputData.width),
+        current.X + (currentdir === -1 ? -inputData.size.X : inputData.size.X),
         current.Y,
         current.Z,
       )
     } else if (dir === 'y') {
       current = new Vector3(
         current.X,
-        current.Y + (currentdir === -1 ? -inputData.height : inputData.height),
+        current.Y + (currentdir === -1 ? -inputData.size.Y : inputData.size.Y),
         current.Z,
       )
     } else if (dir === 'z') {
       current = new Vector3(
         current.X,
         current.Y,
-        current.Z + (currentdir === -1 ? -inputData.length : inputData.length),
+        current.Z + (currentdir === -1 ? -inputData.size.Z : inputData.size.Z),
       )
     }
-    const data = meshMapGet(map, current)
+
+    const data = !meshSetGet(seen, current)
+      ? meshMapGet(map, current)
+      : undefined
     if (
       data &&
-      data.width === inputData.width &&
-      data.length === inputData.length &&
-      data.height === inputData.height &&
+      data.size.X === inputData.size.X &&
+      data.size.Y === inputData.size.Y &&
+      data.size.Z === inputData.size.Z &&
       data.blockId === inputData.blockId
     ) {
       const { startpoint, endpoint } =
         getMeshStartpointEndpointFromMidpointSize(
           current,
-          new Vector3(data.width, data.height, data.length),
+          data.size,
           data.rotation,
         )
       if (currentdir === -1) sp = startpoint
       else ep = endpoint
-      meshSetAdd(included, current)
+      meshSetAdd(seen, current)
     } else if (currentdir === -1) {
       currentdir = 1
       current = inputMidpoint
@@ -298,27 +336,30 @@ export function expandMesh(
   return {
     data: {
       blockId: inputData.blockId,
-      width: size.X,
-      length: size.Z,
-      height: size.Y,
       rotation: inputData.rotation,
+      size,
     },
-    included,
     midpoint,
   }
 }
 
-function expandMeshes(map: MeshMap, dir: 'x' | 'y' | 'z') {
+export function expandMeshes(map: MeshMap, dir: 'x' | 'y' | 'z') {
   const out: MeshMap = {}
-  for (const [key, value] of Object.entries(map)) {
-    const { data, included, midpoint } = expandMesh(
+  const seen: MeshSet = {}
+
+  for (const [encodedMidpoint, encodedValue] of Object.entries(map)) {
+    const inputMidpoint = decodeMeshMidpoint(encodedMidpoint)
+    if (meshSetGet(seen, inputMidpoint)) continue
+    meshSetAdd(seen, inputMidpoint)
+
+    const { data, midpoint } = expandMesh(
       map,
-      key,
-      decodeMeshData(value),
+      seen,
+      inputMidpoint,
+      decodeMeshData(encodedValue),
       dir,
     )
     meshMapAdd(out, midpoint, data)
-    for (const v of Object.keys(included)) delete map[v]
   }
   return out
 }
@@ -374,10 +415,8 @@ export function runGreedyMeshing(parent: Instance, baseplate: BasePart) {
           meshMapAdd(out, midpoint, {
             ...lastData,
             blockId: lastData?.blockId ?? 1,
-            width: size.X,
-            length: size.Z,
-            height: size.Y,
             rotation: lastData?.rotation ?? new Vector3(0, 0, 0),
+            size,
           })
           if (lastData && currentData && lastData === currentData) sp = current
           else sp = undefined

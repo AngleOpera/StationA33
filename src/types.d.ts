@@ -18,6 +18,10 @@ interface BlockBreakerAttributes {
   MaxDistance: number
 }
 
+interface EntityAttributes {
+  EntityId: number
+}
+
 interface PlaceBlockTool extends Tool {}
 
 interface PlaceBlockToolAttributes {
@@ -43,6 +47,8 @@ interface Instance {
 }
 
 interface InventoryItem extends Model {}
+
+type ItemVector3 = number[]
 
 interface Leaderboard extends Model {
   Leaderboard: Part & {
