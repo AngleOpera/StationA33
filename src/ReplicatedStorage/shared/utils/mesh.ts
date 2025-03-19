@@ -5,6 +5,7 @@ import {
   decodeBase58Array,
   encodeBase58Array,
 } from 'ReplicatedStorage/shared/utils/base58'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/instance'
 import { roundVector3 } from 'ReplicatedStorage/shared/utils/math'
 
 export type EncodedMeshMidpoint = string
@@ -130,6 +131,19 @@ export function getMeshMidpointSizeFromStartpointEndpoint(
   }
 }
 
+export function getMeshUnquantizedMidpointFromMidpointRotatedSize(
+  midpoint: MeshMidpoint,
+  rotatedSize: Vector3,
+) {
+  return midpoint.add(
+    new Vector3(
+      rotatedSize.X % 2 ? 0.5 : 1,
+      rotatedSize.Y % 2 ? 0.5 : 1,
+      rotatedSize.Z % 2 ? 0.5 : 1,
+    ),
+  )
+}
+
 export function getMeshStartpointEndpointFromMidpointSize(
   midpoint: MeshMidpoint,
   unrotatedSize: Vector3,
@@ -139,12 +153,9 @@ export function getMeshStartpointEndpointFromMidpointSize(
   endpoint: MeshEndpoint
 } {
   const size = getRotatedMeshSize(unrotatedSize, rotation)
-  const unquantizedMidpoint = midpoint.add(
-    new Vector3(
-      size.X % 2 ? 0.5 : 1,
-      size.Y % 2 ? 0.5 : 1,
-      size.Z % 2 ? 0.5 : 1,
-    ),
+  const unquantizedMidpoint = getMeshUnquantizedMidpointFromMidpointRotatedSize(
+    midpoint,
+    size,
   )
   const lowerCorner = getLowerCorner(unquantizedMidpoint, size)
   const upperCorner = getUpperCorner(unquantizedMidpoint, size)
@@ -160,6 +171,24 @@ export function getMeshStartpointEndpointFromMidpointSize(
     startpoint,
     endpoint: endpoint.sub(new Vector3(1, 1, 1)),
   }
+}
+
+export function getMeshOffsetsFromMeshMidpoint(
+  midpoint: MeshMidpoint,
+  unrotatedSize: Vector3,
+  rotation: MeshRotation,
+  offsets: ItemVector3[],
+) {
+  const size = getRotatedMeshSize(unrotatedSize, rotation)
+  const unquantizedMidpoint = getMeshUnquantizedMidpointFromMidpointRotatedSize(
+    midpoint,
+    size,
+  )
+  return offsets.map((offset) =>
+    unquantizedMidpoint
+      .add(getRotatedMeshPoint(getItemVector3(offset), rotation))
+      .Floor(),
+  )
 }
 
 export function getCFrameFromMeshMidpoint(
@@ -265,7 +294,7 @@ export function meshSetGetEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
   return !!map[midpoint]
 }
 
-export function expandMesh(
+export function doGreedyMeshingFromPoint(
   map: MeshMap,
   seen: MeshSet,
   inputMidpoint: MeshMidpoint,
@@ -278,37 +307,24 @@ export function expandMesh(
       inputData.size,
       inputData.rotation,
     )
+  let step = new Vector3(
+    dir === 'x' ? -inputData.size.X : 0,
+    dir === 'y' ? -inputData.size.Y : 0,
+    dir === 'z' ? -inputData.size.Z : 0,
+  )
 
   for (let current = inputMidpoint, currentdir = -1; ; ) {
-    if (dir === 'x') {
-      current = new Vector3(
-        current.X + (currentdir === -1 ? -inputData.size.X : inputData.size.X),
-        current.Y,
-        current.Z,
-      )
-    } else if (dir === 'y') {
-      current = new Vector3(
-        current.X,
-        current.Y + (currentdir === -1 ? -inputData.size.Y : inputData.size.Y),
-        current.Z,
-      )
-    } else if (dir === 'z') {
-      current = new Vector3(
-        current.X,
-        current.Y,
-        current.Z + (currentdir === -1 ? -inputData.size.Z : inputData.size.Z),
-      )
-    }
+    current = current.add(step)
 
     const data = !meshSetGet(seen, current)
       ? meshMapGet(map, current)
       : undefined
     if (
       data &&
+      data.blockId === inputData.blockId &&
       data.size.X === inputData.size.X &&
       data.size.Y === inputData.size.Y &&
-      data.size.Z === inputData.size.Z &&
-      data.blockId === inputData.blockId
+      data.size.Z === inputData.size.Z
     ) {
       const { startpoint, endpoint } =
         getMeshStartpointEndpointFromMidpointSize(
@@ -322,6 +338,7 @@ export function expandMesh(
     } else if (currentdir === -1) {
       currentdir = 1
       current = inputMidpoint
+      step = step.mul(-1)
       continue
     } else {
       break
@@ -343,7 +360,7 @@ export function expandMesh(
   }
 }
 
-export function expandMeshes(map: MeshMap, dir: 'x' | 'y' | 'z') {
+export function doGreedyMeshing(map: MeshMap, dir: 'x' | 'y' | 'z') {
   const out: MeshMap = {}
   const seen: MeshSet = {}
 
@@ -352,7 +369,7 @@ export function expandMeshes(map: MeshMap, dir: 'x' | 'y' | 'z') {
     if (meshSetGet(seen, inputMidpoint)) continue
     meshSetAdd(seen, inputMidpoint)
 
-    const { data, midpoint } = expandMesh(
+    const { data, midpoint } = doGreedyMeshingFromPoint(
       map,
       seen,
       inputMidpoint,
@@ -362,73 +379,4 @@ export function expandMeshes(map: MeshMap, dir: 'x' | 'y' | 'z') {
     meshMapAdd(out, midpoint, data)
   }
   return out
-}
-
-export function runGreedyMeshing(parent: Instance, baseplate: BasePart) {
-  const seen: MeshSet = {}
-  const input: MeshMap = {}
-  const inputMidpoint = getMeshMidpointFromWorldPosition(
-    parent.GetChildren<BasePart>()[0].Position,
-    baseplate,
-  )
-  let last: Vector3 | undefined
-  let sp: Vector3 | undefined = inputMidpoint
-  let ep = inputMidpoint
-  let current = inputMidpoint
-
-  for (const v of parent.GetChildren<Model>()) {
-    const world = v.GetPivot()
-    const midpoint = getMeshMidpointFromWorldPosition(world.Position, baseplate)
-    const data = getMeshDataFromModel(v)
-    meshMapAdd(input, midpoint, data)
-    sp = sp.Min(midpoint)
-    ep = ep.Max(midpoint)
-  }
-
-  const out: MeshMap = {}
-  while (current.Z <= ep.Z) {
-    while (current.X <= ep.X) {
-      while (current.Y <= ep.Y) {
-        const currentEncodedMidpoint = encodeMeshMidpoint(current)
-        const currentData = meshMapGetEncoded(input, currentEncodedMidpoint)
-        const currentSeen = meshSetGetEncoded(seen, currentEncodedMidpoint)
-        const lastData = meshMapGet(input, last)
-        if (
-          lastData &&
-          currentData &&
-          currentSeen &&
-          currentData !== lastData
-        ) {
-          if (!meshMapGet(input, last)) sp = current
-          meshSetAddEncoded(seen, currentEncodedMidpoint)
-        } else if (
-          (!currentData || (lastData && lastData !== currentData)) &&
-          meshMapGet(input, sp) &&
-          sp &&
-          last
-        ) {
-          const { midpoint, size } = getMeshMidpointSizeFromStartpointEndpoint(
-            sp,
-            last,
-            lastData?.rotation ?? new Vector3(0, 0, 0),
-          )
-          meshMapAdd(out, midpoint, {
-            ...lastData,
-            blockId: lastData?.blockId ?? 1,
-            rotation: lastData?.rotation ?? new Vector3(0, 0, 0),
-            size,
-          })
-          if (lastData && currentData && lastData === currentData) sp = current
-          else sp = undefined
-        }
-        last = current
-        current = new Vector3(current.X, current.Y + 1, current.Z)
-      }
-      current = new Vector3(current.X + 1, inputMidpoint.Y, current.Z)
-    }
-    last = new Vector3(last?.X, last?.Y, current.Z)
-    current = new Vector3(inputMidpoint.X, current.Y, current.Z + 1)
-  }
-
-  return expandMeshes(expandMeshes(out, 'x'), 'z')
 }

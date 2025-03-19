@@ -3,14 +3,17 @@
 import { expect } from '@rbxts/expect'
 import Object from '@rbxts/object-utils'
 import { padEnd } from '@rbxts/string-utils'
+import { INVENTORY } from 'ReplicatedStorage/shared/constants/core'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/instance'
 import {
   coordinateEncodingLength,
   decodeMeshData,
   decodeMeshMidpoint,
+  doGreedyMeshing,
   encodeMeshData,
   encodeMeshMidpoint,
-  expandMeshes,
   getMeshMidpointSizeFromStartpointEndpoint,
+  getMeshOffsetsFromMeshMidpoint,
   getMeshStartpointEndpointFromMidpointSize,
   getRotatedMeshPoint,
   getRotatedMeshSize,
@@ -214,6 +217,64 @@ export = () => {
       expect(decodeMeshData('2_')).to.be.equal(defaultBlock)
     })
 
+    it('should convert rotated (startpoint, endpoint) to (midpoint, size)', () => {
+      // Midpoint: (0, 0, 0), Size: (1, 1, 1)
+      for (let i = 0; i < 4; i++) {
+        expect(
+          getMeshMidpointSizeFromStartpointEndpoint(
+            new Vector3(0, 0, 0),
+            new Vector3(0, 0, 0),
+            new Vector3(0, i, 0),
+          ),
+        ).to.be.equal({
+          midpoint: new Vector3(0, 0, 0),
+          size: new Vector3(1, 1, 1),
+        })
+      }
+
+      // Midpoint: (5, 0, 5), Size: (3, 1, 1)
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(6, 0, 5),
+          new Vector3(4, 0, 5),
+          new Vector3(0, 0, 0),
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(5, 0, 5),
+        size: new Vector3(3, 1, 1),
+      })
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(6, 0, 5),
+          new Vector3(4, 0, 5),
+          new Vector3(0, 1, 0),
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(5, 0, 5),
+        size: new Vector3(1, 1, 3),
+      })
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(6, 0, 5),
+          new Vector3(4, 0, 5),
+          new Vector3(0, 2, 0),
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(5, 0, 5),
+        size: new Vector3(3, 1, 1),
+      })
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(5, 0, 4),
+          new Vector3(5, 0, 6),
+          new Vector3(0, 1, 0),
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(5, 0, 5),
+        size: new Vector3(3, 1, 1),
+      })
+    })
+
     it('should rotate mesh points', () => {
       const rotation0 = new Vector3(0, 0, 0)
       const rotation1 = new Vector3(0, 1, 0)
@@ -239,7 +300,44 @@ export = () => {
     })
   })
 
-  it('should expand meshes', () => {
+  it('should find rotated offsets', () => {
+    const item = INVENTORY.Conveyor
+    const testPoint = new Vector3(39, 0, 422)
+    expect(
+      getMeshOffsetsFromMeshMidpoint(
+        testPoint,
+        getItemVector3(item.size),
+        new Vector3(0, 0, 0),
+        item.output ?? [],
+      ),
+    ).to.be.equal([new Vector3(39, 0, 421)])
+    expect(
+      getMeshOffsetsFromMeshMidpoint(
+        testPoint,
+        getItemVector3(item.size),
+        new Vector3(0, 1, 0),
+        item.output ?? [],
+      ),
+    ).to.be.equal([new Vector3(40, 0, 422)])
+    expect(
+      getMeshOffsetsFromMeshMidpoint(
+        testPoint,
+        getItemVector3(item.size),
+        new Vector3(0, 2, 0),
+        item.output ?? [],
+      ),
+    ).to.be.equal([new Vector3(39, 0, 423)])
+    expect(
+      getMeshOffsetsFromMeshMidpoint(
+        testPoint,
+        getItemVector3(item.size),
+        new Vector3(0, 3, 0),
+        item.output ?? [],
+      ),
+    ).to.be.equal([new Vector3(38, 0, 422)])
+  })
+
+  it('should do greedy meshing', () => {
     const meshData: MeshData = {
       blockId: 1,
       size: new Vector3(1, 1, 1),
@@ -255,7 +353,7 @@ export = () => {
     meshMapAdd(world, new Vector3(34, 0, 13), { ...meshData })
     meshMapAdd(world, new Vector3(34, 0, 14), { ...meshData })
 
-    const expanded = expandMeshes(expandMeshes({ ...world }, 'z'), 'x')
+    const expanded = doGreedyMeshing(doGreedyMeshing({ ...world }, 'z'), 'x')
     expect(Object.keys(expanded).size()).to.be.equal(1)
     const [encodedMidpoint, encodedData] = Object.entries(expanded)[0]
     const midpoint = decodeMeshMidpoint(encodedMidpoint)
