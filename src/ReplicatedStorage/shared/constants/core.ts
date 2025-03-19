@@ -15,6 +15,7 @@ export interface InventoryItemDescription {
   input?: ItemVector3[]
   parent?: string
   output?: ItemVector3[]
+  placeable?: boolean
   price?: number
   stackable?: boolean
 }
@@ -80,9 +81,17 @@ export const INVENTORY = inventoryConstants as Record<
   InventoryItemDescription
 >
 
+export const INVENTORY_LOOKUP = inventoryConstants as Record<
+  string,
+  InventoryItemDescription
+>
+
 export const INVENTORY_NAMES: InventoryItemName[] = Object.values(INVENTORY)
   .filter((x) => !x.parent)
   .map((item) => item.name)
+
+export const PLACEABLE_INVENTORY_NAMES: InventoryItemName[] =
+  INVENTORY_NAMES.filter((name) => INVENTORY[name].placeable !== false)
 
 export const INVENTORY_ID = Object.fromEntries(
   Object.values(INVENTORY).map((item) => [item.blockId, item]),

@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useMemo, useRef } from '@rbxts/react'
 import { useSelector } from '@rbxts/react-reflex'
 import { ReplicatedStorage } from '@rbxts/services'
 import {
-  INVENTORY_NAMES,
   InventoryItemName,
+  PLACEABLE_INVENTORY_NAMES,
 } from 'ReplicatedStorage/shared/constants/core'
 import { palette } from 'ReplicatedStorage/shared/constants/palette'
 import { fonts } from 'StarterPlayer/StarterPlayerScripts/fonts'
@@ -169,7 +169,7 @@ export function InventoryMenu() {
                   CellPadding={new UDim2(0.02, 0, 0.015, 0)}
                   CellSize={new UDim2(0.15, 0, 0.09, 0)}
                 />
-                {INVENTORY_NAMES.map((name) => (
+                {PLACEABLE_INVENTORY_NAMES.map((name) => (
                   <InventoryItem
                     key={name}
                     name={name}

@@ -145,5 +145,14 @@
     "size": [1, 1, 3],
     "input": [ [ 0, 0, 2 ] ],
     "output": [ [ 0, 0, -2 ] ]
+  },
+  "RubyOre": {
+    "blockId": 18,
+    "name": "RubyOre",
+    "description": "Ruby Ore",
+    "image": "rbxassetid://0",
+    "price": 900,
+    "size": [1, 1, 1],
+    "placeable": false
   }
 }

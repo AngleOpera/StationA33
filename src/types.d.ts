@@ -162,6 +162,7 @@ interface SpawnerAttributes {
   MaxDelay?: number
   MaxTotal?: number
   SpawnHeight?: number
+  SpawnItem?: string
 }
 
 interface Swinger extends Tool {

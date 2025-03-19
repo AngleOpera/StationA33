@@ -4,7 +4,7 @@
       <string name="Name">RubyOre</string>
       <BinaryString name="AttributesSerialize"></BinaryString>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-      <bool name="DefinesCapabilities">false</bool>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <token name="LevelOfDetail">0</token>
       <CoordinateFrame name="ModelMeshCFrame">
         <X>0</X>
@@ -29,13 +29,15 @@
       <token name="ModelStreamingMode">0</token>
       <bool name="NeedsPivotMigration">false</bool>
       <Ref name="PrimaryPart">null</Ref>
+      <bool name="DefinesCapabilities">false</bool>
       <float name="ScaleFactor">1</float>
       <int64 name="SourceAssetId">715405993</int64>
       <BinaryString name="Tags"></BinaryString>
+      <UniqueId name="UniqueId">162ee904c446af1707ebfcda00000399</UniqueId>
       <OptionalCoordinateFrame name="WorldPivotData">
         <CFrame>
           <X>0</X>
-          <Y>1.5015564</Y>
+          <Y>2.521803</Y>
           <Z>0</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -53,10 +55,10 @@
       <Properties>
         <string name="Name">Rock</string>
         <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
-        <bool name="Anchored">false</bool>
-        <Content name="AssetId">
+        <bool name="Anchored">true</bool>
+        <ContentId name="AssetId">
           <url>http://www.roblox.com//asset/?id=394314025</url>
-        </Content>
+        </ContentId>
         <BinaryString name="AttributesSerialize"></BinaryString>
         <bool name="AudioCanCollide">true</bool>
         <float name="BackParamA">-0.5</float>
@@ -69,7 +71,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>0.09844971</X>
-          <Y>1.5015559</Y>
+          <Y>2.5218024</Y>
           <Z>0</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -95,7 +97,6 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="FluidFidelityInternal">0</token>
         <token name="FormFactor">0</token>
@@ -103,6 +104,7 @@
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <Vector3 name="InitialSize">
           <X>4.000002</X>
           <Y>2.00309</Y>
@@ -148,6 +150,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <Vector3 name="size">
           <X>5.9969177</X>
           <Y>3.00309</Y>
@@ -161,6 +164,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda0000039a</UniqueId>
         <Vector3 name="UnscaledCofm">
           <X>NAN</X>
           <Y>NAN</Y>
@@ -201,7 +205,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-1.7031193</X>
-          <Y>1.500011</Y>
+          <Y>2.5202575</Y>
           <Z>1.7777023</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -224,13 +228,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -264,6 +268,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -277,6 +282,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda0000039b</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -288,16 +294,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -305,10 +312,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda0000039c</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>
@@ -333,7 +341,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-2.5</X>
-          <Y>1.500011</Y>
+          <Y>2.5202575</Y>
           <Z>-0.49845886</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -356,13 +364,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -396,6 +404,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -409,6 +418,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda0000039d</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -420,16 +430,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -437,10 +448,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda0000039e</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>
@@ -465,7 +477,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>1.4968872</X>
-          <Y>2.4578738</Y>
+          <Y>3.4781203</Y>
           <Z>0.50154114</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -488,13 +500,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -528,6 +540,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -541,6 +554,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda0000039f</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -552,16 +566,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -569,10 +584,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a0</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>
@@ -597,7 +613,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-0.5031128</X>
-          <Y>2.7301092</Y>
+          <Y>3.7503557</Y>
           <Z>1.4256706</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -620,13 +636,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -660,6 +676,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -673,6 +690,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a1</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -684,16 +702,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -701,10 +720,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a2</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>
@@ -729,7 +749,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-0.5031128</X>
-          <Y>1.500011</Y>
+          <Y>2.5202575</Y>
           <Z>-2.4984589</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -752,13 +772,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -792,6 +812,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -805,6 +826,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a3</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -816,16 +838,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -833,10 +856,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a4</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>
@@ -861,7 +885,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-0.5031128</X>
-          <Y>2.5031018</Y>
+          <Y>3.5233483</Y>
           <Z>-0.49845886</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -884,13 +908,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -924,6 +948,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -937,6 +962,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a5</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -948,16 +974,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -965,10 +992,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a6</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>
@@ -993,7 +1021,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>2.0105762</X>
-          <Y>1.500011</Y>
+          <Y>2.5202575</Y>
           <Z>-1.5015411</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -1016,13 +1044,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -1056,6 +1084,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -1069,6 +1098,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a7</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -1080,16 +1110,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -1097,10 +1128,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a8</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>
@@ -1125,7 +1157,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>2.5</X>
-          <Y>1.500011</Y>
+          <Y>2.5202575</Y>
           <Z>1.4984589</Z>
           <R00>0</R00>
           <R01>-1</R01>
@@ -1148,13 +1180,13 @@
         <PhysicalProperties name="CustomPhysicalProperties">
           <CustomPhysics>false</CustomPhysics>
         </PhysicalProperties>
-        <bool name="DefinesCapabilities">false</bool>
         <bool name="EnableFluidForces">true</bool>
         <token name="formFactorRaw">1</token>
         <float name="FrontParamA">-0.5</float>
         <float name="FrontParamB">0.5</float>
         <token name="FrontSurface">0</token>
         <token name="FrontSurfaceInput">0</token>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <float name="LeftParamA">-0.5</float>
         <float name="LeftParamB">0.5</float>
         <token name="LeftSurface">0</token>
@@ -1188,6 +1220,7 @@
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <token name="shape">1</token>
         <Vector3 name="size">
           <X>1</X>
@@ -1201,6 +1234,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003a9</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -1212,16 +1246,17 @@
           <string name="Name">Mesh</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="DefinesCapabilities">false</bool>
-          <Content name="MeshId">
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <ContentId name="MeshId">
             <url>http://www.roblox.com/Asset/?id=9756362</url>
-          </Content>
+          </ContentId>
           <token name="MeshType">5</token>
           <Vector3 name="Offset">
             <X>0</X>
             <Y>0</Y>
             <Z>0</Z>
           </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
           <Vector3 name="Scale">
             <X>1</X>
             <Y>1</Y>
@@ -1229,10 +1264,11 @@
           </Vector3>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <Content name="TextureId">
+          <ContentId name="TextureId">
             <null>
             </null>
-          </Content>
+          </ContentId>
+          <UniqueId name="UniqueId">162ee904c446af1707ebfcda000003aa</UniqueId>
           <Vector3 name="VertexColor">
             <X>1</X>
             <Y>1</Y>

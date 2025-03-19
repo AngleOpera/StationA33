@@ -1,5 +1,11 @@
 import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
+import { ReplicatedStorage } from '@rbxts/services'
+import {
+  BLOCK_ATTRIBUTE,
+  INVENTORY_LOOKUP,
+  InventoryItemDescription,
+} from 'ReplicatedStorage/shared/constants/core'
 import { SpawnerTag } from 'ReplicatedStorage/shared/constants/tags'
 
 @Component({ tag: SpawnerTag })
@@ -9,7 +15,7 @@ export class SpawnerComponent
 {
   minDelay = 10
   maxDelay = 60
-  maxTotal = 10
+  maxTotal = 100
   spawnHeight = 0
 
   constructor() {
@@ -22,26 +28,41 @@ export class SpawnerComponent
     this.maxTotal = this.attributes.MaxTotal ?? this.maxTotal
     this.spawnHeight = this.attributes.SpawnHeight ?? this.spawnHeight
 
-    // while (wait(math.random(10, 60))[0]) this.dropLootBox()
+    while (
+      this.instance &&
+      wait(math.random(this.minDelay, this.maxDelay))[0]
+    ) {
+      const numChildren = this.instance.GetChildren().size()
+      if (numChildren >= this.maxTotal) continue
+      if (this.attributes.SpawnItem)
+        this.spawnItem(
+          ReplicatedStorage.Items.FindFirstChild<Model>(
+            this.attributes.SpawnItem,
+          ),
+          INVENTORY_LOOKUP[this.attributes.SpawnItem],
+        )
+    }
   }
 
-  getRandomSpawnLocation() {
+  spawnItem(resourceTemplate?: Model, item?: InventoryItemDescription) {
+    if (!resourceTemplate || !item) return
+    const resource = resourceTemplate.Clone()
+    resource.SetAttribute(BLOCK_ATTRIBUTE.BlockId, item.blockId)
+    resource.PivotTo(
+      this.getRandomSpawnLocation(resource.GetBoundingBox()[1].Y / 2),
+    )
+    resource.Parent = this.instance
+  }
+
+  getRandomSpawnLocation(height: number) {
     const radius = math.min(this.instance.Size.X, this.instance.Size.Z) / 2
     const randomAngle = math.random() * math.pi * 2
     return this.instance.CFrame.ToWorldSpace(
       new CFrame(
         math.cos(randomAngle) * radius,
-        this.spawnHeight,
+        this.spawnHeight + height,
         math.sin(randomAngle) * radius,
       ),
     )
   }
-
-  /*
-    const lootBox = ReplicatedStorage.Common.LootBox.Clone()
-    weldParts(findDescendentsWhichAre<BasePart>(lootBox, 'BasePart'))
-    lootBox.PivotTo(this.mapService.getRandomSpawnLocation(150))
-    lootBox.Parent = Workspace
-    Debris.AddItem(lootBox, 35)
-    */
 }
