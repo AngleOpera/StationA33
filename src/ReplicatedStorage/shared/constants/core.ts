@@ -44,6 +44,14 @@ export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {
   BlockId: 'BlockId',
 }
 
+export const BLOCK_ID_LOOKUP: Record<number, InventoryItemDescription> =
+  Object.fromEntries(
+    Object.values(inventoryConstants).map((item) => [
+      item.blockId,
+      item as InventoryItemDescription,
+    ]),
+  )
+
 export const BLOCK_CHILD: Record<keyof BlockBase, string> = {
   Bounding: 'Bounding',
 }

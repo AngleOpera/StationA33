@@ -173,7 +173,7 @@ interface Swinger extends Tool {
 }
 
 interface SwingerAttributes {
-  AnimationId?: number
+  SwingName?: string
 }
 
 interface Workspace extends Instance {

@@ -32,7 +32,7 @@
       <bool name="DefinesCapabilities">false</bool>
       <float name="ScaleFactor">1</float>
       <int64 name="SourceAssetId">715405993</int64>
-      <BinaryString name="Tags"></BinaryString>
+      <BinaryString name="Tags">TWluYWJsZQ==</BinaryString>
       <UniqueId name="UniqueId">162ee904c446af1707ebfcda00000399</UniqueId>
       <OptionalCoordinateFrame name="WorldPivotData">
         <CFrame>

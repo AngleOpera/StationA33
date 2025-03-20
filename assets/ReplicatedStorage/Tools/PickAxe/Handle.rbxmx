@@ -38,13 +38,13 @@
       <PhysicalProperties name="CustomPhysicalProperties">
         <CustomPhysics>false</CustomPhysics>
       </PhysicalProperties>
-      <bool name="DefinesCapabilities">false</bool>
       <bool name="EnableFluidForces">true</bool>
       <token name="formFactorRaw">2</token>
       <float name="FrontParamA">-0.5</float>
       <float name="FrontParamB">0.5</float>
       <token name="FrontSurface">0</token>
       <token name="FrontSurfaceInput">0</token>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <float name="LeftParamA">-0.5</float>
       <float name="LeftParamB">0.5</float>
       <token name="LeftSurface">0</token>
@@ -78,6 +78,7 @@
         <Y>0</Y>
         <Z>0</Z>
       </Vector3>
+      <bool name="DefinesCapabilities">false</bool>
       <token name="shape">1</token>
       <Vector3 name="size">
         <X>1</X>
@@ -91,6 +92,7 @@
       <token name="TopSurface">0</token>
       <token name="TopSurfaceInput">0</token>
       <float name="Transparency">0</float>
+      <UniqueId name="UniqueId">5a638edbe429768d07ed22a2000003bd</UniqueId>
       <Vector3 name="Velocity">
         <X>0</X>
         <Y>0</Y>
@@ -102,16 +104,17 @@
         <string name="Name">Mesh</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <bool name="DefinesCapabilities">false</bool>
-        <Content name="MeshId">
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+        <ContentId name="MeshId">
           <url>http://www.roblox.com/asset/?id=22147051</url>
-        </Content>
+        </ContentId>
         <token name="MeshType">5</token>
         <Vector3 name="Offset">
           <X>0</X>
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <bool name="DefinesCapabilities">false</bool>
         <Vector3 name="Scale">
           <X>1.5</X>
           <Y>1.5</Y>
@@ -119,9 +122,10 @@
         </Vector3>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
-        <Content name="TextureId">
+        <ContentId name="TextureId">
           <url>rbxassetid://704114950</url>
-        </Content>
+        </ContentId>
+        <UniqueId name="UniqueId">5a638edbe429768d07ed22a2000003be</UniqueId>
         <Vector3 name="VertexColor">
           <X>1</X>
           <Y>1</Y>
@@ -134,7 +138,7 @@
         <string name="Name">Sound1</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <bool name="DefinesCapabilities">false</bool>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <NumberRange name="LoopRegion">0 60000 </NumberRange>
         <bool name="Looped">false</bool>
         <bool name="PlayOnRemove">false</bool>
@@ -145,13 +149,15 @@
         <float name="xmlRead_MaxDistance_3">10000</float>
         <float name="EmitterSize">10</float>
         <token name="RollOffMode">0</token>
+        <bool name="DefinesCapabilities">false</bool>
         <Ref name="SoundGroup">null</Ref>
-        <Content name="SoundId">
+        <ContentId name="SoundId">
           <url>http://www.roblox.com/asset/?id=21433696</url>
-        </Content>
+        </ContentId>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <double name="TimePosition">0</double>
+        <UniqueId name="UniqueId">5a638edbe429768d07ed22a2000003bf</UniqueId>
         <float name="Volume">0.74792016</float>
       </Properties>
     </Item>
@@ -160,7 +166,7 @@
         <string name="Name">Sound2</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <bool name="DefinesCapabilities">false</bool>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <NumberRange name="LoopRegion">0 60000 </NumberRange>
         <bool name="Looped">false</bool>
         <bool name="PlayOnRemove">false</bool>
@@ -171,13 +177,15 @@
         <float name="xmlRead_MaxDistance_3">10000</float>
         <float name="EmitterSize">10</float>
         <token name="RollOffMode">0</token>
+        <bool name="DefinesCapabilities">false</bool>
         <Ref name="SoundGroup">null</Ref>
-        <Content name="SoundId">
+        <ContentId name="SoundId">
           <url>http://www.roblox.com/asset/?id=21433711</url>
-        </Content>
+        </ContentId>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <double name="TimePosition">0</double>
+        <UniqueId name="UniqueId">5a638edbe429768d07ed22a2000003c0</UniqueId>
         <float name="Volume">0.8011231</float>
       </Properties>
     </Item>
@@ -186,7 +194,7 @@
         <string name="Name">Unsheath</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <bool name="DefinesCapabilities">false</bool>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
         <NumberRange name="LoopRegion">0 60000 </NumberRange>
         <bool name="Looped">false</bool>
         <bool name="PlayOnRemove">false</bool>
@@ -197,14 +205,43 @@
         <float name="xmlRead_MaxDistance_3">10000</float>
         <float name="EmitterSize">10</float>
         <token name="RollOffMode">0</token>
+        <bool name="DefinesCapabilities">false</bool>
         <Ref name="SoundGroup">null</Ref>
-        <Content name="SoundId">
+        <ContentId name="SoundId">
           <url>http://www.roblox.com/asset/?id=12222225</url>
-        </Content>
+        </ContentId>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <double name="TimePosition">0</double>
+        <UniqueId name="UniqueId">5a638edbe429768d07ed22a2000003c1</UniqueId>
         <float name="Volume">1</float>
+      </Properties>
+    </Item>
+    <Item class="Attachment" referent="5">
+      <Properties>
+        <string name="Name">DmgPoint</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <CoordinateFrame name="CFrame">
+          <X>-1.695</X>
+          <Y>0</Y>
+          <Z>1.494</Z>
+          <R00>1</R00>
+          <R01>-0.00000016834171</R01>
+          <R02>0.000000006449012</R02>
+          <R10>0.00000016834171</R10>
+          <R11>1</R11>
+          <R12>-0.0000003227878</R12>
+          <R20>-0.000000006448958</R20>
+          <R21>0.0000003227878</R21>
+          <R22>1</R22>
+        </CoordinateFrame>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+        <bool name="DefinesCapabilities">false</bool>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+        <UniqueId name="UniqueId">5a638edbe429768d07ed22a2000063dc</UniqueId>
+        <bool name="Visible">false</bool>
       </Properties>
     </Item>
   </Item>

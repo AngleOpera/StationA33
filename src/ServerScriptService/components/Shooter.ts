@@ -5,8 +5,8 @@ import { PartCache } from '@rbxts/partcache/out/class'
 import { Debris, Players, Workspace } from '@rbxts/services'
 import { ShooterTag } from 'ReplicatedStorage/shared/constants/tags'
 import { randomElement } from 'ReplicatedStorage/shared/utils/object'
+import { takeDamage } from 'ReplicatedStorage/shared/utils/player'
 import { ShooterService } from 'ServerScriptService/services/ShooterService'
-import { takeDamage } from 'ServerScriptService/utils/player'
 
 // REMEMBER: THERE'S RESOURCES TO HELP YOU AT https://etithespirit.github.io/FastCastAPIDocs
 const BULLET_SPEED = 100 // Studs/second - the speed of the bullet

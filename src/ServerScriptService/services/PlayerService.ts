@@ -21,15 +21,15 @@ import {
   weldTool,
 } from 'ReplicatedStorage/shared/utils/instance'
 import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
+import {
+  forEveryPlayer,
+  getAttackerUserId,
+} from 'ReplicatedStorage/shared/utils/player'
 import { Events } from 'ServerScriptService/network'
 import { LeaderboardService } from 'ServerScriptService/services/LeaderboardService'
 import { MeshService } from 'ServerScriptService/services/MeshService'
 import { TransactionService } from 'ServerScriptService/services/TransactionService'
 import { store } from 'ServerScriptService/store'
-import {
-  forEveryPlayer,
-  getAttackerUserId,
-} from 'ServerScriptService/utils/player'
 
 export interface PlayerProfile {
   data: PlayerData
