@@ -5,7 +5,7 @@ import {
   decodeBase58Array,
   encodeBase58Array,
 } from 'ReplicatedStorage/shared/utils/base58'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/instance'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
 import { roundVector3 } from 'ReplicatedStorage/shared/utils/math'
 
 export type EncodedMeshMidpoint = string

@@ -15,16 +15,11 @@ import {
   PlayerData,
   PlayerState,
 } from 'ReplicatedStorage/shared/state/PlayersState'
-import {
-  findDescendentsWhichAre,
-  weldParts,
-  weldTool,
-} from 'ReplicatedStorage/shared/utils/instance'
+import { getAttackerUserId } from 'ReplicatedStorage/shared/utils/damage'
+import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
-import {
-  forEveryPlayer,
-  getAttackerUserId,
-} from 'ReplicatedStorage/shared/utils/player'
+import { weldParts, weldTool } from 'ReplicatedStorage/shared/utils/part'
+import { forEveryPlayer } from 'ReplicatedStorage/shared/utils/player'
 import { Events } from 'ServerScriptService/network'
 import { LeaderboardService } from 'ServerScriptService/services/LeaderboardService'
 import { MeshService } from 'ServerScriptService/services/MeshService'

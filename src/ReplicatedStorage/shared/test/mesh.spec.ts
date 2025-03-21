@@ -4,7 +4,7 @@ import { expect } from '@rbxts/expect'
 import Object from '@rbxts/object-utils'
 import { padEnd } from '@rbxts/string-utils'
 import { INVENTORY } from 'ReplicatedStorage/shared/constants/core'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/instance'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
 import {
   coordinateEncodingLength,
   decodeMeshData,

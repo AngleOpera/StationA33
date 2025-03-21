@@ -3,10 +3,9 @@ import { OnStart } from '@flamework/core'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
 import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
 import {
   findDescendentsWhichAre,
-  getCharacter,
-  getItemVector3,
   grandParentIs,
 } from 'ReplicatedStorage/shared/utils/instance'
 import {
@@ -17,6 +16,7 @@ import {
   MeshRotation,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
 

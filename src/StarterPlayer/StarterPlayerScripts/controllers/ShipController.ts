@@ -3,7 +3,7 @@ import { RunService, UserInputService } from '@rbxts/services'
 import {
   updateBodyAngularVelocity,
   updateBodyVelocity,
-} from 'ReplicatedStorage/shared/utils/instance'
+} from 'ReplicatedStorage/shared/utils/vehicle'
 
 @Controller({})
 export class ShipController implements OnStart {

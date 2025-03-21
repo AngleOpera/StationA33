@@ -42,6 +42,7 @@ export const USER_NAME = Players.LocalPlayer
 
 export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {
   BlockId: 'BlockId',
+  Damage: 'Damage',
 }
 
 export const BLOCK_ID_LOOKUP: Record<number, InventoryItemDescription> =

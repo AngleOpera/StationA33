@@ -1,5 +1,6 @@
 interface BlockAttributes {
   BlockId: number
+  Damage?: number
 }
 
 interface BlockBase {

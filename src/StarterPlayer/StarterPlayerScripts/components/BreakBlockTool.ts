@@ -8,14 +8,12 @@ import {
   TYPE,
 } from 'ReplicatedStorage/shared/constants/core'
 import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
-import {
-  getCharacter,
-  getItemVector3,
-} from 'ReplicatedStorage/shared/utils/instance'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
 import {
   decodeMeshMidpoint,
   gridSpacing,
 } from 'ReplicatedStorage/shared/utils/mesh'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
 

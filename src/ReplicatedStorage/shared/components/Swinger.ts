@@ -2,7 +2,7 @@ import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import RaycastHitbox, { HitboxObject } from '@rbxts/raycast-hitbox'
-import { CollectionService, Players } from '@rbxts/services'
+import { CollectionService, Players, Workspace } from '@rbxts/services'
 import {
   BLOCK_ATTRIBUTE,
   BLOCK_ID_LOOKUP,
@@ -11,14 +11,23 @@ import {
 } from 'ReplicatedStorage/shared/constants/core'
 import { Swing, SWINGS_LOOKUP } from 'ReplicatedStorage/shared/constants/swings'
 import { SwingerTag } from 'ReplicatedStorage/shared/constants/tags'
-import { createAnimation } from 'ReplicatedStorage/shared/utils/instance'
-import { isSameTeam, takeDamage } from 'ReplicatedStorage/shared/utils/player'
+import { ServerNetworkEvents } from 'ReplicatedStorage/shared/network'
+import { SharedStore } from 'ReplicatedStorage/shared/state'
+import { createAnimation } from 'ReplicatedStorage/shared/utils/animation'
+import {
+  takeBlockDamage,
+  takeDamage,
+} from 'ReplicatedStorage/shared/utils/damage'
+import { findPathToDescendent } from 'ReplicatedStorage/shared/utils/instance'
+import { isSameTeam } from 'ReplicatedStorage/shared/utils/player'
 
 @Component({ tag: SwingerTag })
 export class SwingerComponent
   extends BaseComponent<SwingerAttributes, Swinger>
   implements OnStart
 {
+  serverEvents: ServerNetworkEvents | undefined
+  serverStore: SharedStore | undefined
   character: PlayerCharacter | undefined
   player: Player | undefined
   humanoid: Humanoid | undefined
@@ -32,6 +41,12 @@ export class SwingerComponent
 
   constructor(private readonly logger: Logger) {
     super()
+    if (IS_SERVER) {
+      const { Events } = import('ServerScriptService/network').expect()
+      const { store } = import('ServerScriptService/store').expect()
+      this.serverEvents = Events
+      this.serverStore = store
+    }
   }
 
   onStart() {
@@ -100,8 +115,7 @@ export class SwingerComponent
     if (IS_SERVER) {
       this.hitbox = new RaycastHitbox(this.instance)
       this.hitbox.DetectionMode = RaycastHitbox.DetectionMode.PartMode
-      this.hitbox.DebugLog = true
-      this.hitbox.Visualizer = true
+      this.hitbox.Visualizer = false
       this.hitbox.OnHit.Connect((hit) => this.handleStruckTarget(hit))
       this.sheathSound?.Stop()
       this.unsheathSound?.Play()
@@ -203,6 +217,11 @@ export class SwingerComponent
     this.logger.Info(
       `${this.character?.Name} strikes ${minable.Name} for ${this.active?.baseDamage} damage`,
     )
+    const path = findPathToDescendent(Workspace, minable)
+    if (path && this.serverEvents)
+      this.serverEvents.animate.broadcast('blockBreak', path)
+    if (this.player && this.serverStore)
+      takeBlockDamage(minable, 1, item, this.serverStore, this.player.UserId)
   }
 
   handleStruckPlayer(player: Player, humanoid: Humanoid) {

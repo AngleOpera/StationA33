@@ -2,7 +2,7 @@ import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Players } from '@rbxts/services'
 import { ShipTag } from 'ReplicatedStorage/shared/constants/tags'
-import { setNetworkOwner } from 'ReplicatedStorage/shared/utils/instance'
+import { setNetworkOwner } from 'ReplicatedStorage/shared/utils/part'
 import { createBullet } from 'ServerScriptService/utils/part'
 
 @Component({ tag: ShipTag })

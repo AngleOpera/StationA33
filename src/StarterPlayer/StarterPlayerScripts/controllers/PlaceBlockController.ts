@@ -6,7 +6,7 @@ import {
   InventoryItemDescription,
   InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
-import { getCharacter } from 'ReplicatedStorage/shared/utils/instance'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import { PlaceBlockToolComponent } from 'StarterPlayer/StarterPlayerScripts/components/PlaceBlockTool'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
 import { store } from 'StarterPlayer/StarterPlayerScripts/store'

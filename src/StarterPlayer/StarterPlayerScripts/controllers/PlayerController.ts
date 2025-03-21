@@ -9,7 +9,7 @@ import {
   Workspace,
 } from '@rbxts/services'
 import { USER_DEVICE } from 'ReplicatedStorage/shared/constants/core'
-import { getCharacter } from 'ReplicatedStorage/shared/utils/instance'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import { ShooterComponent } from 'StarterPlayer/StarterPlayerScripts/components/Shooter'
 
 @Controller({})

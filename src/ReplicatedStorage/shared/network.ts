@@ -20,6 +20,7 @@ interface ServerFunctions {
 }
 
 interface ClientEvents {
+  animate: (animation: string, path: string[]) => void
   dispatch: (actions: Array<BroadcastAction>) => void
   message: (
     messageType: string,

@@ -185,6 +185,29 @@ export const playersSlice = createProducer(initialState, {
     }
   },
 
+  updatePlayerInventory: (
+    state,
+    userID: number,
+    itemName: InventoryItemName,
+    delta: number,
+  ) => {
+    const playerKey = getPlayerKey(userID)
+    const playerState = state[playerKey]
+    const playerItems = playerState?.inventory[itemName] || 0
+    if (!playerState || (delta < 0 && playerItems < math.abs(delta)))
+      return state
+    return {
+      ...state,
+      [playerKey]: {
+        ...playerState,
+        inventory: {
+          ...playerState.inventory,
+          [itemName]: math.max(0, playerItems + (delta || 0)),
+        },
+      },
+    }
+  },
+
   setGamePassOwned: (state, userID: number, gamePassId: GamePass) => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]

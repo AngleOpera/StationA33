@@ -9,7 +9,7 @@ import {
   InventoryItemDescription,
   InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/instance'
+import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
 import {
   decodeMeshData,
   decodeMeshMidpoint,

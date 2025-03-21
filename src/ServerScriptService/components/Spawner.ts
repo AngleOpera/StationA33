@@ -17,6 +17,7 @@ export class SpawnerComponent
   maxDelay = 60
   maxTotal = 100
   spawnHeight = 0
+  totalSpawned = 0
 
   constructor() {
     super()
@@ -46,7 +47,9 @@ export class SpawnerComponent
 
   spawnItem(resourceTemplate?: Model, item?: InventoryItemDescription) {
     if (!resourceTemplate || !item) return
+    this.totalSpawned++
     const resource = resourceTemplate.Clone()
+    resource.Name = `${resource.Name}${this.totalSpawned}`
     resource.SetAttribute(BLOCK_ATTRIBUTE.BlockId, item.blockId)
     resource.PivotTo(
       this.getRandomSpawnLocation(resource.GetBoundingBox()[1].Y / 2),

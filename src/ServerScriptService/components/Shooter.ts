@@ -4,8 +4,8 @@ import FastCast from '@rbxts/fastcast'
 import { PartCache } from '@rbxts/partcache/out/class'
 import { Debris, Players, Workspace } from '@rbxts/services'
 import { ShooterTag } from 'ReplicatedStorage/shared/constants/tags'
+import { takeDamage } from 'ReplicatedStorage/shared/utils/damage'
 import { randomElement } from 'ReplicatedStorage/shared/utils/object'
-import { takeDamage } from 'ReplicatedStorage/shared/utils/player'
 import { ShooterService } from 'ServerScriptService/services/ShooterService'
 
 // REMEMBER: THERE'S RESOURCES TO HELP YOU AT https://etithespirit.github.io/FastCastAPIDocs
