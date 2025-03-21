@@ -1,6 +1,7 @@
 export const BreakBlockToolTag = 'BreakBlockTool'
 export const PlaceBlockToolTag = 'PlaceBlockTool'
 export const DoorTag = 'Door'
+export const FactoryTag = 'Factory'
 export const ShipTag = 'Ship'
 export const SaberTag = 'Saber'
 export const ShooterTag = 'Shooter'

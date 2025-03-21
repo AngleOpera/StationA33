@@ -1,17 +1,16 @@
 import { Controller, OnStart, OnTick, Service } from '@flamework/core'
-import { Entity, OnRemove, OnSet, World } from '@rbxts/jecs'
+import { Entity, OnRemove, OnSet, Tag, World } from '@rbxts/jecs'
 import { Logger } from '@rbxts/log'
 import { timePassed } from '@rbxts/planck/out/conditions'
 import Phase from '@rbxts/planck/out/Phase'
 import Scheduler from '@rbxts/planck/out/Scheduler'
 import { CollectionService } from '@rbxts/services'
 import { ENTITY_ATTRIBUTE } from 'ReplicatedStorage/shared/constants/core'
-import { SpawnerTag } from 'ReplicatedStorage/shared/constants/tags'
 
 export const world = new World()
 export const Name = world.component<string>()
 export const Model = world.component<Model>()
-export const Spawner = world.component<undefined>()
+export const Owner = world.component<number>()
 
 @Controller()
 @Service()
@@ -31,34 +30,40 @@ export class EntityComponentSystem implements OnStart, OnTick {
 
       world.set(Model, OnRemove, (entity) => {
         const model = world.get(entity, Model)
-        if (model) {
-          this.logger.Info(`Destroying model ${model.GetFullName()}`)
-          model.Destroy()
+        if (model?.Parent) {
+          try {
+            model.Destroy()
+            this.logger.Info(`Destroyed model ${model.GetFullName()}`)
+          } catch {
+            // ignore
+          }
         }
       })
-
-      bindTaggedModelToComponent(SpawnerTag, Spawner)
     }, Phase.Startup)
-
-    this.scheduler.addSystem(spawnerSystem)
-    this.scheduler.addRunCondition(spawnerSystem, timePassed(1))
   }
 
   onTick() {
     this.scheduler.runAll()
   }
-}
 
-export function spawnerSystem(world: World) {
-  for (const [entity] of world.query(Spawner, Model)) {
-    const model = world.get(entity, Model)
-    print(model)
+  addSystem(
+    system: (world: World) => void,
+    options?: { phase?: Phase; timePassedCondition?: number },
+  ) {
+    this.scheduler.addSystem(system, options?.phase)
+    if (options?.timePassedCondition)
+      this.scheduler.addRunCondition(
+        system,
+        timePassed(options.timePassedCondition),
+      )
   }
 }
 
 export function bindTaggedModelToComponent(
   tag: string,
   component: Entity<undefined>,
+  joinFunc?: (entity: Tag, model: Model) => void,
+  leaveFunc?: (entity: Tag, model: Model) => void,
 ) {
   forEveryTag(
     tag,
@@ -67,22 +72,18 @@ export function bindTaggedModelToComponent(
       const entity = world.entity()
       world.set(entity, Model, instance)
       world.add(entity, component)
+      joinFunc?.(entity, instance)
     },
     (instance) => {
       if (!instance.IsA('Model')) return
       const entity = instance.GetAttribute(ENTITY_ATTRIBUTE.EntityId) as
-        | Entity<unknown>
+        | Entity<undefined>
         | undefined
       if (!entity) return
       if (world.get(entity, Model) === instance) {
+        leaveFunc?.(entity, instance)
         world.delete(entity)
       }
-      /* for (const [entity] of world.query(Model)) {
-        if (world.get(entity, Model) === instance) {
-          world.delete(entity)
-          break
-        }
-      } */
     },
   )
 }

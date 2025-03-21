@@ -3,17 +3,13 @@ import { OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import RaycastHitbox, { HitboxObject } from '@rbxts/raycast-hitbox'
 import { CollectionService, Players, Workspace } from '@rbxts/services'
-import {
-  BLOCK_ATTRIBUTE,
-  BLOCK_ID_LOOKUP,
-  IS_CLIENT,
-  IS_SERVER,
-} from 'ReplicatedStorage/shared/constants/core'
+import { IS_CLIENT, IS_SERVER } from 'ReplicatedStorage/shared/constants/core'
 import { Swing, SWINGS_LOOKUP } from 'ReplicatedStorage/shared/constants/swings'
 import { SwingerTag } from 'ReplicatedStorage/shared/constants/tags'
 import { ServerNetworkEvents } from 'ReplicatedStorage/shared/network'
 import { SharedStore } from 'ReplicatedStorage/shared/state'
 import { createAnimation } from 'ReplicatedStorage/shared/utils/animation'
+import { getItemFromBlock } from 'ReplicatedStorage/shared/utils/core'
 import {
   takeBlockDamage,
   takeDamage,
@@ -208,11 +204,7 @@ export class SwingerComponent
   }
 
   handleStruckMinable(minable: Model) {
-    const blockId = minable.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
-    const item =
-      blockId && typeIs(blockId, 'number')
-        ? BLOCK_ID_LOOKUP[blockId]
-        : undefined
+    const item = getItemFromBlock(minable)
     if (!item) return
     this.logger.Info(
       `${this.character?.Name} strikes ${minable.Name} for ${this.active?.baseDamage} damage`,
