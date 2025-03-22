@@ -75,7 +75,7 @@ export class PlayerService implements OnInit {
     playerContext?.profile?.Release()
     store.closePlayerData(player.UserId)
     this.players.delete(player.UserId)
-    this.placeBlockService.loadPlayerSandbox(player, undefined)
+    this.placeBlockService.unloadPlayerSandbox(player)
     this.cleanupPlayerSpace(player)
   }
 
@@ -139,11 +139,12 @@ export class PlayerService implements OnInit {
       `Loaded player ${player.UserId} data {@MeshData}`,
       playerContext.profile.Data.mesh,
     )
-    this.placeBlockService.loadPlayerSandbox(player, {
-      location: PLACE_PLOT_LOCATION,
-      mesh: playerContext.profile.Data.mesh,
-      workspace: playerSpace,
-    })
+    this.placeBlockService.loadPlayerSandbox(
+      player,
+      playerSpace,
+      PLACE_PLOT_LOCATION,
+      playerContext.profile.Data.mesh,
+    )
 
     // Load player's game passes
     Promise.try(() =>

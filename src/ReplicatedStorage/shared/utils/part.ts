@@ -1,5 +1,9 @@
 import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 
+export function getPartLowerCorner(part: BasePart): Vector3 {
+  return part.CFrame.ToWorldSpace(new CFrame(part.Size.div(-2))).Position
+}
+
 export function setNetworkOwner(ancestor: Instance, player?: Player) {
   for (const descendent of ancestor.GetDescendants()) {
     if (descendent.IsA('BasePart') && descendent.CanSetNetworkOwnership()[0]) {

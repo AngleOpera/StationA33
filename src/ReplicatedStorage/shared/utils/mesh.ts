@@ -6,12 +6,17 @@ import {
   encodeBase58Array,
 } from 'ReplicatedStorage/shared/utils/base58'
 import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
-import { roundVector3 } from 'ReplicatedStorage/shared/utils/math'
+import {
+  getLowerCorner,
+  getUpperCorner,
+  roundVector3,
+} from 'ReplicatedStorage/shared/utils/math'
 
 export type EncodedMeshMidpoint = string
 export type EncodedMeshData = string
 export type MeshMap = Record<EncodedMeshMidpoint, EncodedMeshData>
 export type MeshSet = Record<EncodedMeshMidpoint, boolean>
+export type MeshOffsetMap = Record<EncodedMeshMidpoint, EncodedMeshMidpoint>
 
 export type MeshStartpoint = Vector3 & { readonly _mesh_start?: unique symbol }
 export type MeshEndpoint = Vector3 & { readonly _mesh_end?: unique symbol }
@@ -76,18 +81,6 @@ export function decodeMeshData(encoded: EncodedMeshData): MeshData {
   }
 }
 
-export function getLowerCorner(position: Vector3, size: Vector3): Vector3 {
-  return position.sub(size.div(2))
-}
-
-export function getUpperCorner(position: Vector3, size: Vector3): Vector3 {
-  return position.add(size.div(2))
-}
-
-export function getPartLowerCorner(part: BasePart): Vector3 {
-  return getLowerCorner(part.CFrame.Position, part.Size)
-}
-
 export function getMeshDataFromModel(model: Model): MeshData {
   const blockId = model.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
   const size = model.PrimaryPart?.Size
@@ -106,10 +99,10 @@ export function getMeshMidpointFromWorldPosition(
   position: Vector3,
   baseplate: BasePart,
 ): MeshMidpoint {
-  const baseplateCorner = getPartLowerCorner(baseplate).add(
-    new Vector3(0, baseplate.Size.Y / 2, 0),
-  )
-  return position.sub(baseplateCorner).div(gridSpacing).Floor()
+  return baseplate.CFrame.ToObjectSpace(new CFrame(position))
+    .add(baseplate.Size.div(2))
+    .Position.div(gridSpacing)
+    .Floor()
 }
 
 export function getMeshRotationFromCFrame(

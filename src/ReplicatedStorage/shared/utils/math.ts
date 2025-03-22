@@ -2,6 +2,14 @@ export function roundVector3(v: Vector3) {
   return new Vector3(math.round(v.X), math.round(v.Y), math.round(v.Z))
 }
 
+export function getLowerCorner(position: Vector3, size: Vector3): Vector3 {
+  return position.sub(size.div(2))
+}
+
+export function getUpperCorner(position: Vector3, size: Vector3): Vector3 {
+  return position.add(size.div(2))
+}
+
 export function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t
 }

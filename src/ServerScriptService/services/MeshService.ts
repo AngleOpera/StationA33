@@ -19,14 +19,21 @@ import {
   MeshMap,
   meshMapAddEncoded,
   meshMapRemoveEncoded,
+  MeshOffsetMap,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { Functions } from 'ServerScriptService/network'
 
+export interface PlayerPlot {
+  mesh: MeshMap
+  inputs: MeshOffsetMap
+  outputs: MeshOffsetMap
+}
+
 export interface PlayerSandbox {
   location: PlotLocation
-  mesh: Record<string, MeshMap>
   workspace: PlayerSpace
+  plot: Record<PlotLocation, PlayerPlot>
 }
 
 @Service()
@@ -52,21 +59,40 @@ export class MeshService implements OnStart {
     return this.playerSandbox[`${userId}`]
   }
 
-  loadPlayerSandbox(player: Player, playerSandbox?: PlayerSandbox) {
+  loadPlayerSandbox(
+    player: Player,
+    playerSpace: PlayerSpace,
+    location: PlotLocation,
+    mesh: Partial<Record<PlotLocation, MeshMap>>,
+  ) {
     const key = `${player.UserId}`
-    if (!playerSandbox) {
-      delete this.playerSandbox[key]
-      return
+    const playerSandbox: PlayerSandbox = {
+      location,
+      workspace: playerSpace,
+      plot: Object.fromEntries(
+        Object.entries(mesh).map(([key, value]) => [
+          key,
+          {
+            mesh: value,
+            inputs: {},
+            outputs: {},
+          },
+        ]),
+      ),
     }
     this.playerSandbox[key] = playerSandbox
     this.loadPlayerSandboxMesh(player, playerSandbox)
   }
 
+  unloadPlayerSandbox(player: Player) {
+    const key = `${player.UserId}`
+    delete this.playerSandbox[key]
+  }
+
   loadPlayerSandboxMesh(player: Player, playerSandbox: PlayerSandbox) {
+    const plot = playerSandbox.plot[playerSandbox.location]
     const placedBlocksFolder = playerSandbox.workspace.PlacedBlocks
-    for (const [encodedMidpoint, encodedData] of Object.entries(
-      playerSandbox.mesh[playerSandbox.location],
-    )) {
+    for (const [encodedMidpoint, encodedData] of Object.entries(plot.mesh)) {
       const midpoint = decodeMeshMidpoint(encodedMidpoint)
       const data = decodeMeshData(encodedData)
       const item = INVENTORY_ID[data.blockId]
@@ -124,16 +150,13 @@ export class MeshService implements OnStart {
     const clonedModel = this.cloneBlock(playerSandbox, item, midpoint, rotation)
     if (!clonedModel) return
 
+    const plot = playerSandbox.plot[playerSandbox.location]
     const encodedMidpoint = encodeMeshMidpoint(midpoint)
-    meshMapAddEncoded(
-      playerSandbox.mesh[playerSandbox.location],
-      encodedMidpoint,
-      {
-        ...item,
-        rotation,
-        size: getItemVector3(item.size),
-      },
-    )
+    meshMapAddEncoded(plot.mesh, encodedMidpoint, {
+      ...item,
+      rotation,
+      size: getItemVector3(item.size),
+    })
 
     const clonedSound = Workspace.Audio.BlockPlaced.Clone()
     clonedSound.Parent = clonedModel
@@ -167,10 +190,8 @@ export class MeshService implements OnStart {
       )
       return
     }
-    meshMapRemoveEncoded(
-      playerSandbox.mesh[playerSandbox.location],
-      encodedMidpoint,
-    )
+    const plot = playerSandbox.plot[playerSandbox.location]
+    meshMapRemoveEncoded(plot.mesh, encodedMidpoint)
 
     const clonedSoundBlock = new Instance('Part')
     clonedSoundBlock.Size = new Vector3(gridSpacing, gridSpacing, gridSpacing)
