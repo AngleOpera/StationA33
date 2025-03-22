@@ -45,7 +45,11 @@ export class MeshService implements OnStart {
   }
 
   getPlayerSandbox(player: Player) {
-    return this.playerSandbox[`${player.UserId}`]
+    return this.getUserIdSandbox(player.UserId)
+  }
+
+  getUserIdSandbox(userId: number) {
+    return this.playerSandbox[`${userId}`]
   }
 
   loadPlayerSandbox(player: Player, playerSandbox?: PlayerSandbox) {

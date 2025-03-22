@@ -84,3 +84,20 @@ export function grandParentIs(
 ) {
   return instance && instance.Parent && instance.Parent.Parent === grandParent
 }
+
+export function forEveryTag<T extends Instance>(
+  tag: string,
+  joinFunc: (instance: T) => void,
+  leaveFunc: (instance: T) => void,
+) {
+  for (const instance of CollectionService.GetTagged(tag))
+    joinFunc(instance as T)
+
+  CollectionService.GetInstanceRemovedSignal(tag).Connect((instance) =>
+    leaveFunc(instance as T),
+  )
+
+  CollectionService.GetInstanceAddedSignal(tag).Connect((instance) =>
+    joinFunc(instance as T),
+  )
+}

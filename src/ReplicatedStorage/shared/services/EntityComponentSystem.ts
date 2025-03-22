@@ -4,18 +4,20 @@ import { Logger } from '@rbxts/log'
 import { timePassed } from '@rbxts/planck/out/conditions'
 import Phase from '@rbxts/planck/out/Phase'
 import Scheduler from '@rbxts/planck/out/Scheduler'
-import { CollectionService } from '@rbxts/services'
 import { ENTITY_ATTRIBUTE } from 'ReplicatedStorage/shared/constants/core'
+import { forEveryTag } from 'ReplicatedStorage/shared/utils/instance'
+import { forEveryPlayer } from 'ReplicatedStorage/shared/utils/player'
 
 export const world = new World()
 export const Name = world.component<string>()
 export const Model = world.component<Model>()
-export const Owner = world.component<number>()
+export const Player = world.component<undefined>()
 
 @Controller()
 @Service()
 export class EntityComponentSystem implements OnStart, OnTick {
   scheduler: Scheduler<World[]>
+  players: Record<number, Tag> = {}
 
   constructor(protected readonly logger: Logger) {
     this.scheduler = new Scheduler(world)
@@ -39,6 +41,24 @@ export class EntityComponentSystem implements OnStart, OnTick {
           }
         }
       })
+
+      forEveryPlayer(
+        (player) => {
+          const entity = world.entity()
+          world.add(entity, Player)
+          world.set(entity, Name, player.Name)
+          // const character = getCharacter(player)
+          // if (character) world.set(entity, Model, character)
+          this.players[player.UserId] = entity
+        },
+        (player) => {
+          const entity = this.players[player.UserId]
+          if (entity) {
+            world.delete(entity)
+            delete this.players[player.UserId]
+          }
+        },
+      )
     }, Phase.Startup)
   }
 
@@ -85,22 +105,5 @@ export function bindTaggedModelToComponent(
         world.delete(entity)
       }
     },
-  )
-}
-
-export function forEveryTag<T extends Instance>(
-  tag: string,
-  joinFunc: (instance: T) => void,
-  leaveFunc: (instance: T) => void,
-) {
-  for (const instance of CollectionService.GetTagged(tag))
-    joinFunc(instance as T)
-
-  CollectionService.GetInstanceRemovedSignal(tag).Connect((instance) =>
-    leaveFunc(instance as T),
-  )
-
-  CollectionService.GetInstanceAddedSignal(tag).Connect((instance) =>
-    joinFunc(instance as T),
   )
 }

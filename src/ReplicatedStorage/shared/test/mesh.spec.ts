@@ -2,6 +2,7 @@
 
 import { expect } from '@rbxts/expect'
 import Object from '@rbxts/object-utils'
+import { Workspace } from '@rbxts/services'
 import { padEnd } from '@rbxts/string-utils'
 import { INVENTORY } from 'ReplicatedStorage/shared/constants/core'
 import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
@@ -12,8 +13,10 @@ import {
   doGreedyMeshing,
   encodeMeshData,
   encodeMeshMidpoint,
+  getCFrameFromMeshMidpoint,
   getMeshMidpointSizeFromStartpointEndpoint,
   getMeshOffsetsFromMeshMidpoint,
+  getMeshRotationFromCFrame,
   getMeshStartpointEndpointFromMidpointSize,
   getRotatedMeshPoint,
   getRotatedMeshSize,
@@ -335,6 +338,40 @@ export = () => {
         item.output ?? [],
       ),
     ).to.be.equal([new Vector3(38, 0, 422)])
+  })
+
+  it('should find rotation for mesh relative to baseplate', () => {
+    const baseplate = Workspace.Planet.Plot1
+    const midpoint = new Vector3(3, 3, 3)
+    const size = new Vector3(1, 1, 1)
+    const rotation0 = new Vector3(0, 0, 0)
+    const rotation1 = new Vector3(0, 1, 0)
+    const rotation2 = new Vector3(0, 2, 0)
+    const rotation3 = new Vector3(0, 3, 0)
+    expect(
+      getMeshRotationFromCFrame(
+        getCFrameFromMeshMidpoint(midpoint, size, rotation0, baseplate),
+        baseplate,
+      ),
+    ).to.be.equal(rotation0)
+    expect(
+      getMeshRotationFromCFrame(
+        getCFrameFromMeshMidpoint(midpoint, size, rotation1, baseplate),
+        baseplate,
+      ),
+    ).to.be.equal(rotation1)
+    expect(
+      getMeshRotationFromCFrame(
+        getCFrameFromMeshMidpoint(midpoint, size, rotation2, baseplate),
+        baseplate,
+      ),
+    ).to.be.equal(rotation2)
+    expect(
+      getMeshRotationFromCFrame(
+        getCFrameFromMeshMidpoint(midpoint, size, rotation3, baseplate),
+        baseplate,
+      ),
+    ).to.be.equal(rotation3)
   })
 
   it('should do greedy meshing', () => {

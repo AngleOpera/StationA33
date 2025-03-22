@@ -112,6 +112,21 @@ export function getMeshMidpointFromWorldPosition(
   return position.sub(baseplateCorner).div(gridSpacing).Floor()
 }
 
+export function getMeshRotationFromCFrame(
+  cframe: CFrame,
+  baseplate: BasePart,
+): MeshMidpoint {
+  const [_x, y, _z] = baseplate.CFrame.ToObjectSpace(cframe).ToOrientation()
+  const rotation = new Vector3(0, y > 0 ? y - math.rad(360) : y, 0).div(
+    math.rad(-90),
+  )
+  const quantized = roundVector3(rotation)
+  if (rotation.sub(quantized).Magnitude > 0.01) {
+    throw `Invalid rotation ${cframe.ToOrientation()} for baseplate ${baseplate.CFrame.ToOrientation()}`
+  }
+  return new Vector3(0, quantized.Y % 4, 0)
+}
+
 export function getMeshMidpointSizeFromStartpointEndpoint(
   startpoint: MeshStartpoint,
   endpoint: MeshEndpoint,
