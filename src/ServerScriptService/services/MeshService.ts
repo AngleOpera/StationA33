@@ -9,7 +9,10 @@ import {
   InventoryItemDescription,
   InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
+import {
+  getItemFromBlock,
+  getItemVector3,
+} from 'ReplicatedStorage/shared/utils/core'
 import {
   decodeMeshData,
   decodeMeshMidpoint,
@@ -17,23 +20,17 @@ import {
   getCFrameFromMeshMidpoint,
   gridSpacing,
   MeshMap,
-  meshMapAddEncoded,
-  meshMapRemoveEncoded,
-  MeshOffsetMap,
+  MeshPlot,
+  meshPlotAdd,
+  meshPlotRemove,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { Functions } from 'ServerScriptService/network'
 
-export interface PlayerPlot {
-  mesh: MeshMap
-  inputs: MeshOffsetMap
-  outputs: MeshOffsetMap
-}
-
 export interface PlayerSandbox {
   location: PlotLocation
   workspace: PlayerSpace
-  plot: Record<PlotLocation, PlayerPlot>
+  plot: Record<PlotLocation, MeshPlot>
 }
 
 @Service()
@@ -151,12 +148,7 @@ export class MeshService implements OnStart {
     if (!clonedModel) return
 
     const plot = playerSandbox.plot[playerSandbox.location]
-    const encodedMidpoint = encodeMeshMidpoint(midpoint)
-    meshMapAddEncoded(plot.mesh, encodedMidpoint, {
-      ...item,
-      rotation,
-      size: getItemVector3(item.size),
-    })
+    const encodedMidpoint = meshPlotAdd(plot, midpoint, item, rotation)
 
     const clonedSound = Workspace.Audio.BlockPlaced.Clone()
     clonedSound.Parent = clonedModel
@@ -190,8 +182,16 @@ export class MeshService implements OnStart {
       )
       return
     }
+    const item = getItemFromBlock(target)
+    if (!item) {
+      this.logger.Warn(
+        `MeshService.handleBreakBlock: Block ${encodedMidpoint} item not found`,
+      )
+      return
+    }
+
     const plot = playerSandbox.plot[playerSandbox.location]
-    meshMapRemoveEncoded(plot.mesh, encodedMidpoint)
+    meshPlotRemove(plot, midpoint, item)
 
     const clonedSoundBlock = new Instance('Part')
     clonedSoundBlock.Size = new Vector3(gridSpacing, gridSpacing, gridSpacing)

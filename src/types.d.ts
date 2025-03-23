@@ -67,7 +67,7 @@ interface Leaderboard extends Model {
   }
 }
 
-type MorphName = 'Speakerman' | 'Spacesuit'
+type MorphName = 'None' | 'Speakerman' | 'Spacesuit'
 
 interface Planet extends Folder {
   Baseplate: BasePart
@@ -111,7 +111,7 @@ interface ReplicatedStorage extends Instance {
     Record<string, InventoryItem> & {
       Conveyor: InventoryItem
     }
-  Morphs: Folder & Record<MorphName, Model>
+  Morphs: Folder & Record<MorphName, PlayerCharacter>
   Ships: Folder & {
     OlReliable: Ship
   }

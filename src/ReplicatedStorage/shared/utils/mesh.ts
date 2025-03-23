@@ -1,5 +1,8 @@
 import Object from '@rbxts/object-utils'
-import { BLOCK_ATTRIBUTE } from 'ReplicatedStorage/shared/constants/core'
+import {
+  BLOCK_ATTRIBUTE,
+  InventoryItemDescription,
+} from 'ReplicatedStorage/shared/constants/core'
 import {
   base58ColumnValues,
   decodeBase58Array,
@@ -27,6 +30,12 @@ export interface MeshData {
   readonly blockId: number
   readonly size: Vector3
   readonly rotation: Vector3
+}
+
+export interface MeshPlot {
+  mesh: MeshMap
+  inputs: MeshOffsetMap
+  outputs: MeshOffsetMap
 }
 
 export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
@@ -300,6 +309,30 @@ export function meshSetGet(map: MeshSet, midpoint?: MeshMidpoint): boolean {
 
 export function meshSetGetEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
   return !!map[midpoint]
+}
+
+export function meshPlotAdd(
+  plot: MeshPlot,
+  midpoint: MeshMidpoint,
+  item: InventoryItemDescription,
+  rotation: MeshRotation,
+): EncodedMeshMidpoint {
+  const encodedMidpoint = encodeMeshMidpoint(midpoint)
+  meshMapAddEncoded(plot.mesh, encodedMidpoint, {
+    ...item,
+    rotation,
+    size: getItemVector3(item.size),
+  })
+  return encodedMidpoint
+}
+
+export function meshPlotRemove(
+  plot: MeshPlot,
+  midpoint: MeshMidpoint,
+  _item: InventoryItemDescription,
+): void {
+  const encodedMidpoint = encodeMeshMidpoint(midpoint)
+  meshMapRemoveEncoded(plot.mesh, encodedMidpoint)
 }
 
 export function doGreedyMeshingFromPoint(
