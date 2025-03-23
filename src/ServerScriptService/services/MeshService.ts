@@ -18,6 +18,7 @@ import {
   decodeMeshMidpoint,
   encodeMeshMidpoint,
   getCFrameFromMeshMidpoint,
+  getMeshRotationFromCFrame,
   gridSpacing,
   MeshMap,
   MeshPlot,
@@ -191,7 +192,11 @@ export class MeshService implements OnStart {
     }
 
     const plot = playerSandbox.plot[playerSandbox.location]
-    meshPlotRemove(plot, midpoint, item)
+    const rotation = getMeshRotationFromCFrame(
+      target.GetPivot(),
+      playerSandbox.workspace.Plot.Baseplate,
+    )
+    meshPlotRemove(plot, midpoint, item, rotation)
 
     const clonedSoundBlock = new Instance('Part')
     clonedSoundBlock.Size = new Vector3(gridSpacing, gridSpacing, gridSpacing)

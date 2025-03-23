@@ -14,12 +14,17 @@ import {
   getUpperCorner,
   roundVector3,
 } from 'ReplicatedStorage/shared/utils/math'
+import {
+  compareString,
+  sarrayAdd,
+  sarrayRemove,
+} from 'ReplicatedStorage/shared/utils/sarray'
 
 export type EncodedMeshMidpoint = string
 export type EncodedMeshData = string
 export type MeshMap = Record<EncodedMeshMidpoint, EncodedMeshData>
 export type MeshSet = Record<EncodedMeshMidpoint, boolean>
-export type MeshOffsetMap = Record<EncodedMeshMidpoint, EncodedMeshMidpoint>
+export type MeshOffsetMap = Record<EncodedMeshMidpoint, EncodedMeshMidpoint[]>
 
 export type MeshStartpoint = Vector3 & { readonly _mesh_start?: unique symbol }
 export type MeshEndpoint = Vector3 & { readonly _mesh_end?: unique symbol }
@@ -42,6 +47,11 @@ export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
 export const coordinateEncodingLength = 2
 export const maxCoordinateValue =
   base58ColumnValues[coordinateEncodingLength] - 1
+
+export const meshRotation0: MeshRotation = new Vector3(0, 0, 0)
+export const meshRotation90: MeshRotation = new Vector3(0, 1, 0)
+export const meshRotation180: MeshRotation = new Vector3(0, 2, 0)
+export const meshRotation270: MeshRotation = new Vector3(0, 3, 0)
 
 export function validMeshMidpoint(midpoint: Vector3): boolean {
   return (
@@ -195,7 +205,7 @@ export function getMeshOffsetsFromMeshMidpoint(
   unrotatedSize: Vector3,
   rotation: MeshRotation,
   offsets: ItemVector3[],
-) {
+): MeshMidpoint[] {
   const size = getRotatedMeshSize(unrotatedSize, rotation)
   const unquantizedMidpoint = getMeshUnquantizedMidpointFromMidpointRotatedSize(
     midpoint,
@@ -311,6 +321,39 @@ export function meshSetGetEncoded(map: MeshSet, midpoint: EncodedMeshMidpoint) {
   return !!map[midpoint]
 }
 
+export function meshOffsetMapAdd(
+  map: MeshOffsetMap,
+  offsetMidpoint: MeshMidpoint,
+  encodedParentMidpoint: EncodedMeshMidpoint,
+) {
+  const encodedOffsetMidpoint = encodeMeshMidpoint(offsetMidpoint)
+  let blockOffsets = map[encodedOffsetMidpoint]
+  if (!blockOffsets) {
+    blockOffsets = []
+    map[encodedOffsetMidpoint] = blockOffsets
+  }
+  sarrayAdd(blockOffsets, encodedParentMidpoint, compareString)
+}
+
+export function meshOffsetMapRemove(
+  map: MeshOffsetMap,
+  offsetMidpoint: MeshMidpoint,
+  encodedParentMidpoint: EncodedMeshMidpoint,
+) {
+  const encodedOffsetMidpoint = encodeMeshMidpoint(offsetMidpoint)
+  const blockOffsets = map[encodedOffsetMidpoint]
+  if (!blockOffsets) return
+  sarrayRemove(blockOffsets, encodedParentMidpoint, compareString)
+  if (blockOffsets.size() === 0) delete map[encodedOffsetMidpoint]
+}
+
+export function meshOffsetMapGet(
+  map: MeshOffsetMap,
+  offsetMidpoint: MeshMidpoint,
+) {
+  return map[encodeMeshMidpoint(offsetMidpoint)]
+}
+
 export function meshPlotAdd(
   plot: MeshPlot,
   midpoint: MeshMidpoint,
@@ -318,21 +361,44 @@ export function meshPlotAdd(
   rotation: MeshRotation,
 ): EncodedMeshMidpoint {
   const encodedMidpoint = encodeMeshMidpoint(midpoint)
+  const size = getItemVector3(item.size)
   meshMapAddEncoded(plot.mesh, encodedMidpoint, {
     ...item,
     rotation,
-    size: getItemVector3(item.size),
+    size,
   })
+  for (const input of item.input
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.input)
+    : []) {
+    meshOffsetMapAdd(plot.inputs, input, encodedMidpoint)
+  }
+  for (const output of item.output
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.output)
+    : []) {
+    meshOffsetMapAdd(plot.outputs, output, encodedMidpoint)
+  }
   return encodedMidpoint
 }
 
 export function meshPlotRemove(
   plot: MeshPlot,
   midpoint: MeshMidpoint,
-  _item: InventoryItemDescription,
+  item: InventoryItemDescription,
+  rotation: MeshRotation,
 ): void {
   const encodedMidpoint = encodeMeshMidpoint(midpoint)
+  const size = getItemVector3(item.size)
   meshMapRemoveEncoded(plot.mesh, encodedMidpoint)
+  for (const input of item.input
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.input)
+    : []) {
+    meshOffsetMapRemove(plot.inputs, input, encodedMidpoint)
+  }
+  for (const output of item.output
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.output)
+    : []) {
+    meshOffsetMapRemove(plot.outputs, output, encodedMidpoint)
+  }
 }
 
 export function doGreedyMeshingFromPoint(

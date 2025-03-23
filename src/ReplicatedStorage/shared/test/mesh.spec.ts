@@ -24,6 +24,14 @@ import {
   MeshData,
   MeshMap,
   meshMapAdd,
+  meshOffsetMapGet,
+  MeshPlot,
+  meshPlotAdd,
+  meshPlotRemove,
+  meshRotation0,
+  meshRotation90,
+  meshRotation180,
+  meshRotation270,
 } from 'ReplicatedStorage/shared/utils/mesh'
 
 export = () => {
@@ -161,7 +169,7 @@ export = () => {
 
     it('should convert between (midpoint, size) and (startpoint, endpoint)', () => {
       const size = new Vector3(3, 4, 5)
-      const rotation = new Vector3(0, 0, 0)
+      const rotation = meshRotation0
       const testMidpoint1 = new Vector3(721, 444, 123)
       const { startpoint, endpoint } =
         getMeshStartpointEndpointFromMidpointSize(testMidpoint1, size, rotation)
@@ -214,7 +222,7 @@ export = () => {
       const defaultBlock = {
         blockId: 1,
         size: new Vector3(1, 1, 1),
-        rotation: new Vector3(0, 0, 0),
+        rotation: meshRotation0,
       }
       expect(encodeMeshData(defaultBlock)).to.be.equal('2_')
       expect(decodeMeshData('2_')).to.be.equal(defaultBlock)
@@ -279,27 +287,33 @@ export = () => {
     })
 
     it('should rotate mesh points', () => {
-      const rotation0 = new Vector3(0, 0, 0)
-      const rotation1 = new Vector3(0, 1, 0)
-      const rotation2 = new Vector3(0, 2, 0)
-      const rotation3 = new Vector3(0, 3, 0)
-      const rotation4 = new Vector3(0, 4, 0)
+      const rotation360 = new Vector3(0, 4, 0)
       const testPoint1 = new Vector3(0, 0, -1)
       const testPoint2 = new Vector3(1, 0, 0)
       const testPoint3 = new Vector3(0, 0, 1)
       const testPoint4 = new Vector3(-1, 0, 0)
-      expect(getRotatedMeshPoint(testPoint1, rotation0)).to.be.equal(testPoint1)
-      expect(getRotatedMeshPoint(testPoint1, rotation1)).to.be.equal(testPoint2)
-      expect(getRotatedMeshPoint(testPoint1, rotation2)).to.be.equal(testPoint3)
-      expect(getRotatedMeshPoint(testPoint1, rotation3)).to.be.equal(testPoint4)
-      expect(getRotatedMeshPoint(testPoint1, rotation4)).to.be.equal(testPoint1)
+      expect(getRotatedMeshPoint(testPoint1, meshRotation0)).to.be.equal(
+        testPoint1,
+      )
+      expect(getRotatedMeshPoint(testPoint1, meshRotation90)).to.be.equal(
+        testPoint2,
+      )
+      expect(getRotatedMeshPoint(testPoint1, meshRotation180)).to.be.equal(
+        testPoint3,
+      )
+      expect(getRotatedMeshPoint(testPoint1, meshRotation270)).to.be.equal(
+        testPoint4,
+      )
+      expect(getRotatedMeshPoint(testPoint1, rotation360)).to.be.equal(
+        testPoint1,
+      )
       const size1 = new Vector3(6, 1, 2)
       const size2 = new Vector3(2, 1, 6)
-      expect(getRotatedMeshSize(size1, rotation0)).to.be.equal(size1)
-      expect(getRotatedMeshSize(size1, rotation1)).to.be.equal(size2)
-      expect(getRotatedMeshSize(size1, rotation2)).to.be.equal(size1)
-      expect(getRotatedMeshSize(size1, rotation3)).to.be.equal(size2)
-      expect(getRotatedMeshSize(size1, rotation4)).to.be.equal(size1)
+      expect(getRotatedMeshSize(size1, meshRotation0)).to.be.equal(size1)
+      expect(getRotatedMeshSize(size1, meshRotation90)).to.be.equal(size2)
+      expect(getRotatedMeshSize(size1, meshRotation180)).to.be.equal(size1)
+      expect(getRotatedMeshSize(size1, meshRotation270)).to.be.equal(size2)
+      expect(getRotatedMeshSize(size1, rotation360)).to.be.equal(size1)
     })
   })
 
@@ -344,34 +358,82 @@ export = () => {
     const baseplate = Workspace.Planet.Plot1
     const midpoint = new Vector3(3, 3, 3)
     const size = new Vector3(1, 1, 1)
-    const rotation0 = new Vector3(0, 0, 0)
-    const rotation1 = new Vector3(0, 1, 0)
-    const rotation2 = new Vector3(0, 2, 0)
-    const rotation3 = new Vector3(0, 3, 0)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, rotation0, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, meshRotation0, baseplate),
         baseplate,
       ),
-    ).to.be.equal(rotation0)
+    ).to.be.equal(meshRotation0)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, rotation1, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, meshRotation90, baseplate),
         baseplate,
       ),
-    ).to.be.equal(rotation1)
+    ).to.be.equal(meshRotation90)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, rotation2, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, meshRotation180, baseplate),
         baseplate,
       ),
-    ).to.be.equal(rotation2)
+    ).to.be.equal(meshRotation180)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, rotation3, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, meshRotation270, baseplate),
         baseplate,
       ),
-    ).to.be.equal(rotation3)
+    ).to.be.equal(meshRotation270)
+  })
+
+  it('should track mesh inputs and outputs', () => {
+    const meshPlot: MeshPlot = {
+      mesh: {},
+      inputs: {},
+      outputs: {},
+    }
+    const p = new Vector3(10, 0, 20)
+    meshPlotAdd(meshPlot, p, INVENTORY.Conveyor, meshRotation90)
+    expect(Object.keys(meshPlot.mesh).size()).to.be.equal(1)
+    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(1)
+    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(1)
+    let inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(9, 0, 20))
+    let outputs = meshOffsetMapGet(meshPlot.outputs, new Vector3(11, 0, 20))
+    expect(inputs?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(p)
+    expect(outputs?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(outputs[0])).to.be.equal(p)
+
+    const q = new Vector3(11, 0, 20)
+    meshPlotAdd(meshPlot, q, INVENTORY.Conveyor, meshRotation90)
+    expect(Object.keys(meshPlot.mesh).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(2)
+    inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(10, 0, 20))
+    outputs = meshOffsetMapGet(meshPlot.outputs, new Vector3(12, 0, 20))
+    expect(inputs?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(q)
+    expect(outputs?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(outputs[0])).to.be.equal(q)
+
+    const r = new Vector3(9, 0, 19)
+    meshPlotAdd(meshPlot, r, INVENTORY.Conveyor, meshRotation0)
+    expect(Object.keys(meshPlot.mesh).size()).to.be.equal(3)
+    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(3)
+    inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(9, 0, 20))
+    outputs = meshOffsetMapGet(meshPlot.outputs, new Vector3(9, 0, 18))
+    expect(inputs?.size()).to.be.equal(2)
+    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(r)
+    expect(decodeMeshMidpoint(inputs[1])).to.be.equal(p)
+    expect(outputs?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(outputs[0])).to.be.equal(r)
+
+    meshPlotRemove(meshPlot, p, INVENTORY.Conveyor, meshRotation90)
+    expect(Object.keys(meshPlot.mesh).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(2)
+    inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(9, 0, 20))
+    expect(inputs?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(r)
   })
 
   it('should do greedy meshing', () => {

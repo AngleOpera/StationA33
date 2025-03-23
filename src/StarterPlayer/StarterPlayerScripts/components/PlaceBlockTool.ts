@@ -14,6 +14,7 @@ import {
   gridSpacing,
   MeshMidpoint,
   MeshRotation,
+  meshRotation0,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
@@ -27,7 +28,7 @@ export class PlaceBlockToolComponent
 {
   connection: RBXScriptConnection | undefined
   midpoint: MeshMidpoint | undefined
-  rotation: MeshRotation = new Vector3(0, 0, 0)
+  rotation: MeshRotation = meshRotation0
   item: InventoryItemDescription | undefined
   preview: BasePart | Model | undefined
   invoking = false
