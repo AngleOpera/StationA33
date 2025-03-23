@@ -33,6 +33,9 @@
       "Items": {
         "$path": "assets/ReplicatedStorage/Items"
       },
+      "Morphs": {
+        "$path": "assets/ReplicatedStorage/Morphs"
+      },
       "Robots": {
         "$path": "assets/ReplicatedStorage/Robots"
       },

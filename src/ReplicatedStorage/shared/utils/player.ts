@@ -1,4 +1,4 @@
-import { Players } from '@rbxts/services'
+import { Players, Workspace } from '@rbxts/services'
 
 export type PlayerReceivingFunction = (player: Player) => unknown
 
@@ -27,4 +27,21 @@ export function forEveryPlayer(
   if (leaveFunc) events.push(Players.PlayerRemoving.Connect(leaveFunc))
 
   return events
+}
+
+export function morphPlayer(player: Player, morphTemplate: PlayerCharacter) {
+  const morph = morphTemplate.Clone()
+  morph.Name = player.Name
+
+  const morphRoot =
+    morph.FindFirstChild<BasePart>('HumanoidRootPart') ||
+    morph.FindFirstChild<BasePart>('Torso')
+  const playerRoot =
+    player.Character?.FindFirstChild<BasePart>('HumanoidRootPart') ||
+    player.Character?.FindFirstChild<BasePart>('Torso')
+  if (morphRoot && playerRoot) morphRoot.CFrame = playerRoot.CFrame
+
+  player.Character = morph
+  morph.Parent = Workspace
+  return morph
 }

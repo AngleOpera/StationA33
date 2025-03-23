@@ -69,6 +69,13 @@ export const ENTITY_ATTRIBUTE: Record<keyof EntityAttributes, string> = {
   EntityId: 'EntityId',
 }
 
+export const MORPH_NAME: {
+  [name in MorphName]: MorphName
+} = {
+  Speakerman: 'Speakerman' as const,
+  Spacesuit: 'Spacesuit' as const,
+}
+
 export const PLOT_LOCATION: {
   [name in PlotLocation]: PlotLocation
 } = {
