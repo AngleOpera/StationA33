@@ -69,71 +69,69 @@
     "image": "rbxassetid://0",
     "price": 100,
     "size": [1, 1, 1],
-    "input": [ [ 0, 0, 1 ] ],
-    "output": [ [ 0, 0, -1 ] ]
+    "inputFrom": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ 0, 0, -1 ] ]
   },
   "ConveyorLeftTurn": {
     "blockId": 9,
     "name": "ConveyorLeftTurn",
     "size": [1, 1, 1],
-    "input": [ [ 0, 0, 1 ] ],
-    "output": [ [ -1, 0, 0 ] ],
-    "parent": "Conveyor"
+    "inputFrom": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ -1, 0, 0 ] ]
   },
   "ConveyorRightTurn": {
     "blockId": 10,
     "name": "ConveyorRightTurn",
     "size": [1, 1, 1],
-    "input": [ [ 0, 0, 1 ] ],
-    "output": [ [ 1, 0, 0 ] ],
-    "parent": "Conveyor"
+    "inputFrom": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ 1, 0, 0 ] ]
   },
   "ConveyorSplit": {
     "blockId": 11,
     "name": "ConveyorSplit",
     "size": [1, 1, 1],
-    "input": [ [ 0, 0, 1 ] ],
-    "output": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
+    "inputFrom": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
   },
   "ConveyorSplitForward": {
     "blockId": 12,
     "name": "ConveyorSplitForward",
     "size": [1, 1, 1],
-    "input": [ [ 0, 0, 1 ] ],
-    "output": [ [ -1, 0, 0 ], [ 0, 0, -1 ], [ 1, 0, 0 ] ],
+    "inputFrom": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ -1, 0, 0 ], [ 0, 0, -1 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
   },
   "ConveyorLeftSplit": {
     "blockId": 13,
     "name": "ConveyorLeftSplit",
     "size": [1, 1, 1],
-    "input": [ [ 0, 0, 1 ] ],
-    "output": [ [ -1, 0, 0 ], [ 0, 0, -1 ] ],
+    "inputFrom": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ -1, 0, 0 ], [ 0, 0, -1 ] ],
     "parent": "Conveyor"
   },
   "ConveyorRightSplit": {
     "blockId": 14,
     "name": "ConveyorRightSplit",
     "size": [1, 1, 1],
-    "input": [ [ 0, 0, 1 ] ],
-    "output": [ [ 0, 0, -1 ], [ 1, 0, 0 ] ],
+    "inputFrom": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ 0, 0, -1 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
   },
   "ConveyorJoin": {
     "blockId": 15,
     "name": "ConveyorJoin",
     "size": [1, 1, 1],
-    "input": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
-    "output": [ [ 0, 0, -1 ] ],
+    "inputFrom": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
+    "outputTo": [ [ 0, 0, -1 ] ],
     "parent": "Conveyor"
   },
   "ConveyorJoinForward": {
     "blockId": 16,
     "name": "ConveyorJoinForward",
     "size": [1, 1, 1],
-    "input": [ [ -1, 0, 0 ], [0, 0, 1], [ 1, 0, 0 ] ],
-    "output": [ [ 0, 0, -1 ] ],
+    "inputFrom": [ [ -1, 0, 0 ], [0, 0, 1], [ 1, 0, 0 ] ],
+    "outputTo": [ [ 0, 0, -1 ] ],
     "parent": "Conveyor"
   },
   "Sawmill": {
@@ -143,8 +141,10 @@
     "image": "rbxassetid://0",
     "price": 400,
     "size": [1, 1, 3],
-    "input": [ [ 0, 0, 2 ] ],
-    "output": [ [ 0, 0, -2 ] ]
+    "inputFrom": [ [ 0, 0, 2 ] ],
+    "inputTo": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ 0, 0, -2 ] ],
+    "outputFrom": [ [ 0, 0, -1 ] ]
   },
   "RubyOre": {
     "blockId": 18,

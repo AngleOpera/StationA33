@@ -41,12 +41,20 @@ export class MeshService implements OnStart {
   constructor(protected readonly logger: Logger) {}
 
   onStart() {
-    Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) =>
-      this.handlePlaceBlock(player, itemName, midpoint, rotation),
-    )
-    Functions.breakBlock.setCallback((player, midpoint) =>
-      this.handleBreakBlock(player, midpoint),
-    )
+    Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) => {
+      try {
+        this.handlePlaceBlock(player, itemName, midpoint, rotation)
+      } catch (e) {
+        this.logger.Error(`MeshService.placeBlock: ${e}`)
+      }
+    })
+    Functions.breakBlock.setCallback((player, midpoint) => {
+      try {
+        this.handleBreakBlock(player, midpoint)
+      } catch (e) {
+        this.logger.Error(`MeshService.breakBlock: ${e}`)
+      }
+    })
   }
 
   getPlayerSandbox(player: Player) {
@@ -72,8 +80,9 @@ export class MeshService implements OnStart {
           key,
           {
             mesh: value,
-            inputs: {},
-            outputs: {},
+            inputFrom: {},
+            inputTo: {},
+            outputTo: {},
           },
         ]),
       ),
@@ -142,7 +151,7 @@ export class MeshService implements OnStart {
     const item = INVENTORY[itemName]
     if (!item) {
       this.logger.Error(`MeshService.placeBlock: Item ${itemName} unknown`)
-      return undefined
+      return
     }
 
     const clonedModel = this.cloneBlock(playerSandbox, item, midpoint, rotation)
@@ -150,7 +159,6 @@ export class MeshService implements OnStart {
 
     const plot = playerSandbox.plot[playerSandbox.location]
     const encodedMidpoint = meshPlotAdd(plot, midpoint, item, rotation)
-
     const clonedSound = Workspace.Audio.BlockPlaced.Clone()
     clonedSound.Parent = clonedModel
     clonedModel.Name = encodedMidpoint

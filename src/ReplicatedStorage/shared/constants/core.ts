@@ -12,9 +12,11 @@ export interface InventoryItemDescription {
   size: ItemVector3
   description?: string
   image?: string
-  input?: ItemVector3[]
+  inputFrom?: ItemVector3[]
+  inputTo?: ItemVector3[]
   parent?: string
-  output?: ItemVector3[]
+  outputFrom?: ItemVector3[]
+  outputTo?: ItemVector3[]
   placeable?: boolean
   price?: number
   stackable?: boolean

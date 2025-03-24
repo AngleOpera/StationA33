@@ -325,7 +325,7 @@ export = () => {
         testPoint,
         getItemVector3(item.size),
         new Vector3(0, 0, 0),
-        item.output ?? [],
+        item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(39, 0, 421)])
     expect(
@@ -333,7 +333,7 @@ export = () => {
         testPoint,
         getItemVector3(item.size),
         new Vector3(0, 1, 0),
-        item.output ?? [],
+        item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(40, 0, 422)])
     expect(
@@ -341,7 +341,7 @@ export = () => {
         testPoint,
         getItemVector3(item.size),
         new Vector3(0, 2, 0),
-        item.output ?? [],
+        item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(39, 0, 423)])
     expect(
@@ -349,7 +349,7 @@ export = () => {
         testPoint,
         getItemVector3(item.size),
         new Vector3(0, 3, 0),
-        item.output ?? [],
+        item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(38, 0, 422)])
   })
@@ -387,53 +387,67 @@ export = () => {
   it('should track mesh inputs and outputs', () => {
     const meshPlot: MeshPlot = {
       mesh: {},
-      inputs: {},
-      outputs: {},
+      inputFrom: {},
+      inputTo: {},
+      outputTo: {},
     }
     const p = new Vector3(10, 0, 20)
     meshPlotAdd(meshPlot, p, INVENTORY.Conveyor, meshRotation90)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(1)
-    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(1)
-    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(1)
-    let inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(9, 0, 20))
-    let outputs = meshOffsetMapGet(meshPlot.outputs, new Vector3(11, 0, 20))
-    expect(inputs?.size()).to.be.equal(1)
-    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(p)
-    expect(outputs?.size()).to.be.equal(1)
-    expect(decodeMeshMidpoint(outputs[0])).to.be.equal(p)
+    expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(1)
+    expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(1)
+    expect(Object.keys(meshPlot.outputTo).size()).to.be.equal(1)
+    let inputFrom = meshOffsetMapGet(meshPlot.inputFrom, new Vector3(9, 0, 20))
+    let inputTo = meshOffsetMapGet(meshPlot.inputTo, new Vector3(10, 0, 20))
+    let outputTo = meshOffsetMapGet(meshPlot.outputTo, new Vector3(11, 0, 20))
+    expect(inputFrom?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputFrom[0])).to.be.equal(p)
+    expect(inputTo?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputTo[0])).to.be.equal(p)
+    expect(outputTo?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(outputTo[0])).to.be.equal(p)
 
     const q = new Vector3(11, 0, 20)
     meshPlotAdd(meshPlot, q, INVENTORY.Conveyor, meshRotation90)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(2)
-    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(2)
-    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(2)
-    inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(10, 0, 20))
-    outputs = meshOffsetMapGet(meshPlot.outputs, new Vector3(12, 0, 20))
-    expect(inputs?.size()).to.be.equal(1)
-    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(q)
-    expect(outputs?.size()).to.be.equal(1)
-    expect(decodeMeshMidpoint(outputs[0])).to.be.equal(q)
+    expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.outputTo).size()).to.be.equal(2)
+    inputFrom = meshOffsetMapGet(meshPlot.inputFrom, new Vector3(10, 0, 20))
+    inputTo = meshOffsetMapGet(meshPlot.inputTo, new Vector3(11, 0, 20))
+    outputTo = meshOffsetMapGet(meshPlot.outputTo, new Vector3(12, 0, 20))
+    expect(inputFrom?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputFrom[0])).to.be.equal(q)
+    expect(inputTo?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputTo[0])).to.be.equal(q)
+    expect(outputTo?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(outputTo[0])).to.be.equal(q)
 
     const r = new Vector3(9, 0, 19)
     meshPlotAdd(meshPlot, r, INVENTORY.Conveyor, meshRotation0)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(3)
-    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(2)
-    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(3)
-    inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(9, 0, 20))
-    outputs = meshOffsetMapGet(meshPlot.outputs, new Vector3(9, 0, 18))
-    expect(inputs?.size()).to.be.equal(2)
-    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(r)
-    expect(decodeMeshMidpoint(inputs[1])).to.be.equal(p)
-    expect(outputs?.size()).to.be.equal(1)
-    expect(decodeMeshMidpoint(outputs[0])).to.be.equal(r)
+    expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(3)
+    expect(Object.keys(meshPlot.outputTo).size()).to.be.equal(3)
+    inputFrom = meshOffsetMapGet(meshPlot.inputFrom, new Vector3(9, 0, 20))
+    inputTo = meshOffsetMapGet(meshPlot.inputTo, new Vector3(9, 0, 19))
+    outputTo = meshOffsetMapGet(meshPlot.outputTo, new Vector3(9, 0, 18))
+    expect(inputFrom?.size()).to.be.equal(2)
+    expect(decodeMeshMidpoint(inputFrom[0])).to.be.equal(r)
+    expect(decodeMeshMidpoint(inputFrom[1])).to.be.equal(p)
+    expect(inputTo?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputTo[0])).to.be.equal(r)
+    expect(outputTo?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(outputTo[0])).to.be.equal(r)
 
     meshPlotRemove(meshPlot, p, INVENTORY.Conveyor, meshRotation90)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(2)
-    expect(Object.keys(meshPlot.inputs).size()).to.be.equal(2)
-    expect(Object.keys(meshPlot.outputs).size()).to.be.equal(2)
-    inputs = meshOffsetMapGet(meshPlot.inputs, new Vector3(9, 0, 20))
-    expect(inputs?.size()).to.be.equal(1)
-    expect(decodeMeshMidpoint(inputs[0])).to.be.equal(r)
+    expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(2)
+    expect(Object.keys(meshPlot.outputTo).size()).to.be.equal(2)
+    inputFrom = meshOffsetMapGet(meshPlot.inputFrom, new Vector3(9, 0, 20))
+    expect(inputFrom?.size()).to.be.equal(1)
+    expect(decodeMeshMidpoint(inputFrom[0])).to.be.equal(r)
   })
 
   it('should do greedy meshing', () => {

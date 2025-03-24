@@ -39,8 +39,9 @@ export interface MeshData {
 
 export interface MeshPlot {
   mesh: MeshMap
-  inputs: MeshOffsetMap
-  outputs: MeshOffsetMap
+  inputFrom: MeshOffsetMap
+  inputTo: MeshOffsetMap
+  outputTo: MeshOffsetMap
 }
 
 export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
@@ -354,6 +355,40 @@ export function meshOffsetMapGet(
   return map[encodeMeshMidpoint(offsetMidpoint)]
 }
 
+export function visitMeshOffsets(
+  plot: MeshPlot,
+  midpoint: MeshMidpoint,
+  encodedMidpoint: EncodedMeshMidpoint,
+  item: InventoryItemDescription,
+  rotation: MeshRotation,
+  visit = meshOffsetMapAdd,
+) {
+  const size = getItemVector3(item.size)
+  for (const input of item.inputFrom
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.inputFrom)
+    : []) {
+    if (validMeshMidpoint(input)) visit(plot.inputFrom, input, encodedMidpoint)
+  }
+  if (item.inputTo) {
+    for (const input of getMeshOffsetsFromMeshMidpoint(
+      midpoint,
+      size,
+      rotation,
+      item.inputTo,
+    )) {
+      if (validMeshMidpoint(input)) visit(plot.inputTo, input, encodedMidpoint)
+    }
+  } else if (item.inputFrom) {
+    // Default to mesh midpoint if inputFrom without inputTo
+    visit(plot.inputTo, midpoint, encodedMidpoint)
+  }
+  for (const output of item.outputTo
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.outputTo)
+    : []) {
+    if (validMeshMidpoint(output)) visit(plot.outputTo, output, encodedMidpoint)
+  }
+}
+
 export function meshPlotAdd(
   plot: MeshPlot,
   midpoint: MeshMidpoint,
@@ -367,16 +402,14 @@ export function meshPlotAdd(
     rotation,
     size,
   })
-  for (const input of item.input
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.input)
-    : []) {
-    meshOffsetMapAdd(plot.inputs, input, encodedMidpoint)
-  }
-  for (const output of item.output
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.output)
-    : []) {
-    meshOffsetMapAdd(plot.outputs, output, encodedMidpoint)
-  }
+  visitMeshOffsets(
+    plot,
+    midpoint,
+    encodedMidpoint,
+    item,
+    rotation,
+    meshOffsetMapAdd,
+  )
   return encodedMidpoint
 }
 
@@ -387,18 +420,15 @@ export function meshPlotRemove(
   rotation: MeshRotation,
 ): void {
   const encodedMidpoint = encodeMeshMidpoint(midpoint)
-  const size = getItemVector3(item.size)
   meshMapRemoveEncoded(plot.mesh, encodedMidpoint)
-  for (const input of item.input
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.input)
-    : []) {
-    meshOffsetMapRemove(plot.inputs, input, encodedMidpoint)
-  }
-  for (const output of item.output
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.output)
-    : []) {
-    meshOffsetMapRemove(plot.outputs, output, encodedMidpoint)
-  }
+  visitMeshOffsets(
+    plot,
+    midpoint,
+    encodedMidpoint,
+    item,
+    rotation,
+    meshOffsetMapRemove,
+  )
 }
 
 export function doGreedyMeshingFromPoint(
