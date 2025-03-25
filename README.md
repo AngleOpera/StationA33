@@ -43,6 +43,7 @@ yarn && yarn build && yarn start
 - Install [rbxts-object-to-tree](https://www.roblox.com/library/3379119778/rbxts-object-to-tree) plugin
 - Install [ResizeAlign](https://create.roblox.com/store/asset/165534573/Stravant-ResizeAlign) plugin
 - Install [ThreeDText-2](https://create.roblox.com/store/asset/2273628561/ThreeDText-2) plugin
+- Install [ThumbnailCamera-Generate](https://create.roblox.com/store/asset/9231353080/ThumbmailCamera-Generate) plugin
 
 ### Install VSCode Extensions
 

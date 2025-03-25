@@ -101,7 +101,10 @@ export function decodeMeshData(encoded: EncodedMeshData): MeshData {
   }
 }
 
-export function getMeshDataFromModel(model: Model): MeshData {
+export function getMeshDataFromModel(
+  model: Model,
+  baseplate?: BasePart,
+): MeshData {
   const blockId = model.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
   const size = model.PrimaryPart?.Size
   return {
@@ -111,7 +114,9 @@ export function getMeshDataFromModel(model: Model): MeshData {
       size ? math.floor(size.Y / gridSpacing) : 1,
       size ? math.floor(size.Z / gridSpacing) : 1,
     ),
-    rotation: new Vector3(0, 0, 0),
+    rotation: baseplate
+      ? getMeshRotationFromCFrame(model.GetPivot(), baseplate)
+      : meshRotation0,
   }
 }
 
@@ -221,10 +226,11 @@ export function getMeshOffsetsFromMeshMidpoint(
 
 export function getCFrameFromMeshMidpoint(
   midpoint: MeshMidpoint,
-  size: Vector3,
+  unrotatedSize: Vector3,
   rotation: MeshRotation,
   baseplate: BasePart,
 ): CFrame {
+  const size = getRotatedMeshSize(unrotatedSize, rotation)
   return baseplate.CFrame.ToWorldSpace(
     new CFrame(
       midpoint.X * gridSpacing -

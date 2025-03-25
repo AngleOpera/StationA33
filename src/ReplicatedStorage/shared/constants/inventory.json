@@ -154,5 +154,10 @@
     "price": 900,
     "size": [1, 1, 1],
     "placeable": false
+  },
+  "Container": {
+    "blockId": 19,
+    "name": "Container",
+    "size": [2, 2, 3]
   }
 }
