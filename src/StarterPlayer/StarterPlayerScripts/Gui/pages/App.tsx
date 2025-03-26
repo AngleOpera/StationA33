@@ -1,7 +1,7 @@
 import React from '@rbxts/react'
 import { ErrorHandler } from 'StarterPlayer/StarterPlayerScripts/Gui/components/ErrorHandler'
-import { InventoryMenu } from 'StarterPlayer/StarterPlayerScripts/Gui/sections/InventoryMenu'
-import { MainMenu } from 'StarterPlayer/StarterPlayerScripts/Gui/sections/MainMenu'
+import { InventorySection } from 'StarterPlayer/StarterPlayerScripts/Gui/sections/Inventory'
+import { MainMenu } from 'StarterPlayer/StarterPlayerScripts/Gui/sections/Main'
 import { Music } from 'StarterPlayer/StarterPlayerScripts/Gui/sections/Music'
 
 export function App() {
@@ -10,7 +10,7 @@ export function App() {
       <Music />
       <screengui>
         <MainMenu />
-        <InventoryMenu />
+        <InventorySection />
       </screengui>
     </ErrorHandler>
   )

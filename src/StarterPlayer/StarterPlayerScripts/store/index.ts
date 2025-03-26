@@ -44,6 +44,14 @@ export const selectIsPageOpen = (page: MenuPage) => {
   return (state: RootState) => state.menu.open && state.menu.page === page
 }
 
+export const selectIsPageOpenWithContainer = (page: MenuPage) => {
+  const selectOpened = selectIsPageOpen(page)
+  return (state: RootState) => ({
+    opened: selectOpened(state),
+    container: state.menu.container,
+  })
+}
+
 export const selectMenuTransition = (state: RootState) => {
   return state.menu.transition
 }

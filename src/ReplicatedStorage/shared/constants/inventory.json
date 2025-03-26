@@ -72,63 +72,63 @@
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ 0, 0, -1 ] ]
   },
-  "ConveyorLeftTurn": {
+  "LeftConveyor": {
     "blockId": 9,
-    "name": "ConveyorLeftTurn",
+    "name": "LeftConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ] ]
   },
-  "ConveyorRightTurn": {
+  "RightConveyor": {
     "blockId": 10,
-    "name": "ConveyorRightTurn",
+    "name": "RightConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ 1, 0, 0 ] ]
   },
-  "ConveyorSplit": {
+  "SplitConveyor": {
     "blockId": 11,
-    "name": "ConveyorSplit",
+    "name": "SplitConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
   },
-  "ConveyorSplitForward": {
+  "SplitAllConveyor": {
     "blockId": 12,
-    "name": "ConveyorSplitForward",
+    "name": "SplitAllConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ], [ 0, 0, -1 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
   },
-  "ConveyorLeftSplit": {
+  "SplitLeftConveyor": {
     "blockId": 13,
-    "name": "ConveyorLeftSplit",
+    "name": "SplitLeftConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ], [ 0, 0, -1 ] ],
     "parent": "Conveyor"
   },
-  "ConveyorRightSplit": {
+  "SplitRightConveyor": {
     "blockId": 14,
-    "name": "ConveyorRightSplit",
+    "name": "SplitRightConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ 0, 0, -1 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
   },
-  "ConveyorJoin": {
+  "JoinConveyor": {
     "blockId": 15,
-    "name": "ConveyorJoin",
+    "name": "JoinConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
     "outputTo": [ [ 0, 0, -1 ] ],
     "parent": "Conveyor"
   },
-  "ConveyorJoinForward": {
+  "JoinAllConveyor": {
     "blockId": 16,
-    "name": "ConveyorJoinForward",
+    "name": "JoinAllConveyor",
     "size": [1, 1, 1],
     "inputFrom": [ [ -1, 0, 0 ], [0, 0, 1], [ 1, 0, 0 ] ],
     "outputTo": [ [ 0, 0, -1 ] ],

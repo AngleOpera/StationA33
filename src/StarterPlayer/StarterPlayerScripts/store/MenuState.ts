@@ -16,15 +16,16 @@ export interface MenuState {
     readonly direction: 'left' | 'right'
     readonly counter: number
   }
+  readonly container?: string
 }
 
-export type MenuPage = 'Main' | 'Inventory' | 'Store' | 'Trade'
+export type MenuPage = 'Inventory' | 'Main' | 'Store' | 'Trade'
 
 export const MENU_PAGE: {
   [name in MenuPage]: MenuPage
 } = {
-  Main: 'Main' as const,
   Inventory: 'Inventory' as const,
+  Main: 'Main' as const,
   Store: 'Store' as const,
   Trade: 'Trade' as const,
 }
@@ -46,10 +47,11 @@ const initialState: MenuState = {
 }
 
 export const menuSlice = createProducer(initialState, {
-  setMenuPage: (state, page: MenuPage, open = true) => ({
+  setMenuPage: (state, page: MenuPage, open = true, container?: string) => ({
     ...state,
     page,
     open,
+    container,
     transition: {
       direction: getMenuDirection(state.page, page),
       counter: state.transition.counter + 1,

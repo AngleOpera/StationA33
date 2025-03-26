@@ -38,6 +38,10 @@ export interface ProductData {
 export interface PlayerData {
   readonly credits: number
   readonly inventory: Partial<Record<InventoryItemName, number>>
+  readonly containers: Record<
+    string,
+    Partial<Record<InventoryItemName, number>>
+  >
   readonly settings: PlayerSettings
   readonly gamePasses: Partial<PlayerGamePasses>
   readonly products: Partial<PlayerProducts>
@@ -67,6 +71,7 @@ export const defaultPlayerSettings: PlayerSettings = {
 export const defaultPlayerData: PlayerData = {
   credits: 0,
   inventory: {},
+  containers: {},
   settings: defaultPlayerSettings,
   gamePasses: {},
   products: {},
@@ -90,6 +95,7 @@ const initialState: Players = {}
 export const getPlayerData = (state: PlayerState): PlayerData => ({
   credits: state.credits,
   inventory: state.inventory,
+  containers: state.containers,
   settings: state.settings,
   gamePasses: state.gamePasses,
   products: state.products,
@@ -124,7 +130,7 @@ export const playersSlice = createProducer(initialState, {
     userID: number,
     playerName: string,
     data?: PlayerData,
-  ) => {
+  ): Players => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
 
@@ -159,7 +165,7 @@ export const playersSlice = createProducer(initialState, {
     }
   },
 
-  closePlayerData: (state, userID: number) => ({
+  closePlayerData: (state, userID: number): Players => ({
     ...state,
     [getPlayerKey(userID)]: undefined,
   }),
@@ -169,7 +175,7 @@ export const playersSlice = createProducer(initialState, {
     userID: number,
     currency: CurrencyName,
     delta: number,
-  ) => {
+  ): Players => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
     const currencyField = getPlayerDataCurrencyKey(currency)
@@ -190,7 +196,7 @@ export const playersSlice = createProducer(initialState, {
     userID: number,
     itemName: InventoryItemName,
     delta: number,
-  ) => {
+  ): Players => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
     const playerItems = playerState?.inventory[itemName] || 0
@@ -208,7 +214,69 @@ export const playersSlice = createProducer(initialState, {
     }
   },
 
-  setGamePassOwned: (state, userID: number, gamePassId: GamePass) => {
+  moveFromPlayerContainerToInventory: (
+    state,
+    userID: number,
+    containerName: string,
+    itemName: InventoryItemName,
+    delta: number,
+  ): Players => {
+    const playerKey = getPlayerKey(userID)
+    const playerState = state[playerKey]
+    const containerState = playerState?.containers[containerName]
+    const containerItems = containerState?.[itemName] || 0
+    const playerItems = playerState?.inventory[itemName] || 0
+    if (
+      !playerState ||
+      (delta < 0 && playerItems < math.abs(delta)) ||
+      (delta > 0 && containerItems < delta)
+    )
+      return state
+    return {
+      ...state,
+      [playerKey]: {
+        ...playerState,
+        containers: {
+          ...playerState.containers,
+          [containerName]: {
+            ...containerState,
+            [itemName]: math.max(0, containerItems - (delta || 0)),
+          },
+        },
+        inventory: {
+          ...playerState.inventory,
+          [itemName]: math.max(0, playerItems + (delta || 0)),
+        },
+      },
+    }
+  },
+
+  breakPlayerContainer: (
+    state,
+    userID: number,
+    containerName: string,
+  ): Players => {
+    const playerKey = getPlayerKey(userID)
+    const playerState = state[playerKey]
+    const containerState = playerState?.containers[containerName]
+    if (!playerState || !containerState) return state
+    const containers = { ...playerState.containers }
+    delete containers[containerName]
+    const inventory = { ...playerState.inventory }
+    for (const [itemName, count] of Object.entries(containerState)) {
+      inventory[itemName] = (inventory[itemName] || 0) + count
+    }
+    return {
+      ...state,
+      [playerKey]: {
+        ...playerState,
+        containers,
+        inventory,
+      },
+    }
+  },
+
+  setGamePassOwned: (state, userID: number, gamePassId: GamePass): Players => {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
     if (!playerState || playerState.gamePasses[gamePassId]?.active) return state
@@ -229,7 +297,7 @@ export const playersSlice = createProducer(initialState, {
     userId: number,
     productId: Product,
     purchaseId: string,
-  ) => {
+  ): Players => {
     const playerKey = getPlayerKey(userId)
     const playerState = state[playerKey]
     if (!playerState || playerState.receiptHistory.includes(purchaseId))
