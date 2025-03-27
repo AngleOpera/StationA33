@@ -1,5 +1,8 @@
 import { CombineProducers, CombineStates } from '@rbxts/reflex'
-import { USER_ID } from 'ReplicatedStorage/shared/constants/core'
+import {
+  InventoryItemName,
+  USER_ID,
+} from 'ReplicatedStorage/shared/constants/core'
 import {
   getPlayerCurrency,
   getPlayerState,
@@ -21,6 +24,17 @@ export const selectPlayerState = (userID: number) => (state: SharedState) =>
 export const selectPlayerCurrency =
   (userID: number, currency: CurrencyName) => (state: SharedState) =>
     getPlayerCurrency(getPlayerState(state.players, userID), currency)
+
+export const selectPlayerContainer =
+  (userID: number, container: string) => (state: SharedState) =>
+    getPlayerState(state.players, userID)?.containers?.[container]
+
+export const selectPlayerInventory = (userID: number) => (state: SharedState) =>
+  getPlayerState(state.players, userID)?.inventory
+
+export const selectPlayerInventoryItem =
+  (userID: number, item: InventoryItemName) => (state: SharedState) =>
+    getPlayerState(state.players, userID)?.inventory?.[item]
 
 export const selectPlayerGuideEnabled =
   (userID: number) => (state: SharedState) =>

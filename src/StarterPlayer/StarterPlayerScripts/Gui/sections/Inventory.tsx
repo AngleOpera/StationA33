@@ -1,3 +1,4 @@
+import Object from '@rbxts/object-utils'
 import { useAsync } from '@rbxts/pretty-react-hooks'
 import React, { useCallback, useEffect, useMemo, useRef } from '@rbxts/react'
 import { useSelector } from '@rbxts/react-reflex'
@@ -5,12 +6,17 @@ import { ReplicatedStorage } from '@rbxts/services'
 import {
   INVENTORY,
   InventoryItemName,
-  PLACEABLE_INVENTORY_NAMES,
+  USER_ID,
 } from 'ReplicatedStorage/shared/constants/core'
 import { palette } from 'ReplicatedStorage/shared/constants/palette'
+import {
+  selectPlayerContainer,
+  selectPlayerInventory,
+} from 'ReplicatedStorage/shared/state'
 import { fonts } from 'StarterPlayer/StarterPlayerScripts/fonts'
 import { useController } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useController'
 import { useRem } from 'StarterPlayer/StarterPlayerScripts/Gui/hooks/useRem'
+import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
 import {
   selectIsPageOpenWithContainer,
   store,
@@ -22,6 +28,7 @@ export function InventoryItem(props: {
   rem: (size: number) => number
   cameraDepth?: number
   cameraFov?: number
+  count?: number
   onClick: (name: InventoryItemName) => void
 }) {
   const viewportRef = useRef<ViewportFrame>()
@@ -65,18 +72,19 @@ export function InventoryItem(props: {
         BackgroundTransparency={0.7}
       >
         <uicorner CornerRadius={new UDim(0.3)} />
-        <textlabel
-          Text={props.name}
-          TextSize={props.rem(1.3)}
-          Font={Enum.Font.FredokaOne}
-          Position={new UDim2(0.25, 0, 0.8, 0)}
-          Size={new UDim2(0.5, 0, 0.2, 0)}
-          TextColor3={palette.text}
-          BackgroundTransparency={1}
-          ZIndex={5}
-        >
-          <uistroke Color={palette.black} Thickness={1} />
-        </textlabel>
+        {!!props.count && (
+          <textlabel
+            Text={`${props.count}`}
+            TextSize={props.rem(1.3)}
+            Font={Enum.Font.LuckiestGuy}
+            Position={new UDim2(1, -props.rem(0.3), 1, -props.rem(0.3))}
+            TextColor3={palette.text}
+            BackgroundTransparency={1}
+            ZIndex={5}
+          >
+            <uistroke Color={palette.black} Thickness={1} />
+          </textlabel>
+        )}
       </viewportframe>
     </imagebutton>
   )
@@ -85,6 +93,7 @@ export function InventoryItem(props: {
 export function InventoryMenu(props: {
   backgroundColor: Color3
   borderColor: Color3
+  inventory?: Partial<Record<InventoryItemName, number>>
   position: UDim2
   size: UDim2
   selectItem: (name: InventoryItemName) => void
@@ -156,10 +165,11 @@ export function InventoryMenu(props: {
                 CellSize={new UDim2(0.12, 0, 0.12, 0)}
               />
               <uiaspectratioconstraint AspectRatio={1} />
-              {PLACEABLE_INVENTORY_NAMES.map((name) => (
+              {Object.entries(props.inventory ?? {}).map(([name, count]) => (
                 <InventoryItem
                   key={name}
                   name={name}
+                  count={count}
                   rem={rem}
                   onClick={props.selectItem}
                 />
@@ -174,6 +184,7 @@ export function InventoryMenu(props: {
 
 export function PlaceBlockInventoryMenu() {
   const controller = useController()
+  const inventory = useSelector(selectPlayerInventory(USER_ID))
   const closeMenu = useCallback(() => {
     controller.placeBlockController?.unequipPlaceBlockTool()
     store.setMenuOpen(false)
@@ -197,6 +208,7 @@ export function PlaceBlockInventoryMenu() {
       </frame>
       <InventoryMenu
         title="Inventory"
+        inventory={inventory}
         position={new UDim2(0.35, 0, 0.01, 0)}
         size={new UDim2(0.3, 0, 0.7, 0)}
         backgroundColor={palette.blue}
@@ -208,18 +220,19 @@ export function PlaceBlockInventoryMenu() {
   )
 }
 
-export function ContainerInventoryMenu(_props: { container: string }) {
-  const controller = useController()
-  const closeMenu = useCallback(() => {
-    controller.placeBlockController?.unequipPlaceBlockTool()
-    store.setMenuOpen(false)
-  }, [])
-  const selectItem = useCallback(
-    (name: InventoryItemName) => {
-      controller.placeBlockController?.setItem(name)
-      store.setMenuOpen(false)
-    },
-    [controller],
+export function ContainerInventoryMenu(props: { container: string }) {
+  const inventory = useSelector(selectPlayerInventory(USER_ID))
+  const container = useSelector(selectPlayerContainer(USER_ID, props.container))
+  const closeMenu = useCallback(() => store.setMenuOpen(false), [])
+  const selectInventoryItem = useCallback(
+    (name: InventoryItemName) =>
+      Functions.moveItem(props.container, name, -(inventory?.[name] ?? 0)),
+    [inventory],
+  )
+  const selectContainerItem = useCallback(
+    (name: InventoryItemName) =>
+      Functions.moveItem(props.container, name, container?.[name] ?? 0),
+    [container],
   )
   return (
     <screengui>
@@ -233,21 +246,23 @@ export function ContainerInventoryMenu(_props: { container: string }) {
       </frame>
       <InventoryMenu
         title="Inventory"
+        inventory={inventory}
         position={new UDim2(0.245, 0, 0.01, 0)}
         size={new UDim2(0.3, 0, 0.7, 0)}
         backgroundColor={palette.blue}
         borderColor={palette.sky}
         titleColor={palette.orange}
-        selectItem={selectItem}
+        selectItem={selectInventoryItem}
       />
       <InventoryMenu
         title="Container"
+        inventory={container}
         position={new UDim2(0.555, 0, 0.01, 0)}
         size={new UDim2(0.2, 0, 0.7, 0)}
         backgroundColor={palette.sky}
         borderColor={palette.text}
         titleColor={palette.blue}
-        selectItem={selectItem}
+        selectItem={selectContainerItem}
       />
     </screengui>
   )

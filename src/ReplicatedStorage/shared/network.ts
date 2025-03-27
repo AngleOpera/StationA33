@@ -17,6 +17,11 @@ interface ServerFunctions {
     rotation: Vector3,
   ) => void
   breakBlock: (midpoint: Vector3) => void
+  moveItem: (
+    container: string,
+    itemName: InventoryItemName,
+    amount: number,
+  ) => void
 }
 
 interface ClientEvents {

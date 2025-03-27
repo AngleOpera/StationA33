@@ -374,8 +374,37 @@
           <bool name="VRTiltAndRollEnabled">false</bool>
         </Properties>
       </Item>
+      <Item class="ProximityPrompt" referent="9">
+        <Properties>
+          <string name="Name">ProximityPrompt</string>
+          <string name="ActionText">Interact</string>
+          <BinaryString name="AttributesSerialize"></BinaryString>
+          <bool name="AutoLocalize">true</bool>
+          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+          <bool name="ClickablePrompt">true</bool>
+          <bool name="Enabled">true</bool>
+          <token name="Exclusivity">0</token>
+          <token name="GamepadKeyCode">1000</token>
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <float name="HoldDuration">0</float>
+          <token name="KeyboardKeyCode">101</token>
+          <float name="MaxActivationDistance">10</float>
+          <string name="ObjectText">Container</string>
+          <bool name="RequiresLineOfSight">true</bool>
+          <Ref name="RootLocalizationTable">null</Ref>
+          <bool name="DefinesCapabilities">false</bool>
+          <int64 name="SourceAssetId">-1</int64>
+          <token name="Style">0</token>
+          <BinaryString name="Tags"></BinaryString>
+          <Vector2 name="UIOffset">
+            <X>0</X>
+            <Y>0</Y>
+          </Vector2>
+          <UniqueId name="UniqueId">0b9692d7b71b508d07f523b500008c14</UniqueId>
+        </Properties>
+      </Item>
     </Item>
-    <Item class="Part" referent="9">
+    <Item class="Part" referent="10">
       <Properties>
         <string name="Name">BeltOut</string>
         <bool name="Anchored">true</bool>
@@ -475,7 +504,7 @@
           <Z>0</Z>
         </Vector3>
       </Properties>
-      <Item class="Attachment" referent="10">
+      <Item class="Attachment" referent="11">
         <Properties>
           <string name="Name">Attachment0</string>
           <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAAzNmY4MTVmMTA1MzA2OGRlMDdlZThhMmUwMDAwODkwMQ==</BinaryString>
@@ -502,7 +531,7 @@
           <bool name="Visible">false</bool>
         </Properties>
       </Item>
-      <Item class="Attachment" referent="11">
+      <Item class="Attachment" referent="12">
         <Properties>
           <string name="Name">Attachment1</string>
           <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAAzNmY4MTVmMTA1MzA2OGRlMDdlZThhMmUwMDAwODkwMg==</BinaryString>
@@ -529,11 +558,11 @@
           <bool name="Visible">false</bool>
         </Properties>
       </Item>
-      <Item class="Beam" referent="12">
+      <Item class="Beam" referent="13">
         <Properties>
           <string name="Name">Beam</string>
-          <Ref name="Attachment0">10</Ref>
-          <Ref name="Attachment1">11</Ref>
+          <Ref name="Attachment0">11</Ref>
+          <Ref name="Attachment1">12</Ref>
           <BinaryString name="AttributesSerialize">AgAAABcAAABSb2pvX1RhcmdldF9BdHRhY2htZW50MAIgAAAAMzZmODE1ZjEwNTMwNjhkZTA3ZWU4YTJlMDAwMDg5MDEXAAAAUm9qb19UYXJnZXRfQXR0YWNobWVudDECIAAAADM2ZjgxNWYxMDUzMDY4ZGUwN2VlOGEyZTAwMDA4OTAy</BinaryString>
           <float name="Brightness">1</float>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -563,7 +592,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Part" referent="13">
+    <Item class="Part" referent="14">
       <Properties>
         <string name="Name">LeftOutPost</string>
         <bool name="Anchored">true</bool>
@@ -664,7 +693,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="14">
+    <Item class="Part" referent="15">
       <Properties>
         <string name="Name">RightOutPost</string>
         <bool name="Anchored">true</bool>
@@ -765,7 +794,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="15">
+    <Item class="Part" referent="16">
       <Properties>
         <string name="Name">BeltIn</string>
         <bool name="Anchored">true</bool>
@@ -865,7 +894,7 @@
           <Z>0</Z>
         </Vector3>
       </Properties>
-      <Item class="Attachment" referent="16">
+      <Item class="Attachment" referent="17">
         <Properties>
           <string name="Name">Attachment0</string>
           <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAA3OGE3ZDhmZDU1MjcwMjQ0MDdmMzllOGEwMDAwNzYyNQ==</BinaryString>
@@ -892,7 +921,7 @@
           <bool name="Visible">false</bool>
         </Properties>
       </Item>
-      <Item class="Attachment" referent="17">
+      <Item class="Attachment" referent="18">
         <Properties>
           <string name="Name">Attachment1</string>
           <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAA3OGE3ZDhmZDU1MjcwMjQ0MDdmMzllOGEwMDAwNzYyNg==</BinaryString>
@@ -919,11 +948,11 @@
           <bool name="Visible">false</bool>
         </Properties>
       </Item>
-      <Item class="Beam" referent="18">
+      <Item class="Beam" referent="19">
         <Properties>
           <string name="Name">Beam</string>
-          <Ref name="Attachment0">16</Ref>
-          <Ref name="Attachment1">17</Ref>
+          <Ref name="Attachment0">17</Ref>
+          <Ref name="Attachment1">18</Ref>
           <BinaryString name="AttributesSerialize">AgAAABcAAABSb2pvX1RhcmdldF9BdHRhY2htZW50MAIgAAAANzhhN2Q4ZmQ1NTI3MDI0NDA3ZjM5ZThhMDAwMDc2MjUXAAAAUm9qb19UYXJnZXRfQXR0YWNobWVudDECIAAAADc4YTdkOGZkNTUyNzAyNDQwN2YzOWU4YTAwMDA3NjI2</BinaryString>
           <float name="Brightness">1</float>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -953,7 +982,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Part" referent="19">
+    <Item class="Part" referent="20">
       <Properties>
         <string name="Name">LeftInPost</string>
         <bool name="Anchored">true</bool>
@@ -1054,7 +1083,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="20">
+    <Item class="Part" referent="21">
       <Properties>
         <string name="Name">RightInPost</string>
         <bool name="Anchored">true</bool>

@@ -2,7 +2,6 @@ import { OnStart, Service } from '@flamework/core'
 import { Tag } from '@rbxts/jecs'
 import { Logger } from '@rbxts/log'
 import Phase from '@rbxts/planck/out/Phase'
-import { Workspace } from '@rbxts/services'
 import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
 import { FactoryTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
@@ -11,11 +10,11 @@ import {
   Model,
   world,
 } from 'ReplicatedStorage/shared/services/EntityComponentSystem'
-import { getItemFromBlock } from 'ReplicatedStorage/shared/utils/core'
 import {
-  findDescendentsWhichAre,
-  findPathToDescendent,
-} from 'ReplicatedStorage/shared/utils/instance'
+  findPlacedBlockFromDescendent,
+  getItemFromBlock,
+} from 'ReplicatedStorage/shared/utils/core'
+import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshMidpoint,
   getMeshRotationFromCFrame,
@@ -39,9 +38,7 @@ export class FactorySystem implements OnStart {
           FactoryTag,
           Factory,
           (entity, model) => {
-            const path = findPathToDescendent(Workspace.PlayerSpaces, model)
-            if (!path || path.size() < 3 || path[1] !== 'PlacedBlocks') return
-            const userId = tonumber(path[0])
+            const { userId } = findPlacedBlockFromDescendent(model)
             const item = getItemFromBlock(model)
             if (!userId || !item) return
             const playerEntity = this.ecs.players[userId]

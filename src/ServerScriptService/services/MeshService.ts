@@ -9,6 +9,7 @@ import {
   InventoryItemDescription,
   InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
+import { selectPlayerInventoryItem } from 'ReplicatedStorage/shared/state'
 import {
   getItemFromBlock,
   getItemVector3,
@@ -27,6 +28,7 @@ import {
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { Functions } from 'ServerScriptService/network'
+import { store } from 'ServerScriptService/store'
 
 export interface PlayerSandbox {
   location: PlotLocation
@@ -53,6 +55,13 @@ export class MeshService implements OnStart {
         this.handleBreakBlock(player, midpoint)
       } catch (e) {
         this.logger.Error(`MeshService.breakBlock: ${e}`)
+      }
+    })
+    Functions.moveItem.setCallback((player, container, item, amount) => {
+      try {
+        store.movePlayerItem(player.UserId, container, item, amount)
+      } catch (e) {
+        this.logger.Error(`MeshService.moveItem: ${e}`)
       }
     })
   }
@@ -144,18 +153,40 @@ export class MeshService implements OnStart {
     }
     if (!validMeshMidpoint(midpoint)) {
       this.logger.Warn(
-        `MeshService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
+        `MeshService.handlePlaceBlock: Player ${player.Name} sent invalid midpoint ${midpoint}`,
       )
       return
     }
     const item = INVENTORY[itemName]
     if (!item) {
-      this.logger.Error(`MeshService.placeBlock: Item ${itemName} unknown`)
+      this.logger.Error(
+        `MeshService.placeBlock: Player ${player.Name} sent unknown item ${itemName}`,
+      )
+      return
+    }
+
+    const inventoryItemSelector = selectPlayerInventoryItem(
+      player.UserId,
+      itemName,
+    )
+    const state = store.getState()
+    const newState = store.updatePlayerInventory(player.UserId, itemName, -1)
+    const oldNumItems = inventoryItemSelector(state)
+    const newNumItems = inventoryItemSelector(newState)
+    if (oldNumItems === newNumItems) {
+      this.logger.Error(
+        `MeshService.placeBlock: Player ${player.Name} has ${oldNumItems} ${itemName} `,
+      )
       return
     }
 
     const clonedModel = this.cloneBlock(playerSandbox, item, midpoint, rotation)
-    if (!clonedModel) return
+    if (!clonedModel) {
+      this.logger.Error(
+        `MeshService.placeBlock: Player ${player.Name} placed ${itemName} missing mesh`,
+      )
+      return
+    }
 
     const plot = playerSandbox.plot[playerSandbox.location]
     const encodedMidpoint = meshPlotAdd(plot, midpoint, item, rotation)
@@ -170,13 +201,13 @@ export class MeshService implements OnStart {
     const playerSandbox = this.getPlayerSandbox(player)
     if (!playerSandbox) {
       this.logger.Warn(
-        `MeshService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
+        `MeshService.handleBreakBlock: Player ${player.Name} has no sandbox`,
       )
       return
     }
     if (!validMeshMidpoint(midpoint)) {
       this.logger.Warn(
-        `MeshService.handlePlaceBlock: Invalid midpoint ${midpoint}`,
+        `MeshService.handleBreakBlock: Player ${player.Name} sent invalid midpoint ${midpoint}`,
       )
       return
     }
@@ -187,14 +218,14 @@ export class MeshService implements OnStart {
       )
     if (!target) {
       this.logger.Warn(
-        `MeshService.handleBreakBlock: Block ${encodedMidpoint} not found`,
+        `MeshService.handleBreakBlock: Player ${player.Name} sent unknown midpoint ${encodedMidpoint}`,
       )
       return
     }
     const item = getItemFromBlock(target)
     if (!item) {
       this.logger.Warn(
-        `MeshService.handleBreakBlock: Block ${encodedMidpoint} item not found`,
+        `MeshService.handleBreakBlock: Player ${player.Name} broke ${encodedMidpoint} missing item`,
       )
       return
     }
@@ -205,6 +236,9 @@ export class MeshService implements OnStart {
       playerSandbox.workspace.Plot.Baseplate,
     )
     meshPlotRemove(plot, midpoint, item, rotation)
+    if (item.name === INVENTORY.Container.name) {
+      store.breakPlayerContainer(player.UserId, encodedMidpoint)
+    }
 
     const clonedSoundBlock = new Instance('Part')
     clonedSoundBlock.Size = new Vector3(gridSpacing, gridSpacing, gridSpacing)

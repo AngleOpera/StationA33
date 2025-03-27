@@ -35,6 +35,8 @@ interface Door extends BasePart {
   ClickDetector: ClickDetector
 }
 
+type GameMode = 'Creative' | 'Default'
+
 interface Instance {
   FindFirstChild<X = Instance>(
     this: Instance,

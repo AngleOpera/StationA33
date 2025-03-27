@@ -71,6 +71,13 @@ export const ENTITY_ATTRIBUTE: Record<keyof EntityAttributes, string> = {
   EntityId: 'EntityId',
 }
 
+export const GAME_MODE: {
+  [name in GameMode]: GameMode
+} = {
+  Creative: 'Creative' as const,
+  Default: 'Default' as const,
+}
+
 export const MORPH_NAME: {
   [name in MorphName]: MorphName
 } = {
@@ -109,8 +116,12 @@ export const INVENTORY_NAMES: InventoryItemName[] = Object.values(INVENTORY)
   .filter((x) => !x.parent)
   .map((item) => item.name)
 
-export const PLACEABLE_INVENTORY_NAMES: InventoryItemName[] =
-  INVENTORY_NAMES.filter((name) => INVENTORY[name].placeable !== false)
+export const PLACEABLE_INVENTORY: Record<InventoryItemName, number> =
+  Object.fromEntries(
+    INVENTORY_NAMES.filter((name) => INVENTORY[name].placeable !== false).map(
+      (name) => [name, 0],
+    ),
+  )
 
 export const INVENTORY_ID = Object.fromEntries(
   Object.values(INVENTORY).map((item) => [item.blockId, item]),

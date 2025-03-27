@@ -2,6 +2,7 @@ import Object from '@rbxts/object-utils'
 import { createProducer } from '@rbxts/reflex'
 import { Players } from '@rbxts/services'
 import {
+  GAME_MODE,
   InventoryItemName,
   PLOT_NAME,
 } from 'ReplicatedStorage/shared/constants/core'
@@ -50,6 +51,7 @@ export interface PlayerData {
 
 export interface PlayerDetail {
   readonly name: string
+  readonly gamemode: GameMode
   readonly plotName: PlotName
   readonly sessionStartTime: number
 }
@@ -80,7 +82,8 @@ export const defaultPlayerData: PlayerData = {
 
 export const defaultPlayerDetail: PlayerDetail = {
   name: '',
-  plotName: 'Plot1',
+  gamemode: GAME_MODE.Default,
+  plotName: PLOT_NAME[0],
   sessionStartTime: 0,
 } as const
 
@@ -170,6 +173,19 @@ export const playersSlice = createProducer(initialState, {
     [getPlayerKey(userID)]: undefined,
   }),
 
+  setPlayerGameMode: (state, userID: number, gamemode: GameMode): Players => {
+    const playerKey = getPlayerKey(userID)
+    const playerState = state[playerKey]
+    if (!playerState) return state
+    return {
+      ...state,
+      [playerKey]: {
+        ...playerState,
+        gamemode,
+      },
+    }
+  },
+
   updatePlayerCurrency: (
     state,
     userID: number,
@@ -214,7 +230,7 @@ export const playersSlice = createProducer(initialState, {
     }
   },
 
-  moveFromPlayerContainerToInventory: (
+  movePlayerItem: (
     state,
     userID: number,
     containerName: string,
@@ -232,21 +248,32 @@ export const playersSlice = createProducer(initialState, {
       (delta > 0 && containerItems < delta)
     )
       return state
+
+    const newPlayerItems = math.max(0, playerItems + (delta || 0))
+    const newContainerItems = math.max(0, containerItems - (delta || 0))
+    const newInventoryState = {
+      ...playerState.inventory,
+      [itemName]: newPlayerItems,
+    }
+    const newContainerState = {
+      ...containerState,
+      [itemName]: newContainerItems,
+    }
+    const newContainersState = {
+      ...playerState.containers,
+      [containerName]: newContainerState,
+    }
+    if (newPlayerItems === 0) delete newInventoryState[itemName]
+    if (newContainerItems === 0) delete newContainerState[itemName]
+    if (Object.keys(newContainerState).size() === 0)
+      delete newContainersState[containerName]
+
     return {
       ...state,
       [playerKey]: {
         ...playerState,
-        containers: {
-          ...playerState.containers,
-          [containerName]: {
-            ...containerState,
-            [itemName]: math.max(0, containerItems - (delta || 0)),
-          },
-        },
-        inventory: {
-          ...playerState.inventory,
-          [itemName]: math.max(0, playerItems + (delta || 0)),
-        },
+        containers: newContainersState,
+        inventory: newInventoryState,
       },
     }
   },

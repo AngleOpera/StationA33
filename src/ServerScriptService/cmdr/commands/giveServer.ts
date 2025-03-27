@@ -1,5 +1,11 @@
+import { Dependency } from '@flamework/core'
 import { CommandContext } from '@rbxts/cmdr'
-import { InventoryItemName } from 'ReplicatedStorage/shared/constants/core'
+import { Logger } from '@rbxts/log'
+import {
+  CURRENCY_NAME,
+  INVENTORY,
+  InventoryItemName,
+} from 'ReplicatedStorage/shared/constants/core'
 import { store } from 'ServerScriptService/store'
 
 export = function (
@@ -8,7 +14,16 @@ export = function (
   itemName: CurrencyName | InventoryItemName,
   amount: number,
 ) {
-  if (itemName === 'Credits') {
+  const logger = Dependency<Logger>()
+  if (itemName === CURRENCY_NAME.Credits) {
     store.updatePlayerCurrency(player.UserId, itemName, amount)
+    logger.Info(`Gave ${player.Name} ${amount} ${itemName}`)
+    return
+  }
+  const item = INVENTORY[itemName]
+  if (item) {
+    store.updatePlayerInventory(player.UserId, itemName, amount)
+    logger.Info(`Gave ${player.Name} ${amount} ${itemName}`)
+    return
   }
 }

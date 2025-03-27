@@ -34,45 +34,25 @@ export = () => {
     })
 
     it('should move from player inventory and container', () => {
-      const state = store.moveFromPlayerContainerToInventory(
-        testUserId,
-        'foobar',
-        'Conveyor',
-        -11,
-      )
+      const state = store.movePlayerItem(testUserId, 'foobar', 'Conveyor', -11)
       const playerState = selectTestPlayer(state)
       expect(playerState?.inventory?.Conveyor).to.equal(2)
       expect(playerState?.containers?.foobar?.Conveyor).to.equal(11)
 
-      const state2 = store.moveFromPlayerContainerToInventory(
-        testUserId,
-        'foobar',
-        'Conveyor',
-        9,
-      )
+      const state2 = store.movePlayerItem(testUserId, 'foobar', 'Conveyor', 9)
       const playerState2 = selectTestPlayer(state2)
       expect(playerState2?.inventory?.Conveyor).to.equal(11)
       expect(playerState2?.containers?.foobar?.Conveyor).to.equal(2)
 
       expect(
         selectTestPlayer(
-          store.moveFromPlayerContainerToInventory(
-            testUserId,
-            'foobar',
-            'Conveyor',
-            -20,
-          ),
+          store.movePlayerItem(testUserId, 'foobar', 'Conveyor', -20),
         ),
       ).to.equal(playerState2)
 
       expect(
         selectTestPlayer(
-          store.moveFromPlayerContainerToInventory(
-            testUserId,
-            'foobar',
-            'Conveyor',
-            20,
-          ),
+          store.movePlayerItem(testUserId, 'foobar', 'Conveyor', 20),
         ),
       ).to.equal(playerState2)
 

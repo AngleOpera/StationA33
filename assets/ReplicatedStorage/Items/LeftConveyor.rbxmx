@@ -1,7 +1,7 @@
 <roblox version="4">
   <Item class="Model" referent="0">
     <Properties>
-      <string name="Name">ConveyorLeftTurn</string>
+      <string name="Name">LeftConveyor</string>
       <BinaryString name="AttributesSerialize"></BinaryString>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
       <UniqueId name="HistoryId">671cdd2cd1cb324307d979960000807c</UniqueId>
@@ -144,7 +144,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
-        <UniqueId name="UniqueId">36f815f1053068de07ee8a2e000088ee</UniqueId>
+        <UniqueId name="UniqueId">334e76bf70f558bdc7d1efb100000000</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -548,7 +548,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
-        <UniqueId name="UniqueId">36f815f1053068de07ee8a2e000088f2</UniqueId>
+        <UniqueId name="UniqueId">3494e0358a045ffcc7d1efb100000001</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -938,7 +938,7 @@
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
         <float name="Transparency">0</float>
-        <UniqueId name="UniqueId">36f815f1053068de07ee8a2e00008900</UniqueId>
+        <UniqueId name="UniqueId">6eadf6cc247a1491c7d1efb100000002</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
           <Y>0</Y>
@@ -948,7 +948,7 @@
       <Item class="Attachment" referent="12">
         <Properties>
           <string name="Name">Attachment0</string>
-          <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAAzNmY4MTVmMTA1MzA2OGRlMDdlZThhMmUwMDAwODkwMQ==</BinaryString>
+          <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAA1NGIyNDVkYjEzODM2MTZkYzdkMWVmYjEwMDAwMDAwMw==</BinaryString>
           <CoordinateFrame name="CFrame">
             <X>0</X>
             <Y>0.5</Y>
@@ -968,14 +968,14 @@
           <bool name="DefinesCapabilities">false</bool>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <UniqueId name="UniqueId">36f815f1053068de07ee8a2e00008901</UniqueId>
+          <UniqueId name="UniqueId">54b245db1383616dc7d1efb100000003</UniqueId>
           <bool name="Visible">false</bool>
         </Properties>
       </Item>
       <Item class="Attachment" referent="13">
         <Properties>
           <string name="Name">Attachment1</string>
-          <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAAzNmY4MTVmMTA1MzA2OGRlMDdlZThhMmUwMDAwODkwMg==</BinaryString>
+          <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAAwNTRkYTQ3MmRiMmM3MTcwYzdkMWVmYjEwMDAwMDAwNA==</BinaryString>
           <CoordinateFrame name="CFrame">
             <X>0.00000000007833645</X>
             <Y>0.5</Y>
@@ -995,7 +995,7 @@
           <bool name="DefinesCapabilities">false</bool>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <UniqueId name="UniqueId">36f815f1053068de07ee8a2e00008902</UniqueId>
+          <UniqueId name="UniqueId">054da472db2c7170c7d1efb100000004</UniqueId>
           <bool name="Visible">false</bool>
         </Properties>
       </Item>
@@ -1004,7 +1004,7 @@
           <string name="Name">Beam</string>
           <Ref name="Attachment0">12</Ref>
           <Ref name="Attachment1">13</Ref>
-          <BinaryString name="AttributesSerialize">AgAAABcAAABSb2pvX1RhcmdldF9BdHRhY2htZW50MAIgAAAAMzZmODE1ZjEwNTMwNjhkZTA3ZWU4YTJlMDAwMDg5MDEXAAAAUm9qb19UYXJnZXRfQXR0YWNobWVudDECIAAAADM2ZjgxNWYxMDUzMDY4ZGUwN2VlOGEyZTAwMDA4OTAy</BinaryString>
+          <BinaryString name="AttributesSerialize">AgAAABcAAABSb2pvX1RhcmdldF9BdHRhY2htZW50MAIgAAAANTRiMjQ1ZGIxMzgzNjE2ZGM3ZDFlZmIxMDAwMDAwMDMXAAAAUm9qb19UYXJnZXRfQXR0YWNobWVudDECIAAAADA1NGRhNDcyZGIyYzcxNzBjN2QxZWZiMTAwMDAwMDA0</BinaryString>
           <float name="Brightness">1</float>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
           <ColorSequence name="Color">0 1 1 1 0 1 1 1 1 0 </ColorSequence>
@@ -1026,7 +1026,7 @@
           <token name="TextureMode">0</token>
           <float name="TextureSpeed">4.75</float>
           <NumberSequence name="Transparency">0 0 0 1 0 0 </NumberSequence>
-          <UniqueId name="UniqueId">36f815f1053068de07ee8a2e00008903</UniqueId>
+          <UniqueId name="UniqueId">63dcd63f8aee0896c7d1efb100000005</UniqueId>
           <float name="Width0">2.25</float>
           <float name="Width1">2.25</float>
           <float name="ZOffset">0.01</float>
