@@ -54,6 +54,21 @@ export const meshRotation90: MeshRotation = new Vector3(0, 1, 0)
 export const meshRotation180: MeshRotation = new Vector3(0, 2, 0)
 export const meshRotation270: MeshRotation = new Vector3(0, 3, 0)
 
+export function getMeshRotationName(rotation: MeshRotation): string {
+  switch (rotation.Y) {
+    case 0:
+      return 'r0'
+    case 1:
+      return 'r90'
+    case 2:
+      return 'r180'
+    case 3:
+      return 'r270'
+    default:
+      return 'rerr'
+  }
+}
+
 export function validMeshMidpoint(midpoint: Vector3): boolean {
   return (
     midpoint.X >= 0 &&
@@ -109,11 +124,7 @@ export function getMeshDataFromModel(
   const size = model.PrimaryPart?.Size
   return {
     blockId: blockId && typeIs(blockId, 'number') ? blockId : 1,
-    size: new Vector3(
-      size ? math.floor(size.X / gridSpacing) : 1,
-      size ? math.floor(size.Y / gridSpacing) : 1,
-      size ? math.floor(size.Z / gridSpacing) : 1,
-    ),
+    size: size ? size.div(gridSpacing).Floor() : new Vector3(1, 1, 1),
     rotation: baseplate
       ? getMeshRotationFromCFrame(model.GetPivot(), baseplate)
       : meshRotation0,
@@ -208,19 +219,12 @@ export function getMeshStartpointEndpointFromMidpointSize(
 
 export function getMeshOffsetsFromMeshMidpoint(
   midpoint: MeshMidpoint,
-  unrotatedSize: Vector3,
+  _unrotatedSize: Vector3,
   rotation: MeshRotation,
   offsets: ItemVector3[],
 ): MeshMidpoint[] {
-  const size = getRotatedMeshSize(unrotatedSize, rotation)
-  const unquantizedMidpoint = getMeshUnquantizedMidpointFromMidpointRotatedSize(
-    midpoint,
-    size,
-  )
   return offsets.map((offset) =>
-    unquantizedMidpoint
-      .add(getRotatedMeshPoint(getItemVector3(offset), rotation))
-      .Floor(),
+    midpoint.add(getRotatedMeshPoint(getItemVector3(offset), rotation)).Floor(),
   )
 }
 
@@ -235,13 +239,13 @@ export function getCFrameFromMeshMidpoint(
     new CFrame(
       midpoint.X * gridSpacing -
         baseplate.Size.X / 2 +
-        (size.X % 2 ? gridSpacing / 2 : 0),
+        (size.X % 2 ? gridSpacing / 2 : gridSpacing),
       midpoint.Y * gridSpacing +
         baseplate.Size.Y / 2 +
-        (size.Y % 2 ? gridSpacing / 2 : 0),
+        (size.Y % 2 ? gridSpacing / 2 : gridSpacing),
       midpoint.Z * gridSpacing -
         baseplate.Size.Z / 2 +
-        (size.Z % 2 ? gridSpacing / 2 : 0),
+        (size.Z % 2 ? gridSpacing / 2 : gridSpacing),
     ).mul(CFrame.Angles(0, math.rad(90 * -rotation.Y), 0)),
   )
 }
@@ -357,8 +361,8 @@ export function meshOffsetMapRemove(
 export function meshOffsetMapGet(
   map: MeshOffsetMap,
   offsetMidpoint: MeshMidpoint,
-) {
-  return map[encodeMeshMidpoint(offsetMidpoint)]
+): EncodedMeshMidpoint[] {
+  return map[encodeMeshMidpoint(offsetMidpoint)] ?? []
 }
 
 export function visitMeshOffsets(

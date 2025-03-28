@@ -324,7 +324,7 @@ export = () => {
       getMeshOffsetsFromMeshMidpoint(
         testPoint,
         getItemVector3(item.size),
-        new Vector3(0, 0, 0),
+        meshRotation0,
         item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(39, 0, 421)])
@@ -332,7 +332,7 @@ export = () => {
       getMeshOffsetsFromMeshMidpoint(
         testPoint,
         getItemVector3(item.size),
-        new Vector3(0, 1, 0),
+        meshRotation90,
         item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(40, 0, 422)])
@@ -340,7 +340,7 @@ export = () => {
       getMeshOffsetsFromMeshMidpoint(
         testPoint,
         getItemVector3(item.size),
-        new Vector3(0, 2, 0),
+        meshRotation180,
         item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(39, 0, 423)])
@@ -348,10 +348,21 @@ export = () => {
       getMeshOffsetsFromMeshMidpoint(
         testPoint,
         getItemVector3(item.size),
-        new Vector3(0, 3, 0),
+        meshRotation270,
         item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(38, 0, 422)])
+
+    const item2 = INVENTORY.Container
+    const testPoint2 = new Vector3(39, 0, 422)
+    expect(
+      getMeshOffsetsFromMeshMidpoint(
+        testPoint2,
+        getItemVector3(item2.size),
+        meshRotation0,
+        item2.outputTo ?? [],
+      ),
+    ).to.be.equal([new Vector3(40, 0, 420)])
   })
 
   it('should find rotation for mesh relative to baseplate', () => {

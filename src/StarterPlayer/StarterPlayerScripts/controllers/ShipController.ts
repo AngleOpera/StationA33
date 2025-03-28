@@ -187,7 +187,7 @@ export class ShipController implements OnStart {
       )
     }
 
-    print('updateBodyVelocity', velocity, angularVelocity)
+    // print('updateBodyVelocity', velocity, angularVelocity)
     updateBodyVelocity(body, velocity, { requireAlreadyExists: !down })
     updateBodyAngularVelocity(body, angularVelocity, {
       requireAlreadyExists: !down,

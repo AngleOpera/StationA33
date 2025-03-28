@@ -3,12 +3,17 @@ import { OnStart } from '@flamework/core'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
 import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
+import {
+  getItemFromBlock,
+  getItemVector3,
+} from 'ReplicatedStorage/shared/utils/core'
 import {
   findDescendentsWhichAre,
   grandParentIs,
 } from 'ReplicatedStorage/shared/utils/instance'
+import { previousOddNumber } from 'ReplicatedStorage/shared/utils/math'
 import {
+  decodeMeshMidpoint,
   getCFrameFromMeshMidpoint,
   getMeshMidpointFromWorldPosition,
   gridSpacing,
@@ -73,62 +78,76 @@ export class PlaceBlockToolComponent
           this.clear()
           return
         }
+        let targetItem: InventoryItemDescription | undefined
         if (mouse.Target === baseplate) {
           this.midpoint = getMeshMidpointFromWorldPosition(
             new Vector3(
               math.floor(mouse.Hit.X) + 0.5,
-              (baseplate.Size.Y + gridSpacing * item.size[1]) / 2 +
-                baseplate.Position.Y,
+              math.floor(
+                (baseplate.Size.Y +
+                  gridSpacing * previousOddNumber(item.size[1])) /
+                  2 +
+                  baseplate.Position.Y,
+              ),
               math.floor(mouse.Hit.Z) + 0.5,
             ),
             baseplate,
           )
         } else if (
           mouse.Target &&
-          grandParentIs(mouse.Target, placedBlocksFolder)
+          grandParentIs(mouse.Target, placedBlocksFolder) &&
+          mouse.Target.Parent?.IsA('Model') &&
+          (targetItem = getItemFromBlock(mouse.Target.Parent))
         ) {
+          const targetMidpoint = decodeMeshMidpoint(mouse.Target.Parent.Name)
           const mouseSurface = mouse.TargetSurface
           if (mouseSurface === Enum.NormalId.Left)
-            this.midpoint = getMeshMidpointFromWorldPosition(
-              mouse.Target.CFrame.ToWorldSpace(
-                new CFrame(-gridSpacing * item.size[0], 0, 0),
-              ).Position,
-              baseplate,
+            this.midpoint = targetMidpoint.add(
+              new Vector3(
+                math.floor(-(targetItem.size[0] + item.size[0]) / 2),
+                0,
+                0,
+              ),
             )
           else if (mouseSurface === Enum.NormalId.Right)
-            this.midpoint = getMeshMidpointFromWorldPosition(
-              mouse.Target.CFrame.ToWorldSpace(
-                new CFrame(gridSpacing * item.size[0], 0, 0),
-              ).Position,
-              baseplate,
+            this.midpoint = targetMidpoint.add(
+              new Vector3(
+                math.floor((targetItem.size[0] + item.size[0]) / 2),
+                0,
+                0,
+              ),
             )
           else if (mouseSurface === Enum.NormalId.Bottom)
-            this.midpoint = getMeshMidpointFromWorldPosition(
-              mouse.Target.CFrame.ToWorldSpace(
-                new CFrame(0, -gridSpacing * item.size[1], 0),
-              ).Position,
-              baseplate,
+            this.midpoint = targetMidpoint.add(
+              new Vector3(
+                0,
+                math.floor(-(targetItem.size[1] + item.size[1]) / 2),
+                0,
+              ),
             )
           else if (mouseSurface === Enum.NormalId.Top)
-            this.midpoint = getMeshMidpointFromWorldPosition(
-              mouse.Target.CFrame.ToWorldSpace(
-                new CFrame(0, gridSpacing * item.size[1], 0),
-              ).Position,
-              baseplate,
+            this.midpoint = targetMidpoint.add(
+              new Vector3(
+                0,
+                math.floor((targetItem.size[1] + item.size[1]) / 2),
+                0,
+              ),
             )
           else if (mouseSurface === Enum.NormalId.Front)
-            this.midpoint = getMeshMidpointFromWorldPosition(
-              mouse.Target.CFrame.ToWorldSpace(
-                new CFrame(0, 0, -gridSpacing * item.size[2]),
-              ).Position,
-              baseplate,
+            this.midpoint = targetMidpoint.add(
+              new Vector3(
+                0,
+                0,
+                math.floor(-(targetItem.size[2] + item.size[2]) / 2),
+              ),
             )
           else
-            this.midpoint = getMeshMidpointFromWorldPosition(
-              mouse.Target.CFrame.ToWorldSpace(
-                new CFrame(0, 0, gridSpacing * item.size[2]),
-              ).Position,
-              baseplate,
+            this.midpoint = targetMidpoint.add(
+              new Vector3(
+                0,
+                0,
+                math.floor((targetItem.size[2] + item.size[2]) / 2),
+              ),
             )
         } else {
           this.clear()

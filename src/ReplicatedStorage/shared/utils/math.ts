@@ -2,6 +2,10 @@ export function roundVector3(v: Vector3) {
   return new Vector3(math.round(v.X), math.round(v.Y), math.round(v.Z))
 }
 
+export function previousOddNumber(n: number) {
+  return n % 2 === 0 ? n - 1 : n
+}
+
 export function getLowerCorner(position: Vector3, size: Vector3): Vector3 {
   return position.sub(size.div(2))
 }

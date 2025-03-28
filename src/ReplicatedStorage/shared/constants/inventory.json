@@ -158,6 +158,10 @@
   "Container": {
     "blockId": 19,
     "name": "Container",
-    "size": [2, 2, 3]
+    "size": [2, 2, 3],
+    "inputFrom": [ [ 0, 0, 2 ] ],
+    "inputTo": [ [ 0, 0, 1 ] ],
+    "outputTo": [ [ 1, 0, -2 ] ],
+    "outputFrom": [ [ 1, 0, -1 ] ]
   }
 }
