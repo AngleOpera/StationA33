@@ -10,8 +10,9 @@ import { forEveryPlayer } from 'ReplicatedStorage/shared/utils/player'
 
 export const world = new World()
 export const Name = world.component<string>()
+export const UserId = world.component<number>()
 export const Model = world.component<Model>()
-export const Player = world.component<undefined>()
+export const PlayerEntity = world.component<Tag>()
 
 @Controller()
 @Service()
@@ -45,7 +46,7 @@ export class EntityComponentSystem implements OnStart, OnTick {
       forEveryPlayer(
         (player) => {
           const entity = world.entity()
-          world.add(entity, Player)
+          world.set(entity, UserId, player.UserId)
           world.set(entity, Name, player.Name)
           // const character = getCharacter(player)
           // if (character) world.set(entity, Model, character)

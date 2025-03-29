@@ -69,6 +69,7 @@
     "image": "rbxassetid://0",
     "price": 100,
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ 0, 0, -1 ] ]
   },
@@ -76,6 +77,7 @@
     "blockId": 9,
     "name": "LeftConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ] ]
   },
@@ -83,6 +85,7 @@
     "blockId": 10,
     "name": "RightConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ 1, 0, 0 ] ]
   },
@@ -90,6 +93,7 @@
     "blockId": 11,
     "name": "SplitConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
@@ -98,6 +102,7 @@
     "blockId": 12,
     "name": "SplitAllConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ], [ 0, 0, -1 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
@@ -106,6 +111,7 @@
     "blockId": 13,
     "name": "SplitLeftConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ -1, 0, 0 ], [ 0, 0, -1 ] ],
     "parent": "Conveyor"
@@ -114,6 +120,7 @@
     "blockId": 14,
     "name": "SplitRightConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ 0, 0, -1 ], [ 1, 0, 0 ] ],
     "parent": "Conveyor"
@@ -122,6 +129,7 @@
     "blockId": 15,
     "name": "JoinConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ -1, 0, 0 ], [ 1, 0, 0 ] ],
     "outputTo": [ [ 0, 0, -1 ] ],
     "parent": "Conveyor"
@@ -130,6 +138,7 @@
     "blockId": 16,
     "name": "JoinAllConveyor",
     "size": [1, 1, 1],
+    "inputStorage": [ 1 ],
     "inputFrom": [ [ -1, 0, 0 ], [0, 0, 1], [ 1, 0, 0 ] ],
     "outputTo": [ [ 0, 0, -1 ] ],
     "parent": "Conveyor"
@@ -141,6 +150,7 @@
     "image": "rbxassetid://0",
     "price": 400,
     "size": [1, 1, 3],
+    "inputStorage": [ 8 ],
     "inputFrom": [ [ 0, 0, 2 ] ],
     "inputTo": [ [ 0, 0, 1 ] ],
     "outputTo": [ [ 0, 0, -2 ] ],

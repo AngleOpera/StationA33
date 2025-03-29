@@ -278,6 +278,38 @@ export const playersSlice = createProducer(initialState, {
     }
   },
 
+  updatePlayerContainer: (
+    state,
+    userID: number,
+    containerName: string,
+    itemName: InventoryItemName,
+    delta: number,
+  ): Players => {
+    const playerKey = getPlayerKey(userID)
+    const playerState = state[playerKey]
+    const containerState = playerState?.containers[containerName]
+    const containerItems = containerState?.[itemName] || 0
+    if (!playerState || (delta < 0 && containerItems < math.abs(delta)))
+      return state
+
+    const newContainerItems = math.max(0, containerItems + (delta || 0))
+    const newContainerState = {
+      ...containerState,
+      [itemName]: newContainerItems,
+    }
+    if (newContainerItems === 0) delete newContainerState[itemName]
+    return {
+      ...state,
+      [playerKey]: {
+        ...playerState,
+        containers: {
+          ...playerState.containers,
+          [containerName]: newContainerState,
+        },
+      },
+    }
+  },
+
   breakPlayerContainer: (
     state,
     userID: number,
