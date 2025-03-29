@@ -1,7 +1,15 @@
 import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
-import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
-import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
+import {
+  Players,
+  ReplicatedStorage,
+  RunService,
+  Workspace,
+} from '@rbxts/services'
+import {
+  InventoryItemDescription,
+  TYPE,
+} from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
   getItemFromBlock,
@@ -16,12 +24,15 @@ import {
   decodeMeshMidpoint,
   getCFrameFromMeshMidpoint,
   getMeshMidpointFromWorldPosition,
+  getMeshRotationFromCFrame,
+  getRotatedSurface,
   gridSpacing,
   MeshMidpoint,
   MeshRotation,
   meshRotation0,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
+import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
 import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
@@ -36,6 +47,9 @@ export class PlaceBlockToolComponent
   rotation: MeshRotation = meshRotation0
   item: InventoryItemDescription | undefined
   preview: BasePart | Model | undefined
+  bounding: BasePart | undefined
+  overlapParams = new OverlapParams()
+  conflicting = false
   invoking = false
 
   constructor(protected placeBlockController: PlaceBlockController) {
@@ -53,6 +67,8 @@ export class PlaceBlockToolComponent
   }
 
   onStart() {
+    this.overlapParams.CollisionGroup = 'Bounding'
+
     const { baseplate, placedBlocksFolder, previewBlockFolder } =
       this.placeBlockController.getFolders()
 
@@ -99,9 +115,17 @@ export class PlaceBlockToolComponent
           mouse.Target.Parent?.IsA('Model') &&
           (targetItem = getItemFromBlock(mouse.Target.Parent))
         ) {
-          const targetMidpoint = decodeMeshMidpoint(mouse.Target.Parent.Name)
+          const model = mouse.Target.Parent
+          const targetMidpoint = decodeMeshMidpoint(model.Name)
+          const targetRotation = getMeshRotationFromCFrame(
+            model.GetPivot(),
+            baseplate,
+          )
           const mouseSurface = mouse.TargetSurface
-          if (mouseSurface === Enum.NormalId.Left)
+          if (
+            mouseSurface ===
+            getRotatedSurface(Enum.NormalId.Left, targetRotation)
+          )
             this.midpoint = targetMidpoint.add(
               new Vector3(
                 math.floor(-(targetItem.size[0] + item.size[0]) / 2),
@@ -109,7 +133,10 @@ export class PlaceBlockToolComponent
                 0,
               ),
             )
-          else if (mouseSurface === Enum.NormalId.Right)
+          else if (
+            mouseSurface ===
+            getRotatedSurface(Enum.NormalId.Right, targetRotation)
+          )
             this.midpoint = targetMidpoint.add(
               new Vector3(
                 math.floor((targetItem.size[0] + item.size[0]) / 2),
@@ -117,7 +144,10 @@ export class PlaceBlockToolComponent
                 0,
               ),
             )
-          else if (mouseSurface === Enum.NormalId.Bottom)
+          else if (
+            mouseSurface ===
+            getRotatedSurface(Enum.NormalId.Bottom, targetRotation)
+          )
             this.midpoint = targetMidpoint.add(
               new Vector3(
                 0,
@@ -125,7 +155,10 @@ export class PlaceBlockToolComponent
                 0,
               ),
             )
-          else if (mouseSurface === Enum.NormalId.Top)
+          else if (
+            mouseSurface ===
+            getRotatedSurface(Enum.NormalId.Top, targetRotation)
+          )
             this.midpoint = targetMidpoint.add(
               new Vector3(
                 0,
@@ -133,7 +166,10 @@ export class PlaceBlockToolComponent
                 0,
               ),
             )
-          else if (mouseSurface === Enum.NormalId.Front)
+          else if (
+            mouseSurface ===
+            getRotatedSurface(Enum.NormalId.Front, targetRotation)
+          )
             this.midpoint = targetMidpoint.add(
               new Vector3(
                 0,
@@ -141,7 +177,10 @@ export class PlaceBlockToolComponent
                 math.floor(-(targetItem.size[2] + item.size[2]) / 2),
               ),
             )
-          else
+          else if (
+            mouseSurface ===
+            getRotatedSurface(Enum.NormalId.Back, targetRotation)
+          )
             this.midpoint = targetMidpoint.add(
               new Vector3(
                 0,
@@ -168,13 +207,20 @@ export class PlaceBlockToolComponent
               ReplicatedStorage.Items?.FindFirstChild<Model>(
                 item.name,
               )?.Clone() || ReplicatedStorage.Common.PlaceBlockPreview.Clone()
-            findDescendentsWhichAre<BasePart>(this.preview, 'BasePart').forEach(
-              (part) => {
-                part.CanCollide = false
-                part.Transparency = 0.5
-              },
+            findDescendentsWhichAre<BasePart>(
+              this.preview,
+              TYPE.BasePart,
+            ).forEach((part) => {
+              part.CanCollide = false
+              part.Transparency = 0.5
+            })
+            this.bounding = createBoundingPart(
+              this.preview.GetPivot().Position,
+              getItemVector3(item.size).mul(gridSpacing * 0.99),
+              this.preview,
             )
           }
+
           this.preview.PivotTo(
             getCFrameFromMeshMidpoint(
               this.midpoint,
@@ -183,7 +229,13 @@ export class PlaceBlockToolComponent
               baseplate,
             ),
           )
-          if (!this.preview.Parent) this.preview.Parent = previewBlockFolder
+          this.conflicting =
+            !!this.bounding &&
+            Workspace.GetPartsInPart(this.bounding, this.overlapParams).size() >
+              0
+          this.preview.Parent = this.conflicting
+            ? undefined
+            : previewBlockFolder
         }
       })
     })
@@ -196,6 +248,8 @@ export class PlaceBlockToolComponent
       this.item = undefined
       this.preview?.Destroy()
       this.preview = undefined
+      this.bounding?.Destroy()
+      this.bounding = undefined
     })
 
     this.instance.Activated.Connect(async () => {

@@ -54,6 +54,15 @@ export const meshRotation90: MeshRotation = new Vector3(0, 1, 0)
 export const meshRotation180: MeshRotation = new Vector3(0, 2, 0)
 export const meshRotation270: MeshRotation = new Vector3(0, 3, 0)
 
+const surfaceRotationSequence = {
+  Y: [
+    Enum.NormalId.Front,
+    Enum.NormalId.Left,
+    Enum.NormalId.Back,
+    Enum.NormalId.Right,
+  ],
+}
+
 export function getMeshRotationName(rotation: MeshRotation): string {
   switch (rotation.Y) {
     case 0:
@@ -66,6 +75,24 @@ export function getMeshRotationName(rotation: MeshRotation): string {
       return 'r270'
     default:
       return 'rerr'
+  }
+}
+
+export function getRotatedSurface(
+  surface: Enum.NormalId,
+  rotation: MeshRotation,
+): Enum.NormalId {
+  switch (surface) {
+    case Enum.NormalId.Front:
+    case Enum.NormalId.Left:
+    case Enum.NormalId.Back:
+    case Enum.NormalId.Right:
+      return surfaceRotationSequence.Y[
+        (surfaceRotationSequence.Y.indexOf(surface) + rotation.Y) %
+          surfaceRotationSequence.Y.size()
+      ]
+    default:
+      return surface
   }
 }
 

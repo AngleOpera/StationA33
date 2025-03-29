@@ -1,8 +1,9 @@
 import { Controller, OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
-import { ProximityPromptService } from '@rbxts/services'
+import { Players, ProximityPromptService } from '@rbxts/services'
 import { INVENTORY, USER_ID } from 'ReplicatedStorage/shared/constants/core'
 import { findPlacedBlockFromDescendent } from 'ReplicatedStorage/shared/utils/core'
+import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import { store } from 'StarterPlayer/StarterPlayerScripts/store'
 import { MENU_PAGE } from 'StarterPlayer/StarterPlayerScripts/store/MenuState'
 
@@ -13,6 +14,8 @@ export class ProximityController implements OnStart {
   onStart() {
     ProximityPromptService.PromptTriggered.Connect(
       (proximityPrompt, _player) => {
+        getCharacter(Players.LocalPlayer)?.Humanoid?.UnequipTools()
+
         if (proximityPrompt.ObjectText === INVENTORY.Container.name) {
           const { userId, encodedMidpoint } =
             findPlacedBlockFromDescendent(proximityPrompt)

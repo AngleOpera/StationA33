@@ -1,8 +1,12 @@
 import { OnStart, Service } from '@flamework/core'
-import { Tag } from '@rbxts/jecs'
+import { ChildOf, Entity, pair, Tag } from '@rbxts/jecs'
 import { Logger } from '@rbxts/log'
 import Phase from '@rbxts/planck/out/Phase'
-import { InventoryItemDescription } from 'ReplicatedStorage/shared/constants/core'
+import {
+  ENTITY_ATTRIBUTE,
+  INVENTORY,
+  InventoryItemDescription,
+} from 'ReplicatedStorage/shared/constants/core'
 import { FactoryTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
   bindTaggedModelToComponent,
@@ -27,6 +31,9 @@ import {
 import { MeshService } from 'ServerScriptService/services/MeshService'
 
 export const Factory = world.component<undefined>()
+export const Product = world.component<undefined>()
+export const Container = world.component<undefined>()
+export const Linear = world.component<undefined>()
 
 @Service()
 export class FactorySystem implements OnStart {
@@ -63,6 +70,32 @@ export class FactorySystem implements OnStart {
       },
       { phase: Phase.Startup },
     )
+    this.ecs.addSystem(
+      (_world) => {
+        // Containers output items
+        for (const [e] of world.query(Container, Model)) {
+          const model = world.get(e, Model)
+          if (!model) continue
+          const item = getItemFromBlock(model)
+          if (!item) continue
+
+          for (const child of world.children(e)) {
+            if (world.has(child, Product)) {
+              world.delete(child)
+            }
+          }
+        }
+
+        // Conveyors move items
+        for (const [e] of world.query(Factory, Model).without(Container)) {
+          const model = world.get(e, Model)
+          if (!model) continue
+          const item = getItemFromBlock(model)
+          if (!item) continue
+        }
+      },
+      { timePassedCondition: 0.1 },
+    )
   }
 
   handleNewFactoryEquipment(
@@ -72,17 +105,22 @@ export class FactorySystem implements OnStart {
     model: Model,
     item: InventoryItemDescription,
   ) {
-    world.add(entity, playerEntity)
-    for (const [e] of world.query(playerEntity, Model)) {
-      const model = world.get(e, Model)
-      if (!model) continue
-      for (const beam of findDescendentsWhichAre<Beam>(model, 'Beam')) {
-        beam.SetTextureOffset(0)
-        // print('set texture offset', beam.Name, model.Name)
-      }
-    }
     const playerSandbox = this.meshService.getUserIdSandbox(userId)
     if (!playerSandbox) return
+
+    world.add(entity, playerEntity)
+
+    switch (item.blockId) {
+      case INVENTORY.Container.blockId:
+        world.add(entity, Container)
+        break
+
+      case INVENTORY.Conveyor.blockId:
+      case INVENTORY.LeftConveyor.blockId:
+      case INVENTORY.RightConveyor.blockId:
+        world.add(entity, Linear)
+        break
+    }
 
     const midpoint = decodeMeshMidpoint(model.Name)
     const unrotatedSize = getItemVector3(item.size)
@@ -103,6 +141,16 @@ export class FactorySystem implements OnStart {
       item.outputTo ?? [],
     )) {
       for (const inputTo of meshOffsetMapGet(plot.inputTo, outputTo)) {
+        // XXX add entity to MeshService to support off-world factories
+        const outputEntity =
+          playerSandbox.workspace.PlacedBlocks.FindFirstChild(
+            inputTo,
+          )?.GetAttribute(ENTITY_ATTRIBUTE.EntityId) as
+            | Entity<undefined>
+            | undefined
+        if (!outputEntity) continue
+
+        world.add(outputEntity, pair(ChildOf, entity))
         this.logger.Info(
           `Factory ${userId} connected: (${midpoint}) -> (${decodeMeshMidpoint(inputTo)})`,
         )
@@ -116,9 +164,28 @@ export class FactorySystem implements OnStart {
       getItemInputToOffsets(item) ?? [],
     )) {
       for (const outputTo of meshOffsetMapGet(plot.outputTo, inputTo)) {
+        // XXX add entity to MeshService to support off-world factories
+        const inputEntity = playerSandbox.workspace.PlacedBlocks.FindFirstChild(
+          outputTo,
+        )?.GetAttribute(ENTITY_ATTRIBUTE.EntityId) as
+          | Entity<undefined>
+          | undefined
+        if (!inputEntity) continue
+
+        world.add(entity, pair(ChildOf, inputEntity))
         this.logger.Info(
           `Factory ${userId} connected: (${decodeMeshMidpoint(outputTo)}) -> (${midpoint})`,
         )
+      }
+    }
+
+    // Synchronize conveyor animations
+    for (const [e] of world.query(playerEntity, Model)) {
+      const model = world.get(e, Model)
+      if (!model) continue
+      for (const beam of findDescendentsWhichAre<Beam>(model, 'Beam')) {
+        beam.SetTextureOffset(0)
+        // print('set texture offset', beam.Name, model.Name)
       }
     }
   }

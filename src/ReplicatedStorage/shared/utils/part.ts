@@ -4,6 +4,23 @@ export function getPartLowerCorner(part: BasePart): Vector3 {
   return part.CFrame.ToWorldSpace(new CFrame(part.Size.div(-2))).Position
 }
 
+export function createBoundingPart(
+  position: Vector3,
+  size: Vector3,
+  parent?: Instance,
+) {
+  const bounding = new Instance('Part')
+  bounding.Name = 'Bounding'
+  bounding.Position = position
+  bounding.Size = size
+  bounding.Anchored = true
+  bounding.CanCollide = true
+  bounding.Transparency = 1.0
+  bounding.CollisionGroup = 'Bounding'
+  if (parent) bounding.Parent = parent
+  return bounding
+}
+
 export function setNetworkOwner(ancestor: Instance, player?: Player) {
   for (const descendent of ancestor.GetDescendants()) {
     if (descendent.IsA('BasePart') && descendent.CanSetNetworkOwnership()[0]) {

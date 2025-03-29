@@ -27,6 +27,7 @@ import {
   meshPlotRemove,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
+import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
 import { Functions } from 'ServerScriptService/network'
 import { store } from 'ServerScriptService/store'
 
@@ -39,10 +40,13 @@ export interface PlayerSandbox {
 @Service()
 export class MeshService implements OnStart {
   playerSandbox: Record<string, PlayerSandbox> = {}
+  overlapParams = new OverlapParams()
 
   constructor(protected readonly logger: Logger) {}
 
   onStart() {
+    this.overlapParams.CollisionGroup = 'Bounding'
+
     Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) => {
       try {
         this.handlePlaceBlock(player, itemName, midpoint, rotation)
@@ -182,9 +186,7 @@ export class MeshService implements OnStart {
 
     const clonedModel = this.cloneBlock(playerSandbox, item, midpoint, rotation)
     if (!clonedModel) {
-      this.logger.Error(
-        `MeshService.placeBlock: Player ${player.Name} placed ${itemName} missing mesh`,
-      )
+      store.updatePlayerInventory(player.UserId, itemName, 1)
       return
     }
 
@@ -267,15 +269,12 @@ export class MeshService implements OnStart {
     }
 
     const clonedModel = templateModel.Clone()
-    const bounding = new Instance('Part')
     const size = getItemVector3(item.size)
-    bounding.Name = 'Bounding'
-    bounding.Position = clonedModel.GetPivot().Position
-    bounding.Size = size.mul(gridSpacing)
-    bounding.Anchored = true
-    bounding.CanCollide = false
-    bounding.Transparency = 1.0
-    bounding.Parent = clonedModel
+    const bounding = createBoundingPart(
+      clonedModel.GetPivot().Position,
+      size.mul(gridSpacing * 0.99),
+      clonedModel,
+    )
     clonedModel.PivotTo(
       getCFrameFromMeshMidpoint(
         midpoint,
@@ -285,7 +284,7 @@ export class MeshService implements OnStart {
       ),
     )
 
-    const touchingParts = bounding.GetTouchingParts()
+    const touchingParts = Workspace.GetPartsInPart(bounding, this.overlapParams)
     if (touchingParts.size() > 0) {
       this.logger.Warn(
         `MeshService.cloneBlock: Item ${item.name} intersects with existing mesh`,

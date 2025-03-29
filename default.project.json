@@ -94,6 +94,9 @@
         "CSGAsyncDynamicCollision": {
           "Enum": 0
         },
+        "CollisionGroupData": {
+          "BinaryString": "AQMABP3///8HRGVmYXVsdAEE+v///whCb3VuZGluZwIE/f///xBTdHVkaW9TZWxlY3RhYmxl"
+        },
         "DecreaseMinimumPartDensityMode": {
           "Enum": 0
         },
