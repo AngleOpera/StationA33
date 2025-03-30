@@ -1,24 +1,19 @@
 import { OnStart, Service } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import Object from '@rbxts/object-utils'
-import { ReplicatedStorage, Workspace } from '@rbxts/services'
+import { Workspace } from '@rbxts/services'
 import {
-  BLOCK_ATTRIBUTE,
   INVENTORY,
   INVENTORY_ID,
-  InventoryItemDescription,
   InventoryItemName,
 } from 'ReplicatedStorage/shared/constants/core'
 import { selectPlayerInventoryItem } from 'ReplicatedStorage/shared/state'
-import {
-  getItemFromBlock,
-  getItemVector3,
-} from 'ReplicatedStorage/shared/utils/core'
+import { cloneBlock } from 'ReplicatedStorage/shared/utils/block'
+import { getItemFromBlock } from 'ReplicatedStorage/shared/utils/core'
 import {
   decodeMeshData,
   decodeMeshMidpoint,
   encodeMeshMidpoint,
-  getCFrameFromMeshMidpoint,
   getMeshRotationFromCFrame,
   gridSpacing,
   MeshMap,
@@ -27,7 +22,6 @@ import {
   meshPlotRemove,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
-import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
 import { Functions } from 'ServerScriptService/network'
 import { store } from 'ServerScriptService/store'
 
@@ -40,13 +34,10 @@ export interface PlayerSandbox {
 @Service()
 export class MeshService implements OnStart {
   playerSandbox: Record<string, PlayerSandbox> = {}
-  overlapParams = new OverlapParams()
 
   constructor(protected readonly logger: Logger) {}
 
   onStart() {
-    this.overlapParams.CollisionGroup = 'Bounding'
-
     Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) => {
       try {
         this.handlePlaceBlock(player, itemName, midpoint, rotation)
@@ -122,11 +113,11 @@ export class MeshService implements OnStart {
         )
         continue
       }
-      const model = this.cloneBlock(
-        playerSandbox,
+      const model = cloneBlock(
         item,
         midpoint,
         data.rotation,
+        playerSandbox.workspace.Plot.Baseplate,
       )
       if (model) {
         model.Name = encodedMidpoint
@@ -184,7 +175,12 @@ export class MeshService implements OnStart {
       return
     }
 
-    const clonedModel = this.cloneBlock(playerSandbox, item, midpoint, rotation)
+    const clonedModel = cloneBlock(
+      item,
+      midpoint,
+      rotation,
+      playerSandbox.workspace.Plot.Baseplate,
+    )
     if (!clonedModel) {
       store.updatePlayerInventory(player.UserId, itemName, 1)
       return
@@ -252,48 +248,5 @@ export class MeshService implements OnStart {
     clonedSoundBlock.Parent = playerSandbox.workspace.PlaceBlockPreview
     clonedSound.Play()
     target.Destroy()
-  }
-
-  cloneBlock(
-    playerSandbox: PlayerSandbox,
-    item: InventoryItemDescription,
-    midpoint: Vector3,
-    rotation: Vector3,
-  ) {
-    const templateModel = ReplicatedStorage.Items.FindFirstChild<Model>(
-      item.name,
-    )
-    if (!templateModel) {
-      this.logger.Error(`MeshService.cloneBlock: Item ${item.name} not found`)
-      return undefined
-    }
-
-    const clonedModel = templateModel.Clone()
-    const size = getItemVector3(item.size)
-    const bounding = createBoundingPart(
-      clonedModel.GetPivot().Position,
-      size.mul(gridSpacing * 0.99),
-      clonedModel,
-    )
-    clonedModel.PivotTo(
-      getCFrameFromMeshMidpoint(
-        midpoint,
-        size,
-        rotation,
-        playerSandbox.workspace.Plot.Baseplate,
-      ),
-    )
-
-    const touchingParts = Workspace.GetPartsInPart(bounding, this.overlapParams)
-    if (touchingParts.size() > 0) {
-      this.logger.Warn(
-        `MeshService.cloneBlock: Item ${item.name} intersects with existing mesh`,
-      )
-      clonedModel.Destroy()
-      return undefined
-    }
-
-    clonedModel.SetAttribute(BLOCK_ATTRIBUTE.BlockId, item.blockId)
-    return clonedModel
   }
 }

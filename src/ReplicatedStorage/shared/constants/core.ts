@@ -22,6 +22,13 @@ export interface InventoryItemDescription {
   stackable?: boolean
 }
 
+export enum Step {
+  Forward = 0,
+  Right = 1,
+  Backward = 2,
+  Left = 3,
+}
+
 export const IS_PROD = $NODE_ENV === 'production'
 export const IS_CANARY = $NODE_ENV === 'canary'
 export const IS_STUDIO = RunService.IsStudio()
@@ -42,9 +49,14 @@ export const USER_NAME = Players.LocalPlayer
   ? Players.LocalPlayer.Name
   : '(server)'
 
+export const ANIMATIONS = {
+  BreakBlock: 'BreakBlock' as const,
+  MoveModel: 'MoveModel' as const,
+}
+
 export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {
-  BlockId: 'BlockId',
-  Damage: 'Damage',
+  BlockId: 'BlockId' as const,
+  Damage: 'Damage' as const,
 }
 
 export const BLOCK_ID_LOOKUP: Record<number, InventoryItemDescription> =
@@ -56,7 +68,7 @@ export const BLOCK_ID_LOOKUP: Record<number, InventoryItemDescription> =
   )
 
 export const BLOCK_CHILD: Record<keyof BlockBase, string> = {
-  Bounding: 'Bounding',
+  Bounding: 'Bounding' as const,
 }
 
 export const CURRENCY_NAME: {
@@ -68,7 +80,7 @@ export const CURRENCY_NAME: {
 export const CURRENCY_NAMES: CurrencyName[] = Object.keys(CURRENCY_NAME)
 
 export const ENTITY_ATTRIBUTE: Record<keyof EntityAttributes, string> = {
-  EntityId: 'EntityId',
+  EntityId: 'EntityId' as const,
 }
 
 export const GAME_MODE: {

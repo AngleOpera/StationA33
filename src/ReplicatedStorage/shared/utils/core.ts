@@ -1,10 +1,52 @@
-import { Workspace } from '@rbxts/services'
+import { Dependency } from '@flamework/core'
+import { Logger } from '@rbxts/log'
 import {
   BLOCK_ATTRIBUTE,
   BLOCK_ID_LOOKUP,
   InventoryItemDescription,
+  Step,
 } from 'ReplicatedStorage/shared/constants/core'
-import { findPathToDescendent } from 'ReplicatedStorage/shared/utils/instance'
+
+export type EncodedEntityStep = number & {
+  readonly _entity_step?: unique symbol
+}
+
+let logger: Logger
+
+export function getLogger() {
+  if (!logger) logger = Dependency<Logger>()
+  return logger
+}
+
+export function getStepVector(step: Step) {
+  switch (step) {
+    case Step.Forward:
+      return new Vector3(0, 0, -1)
+    case Step.Right:
+      return new Vector3(1, 0, 0)
+    case Step.Backward:
+      return new Vector3(0, 0, 1)
+    case Step.Left:
+      return new Vector3(-1, 0, 0)
+  }
+}
+
+export function getEncodedEntityStep(
+  entity: number,
+  step: Step,
+): EncodedEntityStep {
+  return (entity << 2) | step
+}
+
+export function getEntityStepFromEncodedStep(encoded: EncodedEntityStep): {
+  entity: number
+  step: Step
+} {
+  return {
+    entity: encoded >> 2,
+    step: encoded & 0b11,
+  }
+}
 
 export const getItemVector3 = (v: ItemVector3) => new Vector3(v[0], v[1], v[2])
 
@@ -19,13 +61,4 @@ export function getItemInputToOffsets(
   item: InventoryItemDescription,
 ): ItemVector3[] | undefined {
   return item.inputTo ?? (item.inputFrom ? [[0, 0, 0]] : undefined)
-}
-
-export function findPlacedBlockFromDescendent(descendent: Instance) {
-  const path = findPathToDescendent(Workspace.PlayerSpaces, descendent)
-  if (!path || path.size() < 3 || path[1] !== 'PlacedBlocks') {
-    return { userId: undefined, encodedMidpoint: undefined }
-  }
-  const userId = tonumber(path[0])
-  return { userId, encodedMidpoint: path[2] }
 }

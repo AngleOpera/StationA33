@@ -26,6 +26,13 @@ interface ServerFunctions {
 
 interface ClientEvents {
   animate: (animation: string, path: string[]) => void
+  animateNewItem: (
+    itemType: number,
+    encodedMidpoint: string,
+    encodedEntityStep: number,
+  ) => void
+  animateMoveItems: (encodedEntityStep: number[]) => void
+  animateRemoveItem: (entity: number) => void
   dispatch: (actions: Array<BroadcastAction>) => void
   message: (
     messageType: string,

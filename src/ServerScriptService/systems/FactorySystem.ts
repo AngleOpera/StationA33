@@ -1,5 +1,5 @@
 import { OnStart, Service } from '@flamework/core'
-import { ChildOf, Entity, pair, Tag, Wildcard } from '@rbxts/jecs'
+import { ChildOf, Entity, pair, Tag } from '@rbxts/jecs'
 import { Logger } from '@rbxts/log'
 import Object from '@rbxts/object-utils'
 import Phase from '@rbxts/planck/out/Phase'
@@ -19,8 +19,9 @@ import {
   world,
 } from 'ReplicatedStorage/shared/services/EntityComponentSystem'
 import { selectPlayerContainer } from 'ReplicatedStorage/shared/state'
+import { findPlacedBlockFromDescendent } from 'ReplicatedStorage/shared/utils/block'
 import {
-  findPlacedBlockFromDescendent,
+  getEncodedEntityStep,
   getItemFromBlock,
   getItemInputToOffsets,
   getItemVector3,
@@ -33,6 +34,7 @@ import {
   getMeshRotationName,
   meshOffsetMapGet,
 } from 'ReplicatedStorage/shared/utils/mesh'
+import { Events } from 'ServerScriptService/network'
 import { MeshService } from 'ServerScriptService/services/MeshService'
 import { store } from 'ServerScriptService/store'
 
@@ -130,18 +132,23 @@ export class FactorySystem implements OnStart {
             /// XXX fix chained containers
 
             // Add item to conveyor
-            const product = world.entity()
-            world.set(product, Product, INVENTORY[productName].blockId)
-            world.add(product, pair(StorageOf, outputEntity))
-            this.logger.Info(
-              `Factory ${userId} container ${container.Name} output ${productName}`,
+            const blockId = INVENTORY[productName].blockId
+            const productEntity = world.entity()
+            world.set(productEntity, Product, blockId)
+            world.add(productEntity, pair(StorageOf, outputEntity))
+            Events.animateNewItem.broadcast(
+              blockId,
+              container.Name,
+              getEncodedEntityStep(productEntity, 0),
             )
-
-            // broadcast animation event
+            this.logger.Info(
+              `Factory ${userId} container ${container.Name} output ${productName}:${productEntity}`,
+            )
           }
         }
 
         // Conveyors move items
+        const encodedEntitySteps: number[] = []
         for (const [factoryEntity] of world
           .query(Factory, Model)
           .without(Container)) {
@@ -152,8 +159,11 @@ export class FactorySystem implements OnStart {
             if (isFull(outputEntity)) continue
 
             const storageOfFactoryEntity = pair(StorageOf, factoryEntity)
-            for (const product of world.each(storageOfFactoryEntity)) {
-              world.remove(product, storageOfFactoryEntity)
+            for (const productEntity of world.each(storageOfFactoryEntity)) {
+              world.remove(productEntity, storageOfFactoryEntity)
+              const blockId = world.get(productEntity, Product)
+              if (!blockId) continue
+              const productName = INVENTORY_ID[blockId].name
 
               if (world.has(outputEntity, Container)) {
                 const container = world.get(outputEntity, Model)
@@ -162,23 +172,30 @@ export class FactorySystem implements OnStart {
                 if (!player) continue
                 const userId = world.get(player, UserId)
                 if (!userId) continue
-                const blockId = world.get(product, Product)
-                if (!blockId) continue
 
                 state = store.updatePlayerContainer(
                   userId,
                   container.Name,
-                  INVENTORY_ID[blockId].name,
+                  productName,
                   1,
                 )
+                Events.animateRemoveItem.broadcast(productEntity)
+                this.logger.Info(
+                  `Factory ${userId} container ${container.Name} input ${productName}:${productEntity}`,
+                )
               } else {
-                world.add(product, pair(StorageOf, outputEntity))
+                world.add(productEntity, pair(StorageOf, outputEntity))
+                encodedEntitySteps.push(getEncodedEntityStep(productEntity, 0))
+                this.logger.Info(
+                  `Factory conveyor moved ${productName}:${productEntity} from ${factoryEntity} -> ${outputEntity}`,
+                )
               }
-
-              // broadcast animation event
               break
             }
           }
+        }
+        if (encodedEntitySteps.size() > 0) {
+          Events.animateMoveItems.broadcast(encodedEntitySteps)
         }
       },
       { timePassedCondition: 0.1 },
@@ -217,7 +234,7 @@ export class FactorySystem implements OnStart {
     )
     const rotationName = getMeshRotationName(rotation)
     this.logger.Info(
-      `Factory ${userId} created: ${model.GetFullName()} (${midpoint}) ${rotationName}`,
+      `Factory ${userId} created ${item.name}:${entity}: ${model.GetFullName()} (${midpoint}) ${rotationName}`,
     )
 
     const plot = playerSandbox.plot[playerSandbox.location]
@@ -266,7 +283,7 @@ export class FactorySystem implements OnStart {
       }
     }
 
-    // Synchronize conveyor animations
+    // Synchronize conveyor animations - XXX move to client
     for (const [e] of world.query(playerEntity, Model)) {
       const model = world.get(e, Model)
       if (!model) continue

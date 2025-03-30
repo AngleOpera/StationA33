@@ -3,7 +3,11 @@ import { OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import RaycastHitbox, { HitboxObject } from '@rbxts/raycast-hitbox'
 import { CollectionService, Players, Workspace } from '@rbxts/services'
-import { IS_CLIENT, IS_SERVER } from 'ReplicatedStorage/shared/constants/core'
+import {
+  ANIMATIONS,
+  IS_CLIENT,
+  IS_SERVER,
+} from 'ReplicatedStorage/shared/constants/core'
 import { Swing, SWINGS_LOOKUP } from 'ReplicatedStorage/shared/constants/swings'
 import { SwingerTag } from 'ReplicatedStorage/shared/constants/tags'
 import { ServerNetworkEvents } from 'ReplicatedStorage/shared/network'
@@ -211,7 +215,7 @@ export class SwingerComponent
     )
     const path = findPathToDescendent(Workspace, minable)
     if (path && this.serverEvents)
-      this.serverEvents.animate.broadcast('blockBreak', path)
+      this.serverEvents.animate.broadcast(ANIMATIONS.BreakBlock, path)
     if (this.player && this.serverStore)
       takeBlockDamage(minable, 1, item, this.serverStore, this.player.UserId)
   }

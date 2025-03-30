@@ -187,6 +187,9 @@ interface Workspace extends Instance {
     BlockBroken: Sound
     BlockPlaced: Sound
   }
+  Animating: Folder & {
+    Items: Folder
+  }
   Planet: Planet
   PlayerSpaces: Folder & Record<string, PlayerSpace>
 }
