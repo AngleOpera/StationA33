@@ -4,7 +4,7 @@ import { Logger } from '@rbxts/log'
 import { timePassed } from '@rbxts/planck/out/conditions'
 import Phase from '@rbxts/planck/out/Phase'
 import Scheduler from '@rbxts/planck/out/Scheduler'
-import { ENTITY_ATTRIBUTE } from 'ReplicatedStorage/shared/constants/core'
+import { BLOCK_ATTRIBUTE } from 'ReplicatedStorage/shared/constants/core'
 import { forEveryTag } from 'ReplicatedStorage/shared/utils/instance'
 import { forEveryPlayer } from 'ReplicatedStorage/shared/utils/player'
 
@@ -28,7 +28,7 @@ export class EntityComponentSystem implements OnStart, OnTick {
     this.scheduler.addSystem((world) => {
       world.set(Model, OnSet, (entity, value) => {
         const model = value as Instance
-        model.SetAttribute(ENTITY_ATTRIBUTE.EntityId, entity)
+        model.SetAttribute(BLOCK_ATTRIBUTE.EntityId, entity)
       })
 
       world.set(Model, OnRemove, (entity) => {
@@ -97,7 +97,7 @@ export function bindTaggedModelToComponent(
     },
     (instance) => {
       if (!instance.IsA('Model')) return
-      const entity = instance.GetAttribute(ENTITY_ATTRIBUTE.EntityId) as
+      const entity = instance.GetAttribute(BLOCK_ATTRIBUTE.EntityId) as
         | Entity<undefined>
         | undefined
       if (!entity) return

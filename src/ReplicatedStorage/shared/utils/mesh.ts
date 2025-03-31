@@ -8,7 +8,12 @@ import {
   decodeBase58Array,
   encodeBase58Array,
 } from 'ReplicatedStorage/shared/utils/base58'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
+import {
+  getItemVector3,
+  getRotatedPoint,
+  Rotation,
+  rotation0,
+} from 'ReplicatedStorage/shared/utils/core'
 import {
   getLowerCorner,
   getUpperCorner,
@@ -29,7 +34,6 @@ export type MeshOffsetMap = Record<EncodedMeshMidpoint, EncodedMeshMidpoint[]>
 export type MeshStartpoint = Vector3 & { readonly _mesh_start?: unique symbol }
 export type MeshEndpoint = Vector3 & { readonly _mesh_end?: unique symbol }
 export type MeshMidpoint = Vector3 & { readonly _mesh_mid?: unique symbol }
-export type MeshRotation = Vector3 & { readonly _mesh_rot?: unique symbol }
 
 export interface MeshData {
   readonly blockId: number
@@ -48,53 +52,6 @@ export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
 export const coordinateEncodingLength = 2
 export const maxCoordinateValue =
   base58ColumnValues[coordinateEncodingLength] - 1
-
-export const meshRotation0: MeshRotation = new Vector3(0, 0, 0)
-export const meshRotation90: MeshRotation = new Vector3(0, 1, 0)
-export const meshRotation180: MeshRotation = new Vector3(0, 2, 0)
-export const meshRotation270: MeshRotation = new Vector3(0, 3, 0)
-
-const surfaceRotationSequence = {
-  Y: [
-    Enum.NormalId.Front,
-    Enum.NormalId.Left,
-    Enum.NormalId.Back,
-    Enum.NormalId.Right,
-  ],
-}
-
-export function getMeshRotationName(rotation: MeshRotation): string {
-  switch (rotation.Y) {
-    case 0:
-      return 'r0'
-    case 1:
-      return 'r90'
-    case 2:
-      return 'r180'
-    case 3:
-      return 'r270'
-    default:
-      return 'rerr'
-  }
-}
-
-export function getRotatedSurface(
-  surface: Enum.NormalId,
-  rotation: MeshRotation,
-): Enum.NormalId {
-  switch (surface) {
-    case Enum.NormalId.Front:
-    case Enum.NormalId.Left:
-    case Enum.NormalId.Back:
-    case Enum.NormalId.Right:
-      return surfaceRotationSequence.Y[
-        (surfaceRotationSequence.Y.indexOf(surface) + rotation.Y) %
-          surfaceRotationSequence.Y.size()
-      ]
-    default:
-      return surface
-  }
-}
 
 export function validMeshMidpoint(midpoint: Vector3): boolean {
   return (
@@ -154,7 +111,7 @@ export function getMeshDataFromModel(
     size: size ? size.div(gridSpacing).Floor() : new Vector3(1, 1, 1),
     rotation: baseplate
       ? getMeshRotationFromCFrame(model.GetPivot(), baseplate)
-      : meshRotation0,
+      : rotation0,
   }
 }
 
@@ -246,19 +203,18 @@ export function getMeshStartpointEndpointFromMidpointSize(
 
 export function getMeshOffsetsFromMeshMidpoint(
   midpoint: MeshMidpoint,
-  _unrotatedSize: Vector3,
-  rotation: MeshRotation,
+  rotation: Rotation,
   offsets: ItemVector3[],
 ): MeshMidpoint[] {
   return offsets.map((offset) =>
-    midpoint.add(getRotatedMeshPoint(getItemVector3(offset), rotation)).Floor(),
+    midpoint.add(getRotatedPoint(getItemVector3(offset), rotation)).Floor(),
   )
 }
 
 export function getCFrameFromMeshMidpoint(
   midpoint: MeshMidpoint,
   unrotatedSize: Vector3,
-  rotation: MeshRotation,
+  rotation: Rotation,
   baseplate: BasePart,
 ): CFrame {
   const size = getRotatedMeshSize(unrotatedSize, rotation)
@@ -277,28 +233,8 @@ export function getCFrameFromMeshMidpoint(
   )
 }
 
-export function getRotatedMeshPoint(
-  v: MeshStartpoint | MeshEndpoint | MeshMidpoint,
-  rotation: MeshRotation,
-) {
-  if (!rotation.Y) return v
-  const angle = math.rad(90 * rotation.Y)
-  const sinAngle = math.sin(angle)
-  const cosAngle = math.cos(angle)
-  return new Vector3(
-    math.round(v.X * cosAngle - v.Z * sinAngle),
-    math.round(v.Y),
-    math.round(v.X * sinAngle + v.Z * cosAngle),
-  )
-}
-
-export function getRotatedMeshSize(
-  size: Vector3,
-  rotation: MeshRotation,
-): Vector3 {
-  return rotation.Y
-    ? roundVector3(getRotatedMeshPoint(size, rotation).Abs())
-    : size
+export function getRotatedMeshSize(size: Vector3, rotation: Rotation): Vector3 {
+  return rotation.Y ? roundVector3(getRotatedPoint(size, rotation).Abs()) : size
 }
 
 export function meshMapAdd(
@@ -396,20 +332,18 @@ export function visitMeshOffsets(
   plot: MeshPlot,
   midpoint: MeshMidpoint,
   encodedMidpoint: EncodedMeshMidpoint,
+  rotation: Rotation,
   item: InventoryItemDescription,
-  rotation: MeshRotation,
   visit = meshOffsetMapAdd,
 ) {
-  const size = getItemVector3(item.size)
   for (const input of item.inputFrom
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.inputFrom)
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, rotation, item.inputFrom)
     : []) {
     if (validMeshMidpoint(input)) visit(plot.inputFrom, input, encodedMidpoint)
   }
   if (item.inputTo) {
     for (const input of getMeshOffsetsFromMeshMidpoint(
       midpoint,
-      size,
       rotation,
       item.inputTo,
     )) {
@@ -420,7 +354,7 @@ export function visitMeshOffsets(
     visit(plot.inputTo, midpoint, encodedMidpoint)
   }
   for (const output of item.outputTo
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, size, rotation, item.outputTo)
+    ? getMeshOffsetsFromMeshMidpoint(midpoint, rotation, item.outputTo)
     : []) {
     if (validMeshMidpoint(output)) visit(plot.outputTo, output, encodedMidpoint)
   }
@@ -429,8 +363,8 @@ export function visitMeshOffsets(
 export function meshPlotAdd(
   plot: MeshPlot,
   midpoint: MeshMidpoint,
+  rotation: Rotation,
   item: InventoryItemDescription,
-  rotation: MeshRotation,
 ): EncodedMeshMidpoint {
   const encodedMidpoint = encodeMeshMidpoint(midpoint)
   const size = getItemVector3(item.size)
@@ -443,8 +377,8 @@ export function meshPlotAdd(
     plot,
     midpoint,
     encodedMidpoint,
-    item,
     rotation,
+    item,
     meshOffsetMapAdd,
   )
   return encodedMidpoint
@@ -453,8 +387,8 @@ export function meshPlotAdd(
 export function meshPlotRemove(
   plot: MeshPlot,
   midpoint: MeshMidpoint,
+  rotation: Rotation,
   item: InventoryItemDescription,
-  rotation: MeshRotation,
 ): void {
   const encodedMidpoint = encodeMeshMidpoint(midpoint)
   meshMapRemoveEncoded(plot.mesh, encodedMidpoint)
@@ -462,8 +396,8 @@ export function meshPlotRemove(
     plot,
     midpoint,
     encodedMidpoint,
-    item,
     rotation,
+    item,
     meshOffsetMapRemove,
   )
 }

@@ -1,6 +1,7 @@
 interface BlockAttributes {
   BlockId: number
   Damage?: number
+  EntityId?: number
 }
 
 interface BlockBase {
@@ -17,10 +18,6 @@ interface BreakBlockTool extends Tool {}
 
 interface BlockBreakerAttributes {
   MaxDistance: number
-}
-
-interface EntityAttributes {
-  EntityId: number
 }
 
 interface PlaceBlockTool extends Tool {}

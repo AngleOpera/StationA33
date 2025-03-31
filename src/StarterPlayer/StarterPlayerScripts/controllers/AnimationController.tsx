@@ -7,14 +7,12 @@ import {
 } from 'ReplicatedStorage/shared/constants/core'
 import { cloneBlock } from 'ReplicatedStorage/shared/utils/block'
 import {
-  getEntityStepFromEncodedStep,
+  decodeEntityStep,
   getStepVector,
+  rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
 import { findDescendentWithPath } from 'ReplicatedStorage/shared/utils/instance'
-import {
-  decodeMeshMidpoint,
-  meshRotation0,
-} from 'ReplicatedStorage/shared/utils/mesh'
+import { decodeMeshMidpoint } from 'ReplicatedStorage/shared/utils/mesh'
 import {
   AnimatingBreakBlock,
   startBreakBlockAnimation,
@@ -121,11 +119,11 @@ export class AnimationController implements OnStart, OnTick {
       return
     }
     const playerSpace = this.playerController.getPlayerSpace()
-    const { entity } = getEntityStepFromEncodedStep(encodedEntityStep)
+    const { entity } = decodeEntityStep(encodedEntityStep)
     const model = cloneBlock(
       item,
       decodeMeshMidpoint(encodedMidpoint),
-      meshRotation0,
+      rotation0,
       playerSpace.Plot.Baseplate,
       { ignoreExisting: true },
     )
@@ -138,7 +136,7 @@ export class AnimationController implements OnStart, OnTick {
   handleAnimateMoveItems(encodedEntityStep: number[]) {
     const baseplate = this.playerController.getPlayerSpace().Plot.Baseplate
     for (const entityStep of encodedEntityStep) {
-      const { entity, step } = getEntityStepFromEncodedStep(entityStep)
+      const { entity, step } = decodeEntityStep(entityStep)
       const model = Workspace.Animating.Items.FindFirstChild<Model>(
         `Item${entity}`,
       )

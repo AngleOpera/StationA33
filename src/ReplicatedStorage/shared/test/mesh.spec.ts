@@ -5,7 +5,13 @@ import Object from '@rbxts/object-utils'
 import { Workspace } from '@rbxts/services'
 import { padEnd } from '@rbxts/string-utils'
 import { INVENTORY } from 'ReplicatedStorage/shared/constants/core'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
+import {
+  getRotatedPoint,
+  rotation0,
+  rotation90,
+  rotation180,
+  rotation270,
+} from 'ReplicatedStorage/shared/utils/core'
 import {
   coordinateEncodingLength,
   decodeMeshData,
@@ -18,7 +24,6 @@ import {
   getMeshOffsetsFromMeshMidpoint,
   getMeshRotationFromCFrame,
   getMeshStartpointEndpointFromMidpointSize,
-  getRotatedMeshPoint,
   getRotatedMeshSize,
   maxCoordinateValue,
   MeshData,
@@ -28,10 +33,6 @@ import {
   MeshPlot,
   meshPlotAdd,
   meshPlotRemove,
-  meshRotation0,
-  meshRotation90,
-  meshRotation180,
-  meshRotation270,
 } from 'ReplicatedStorage/shared/utils/mesh'
 
 export = () => {
@@ -169,7 +170,7 @@ export = () => {
 
     it('should convert between (midpoint, size) and (startpoint, endpoint)', () => {
       const size = new Vector3(3, 4, 5)
-      const rotation = meshRotation0
+      const rotation = rotation0
       const testMidpoint1 = new Vector3(721, 444, 123)
       const { startpoint, endpoint } =
         getMeshStartpointEndpointFromMidpointSize(testMidpoint1, size, rotation)
@@ -222,7 +223,7 @@ export = () => {
       const defaultBlock = {
         blockId: 1,
         size: new Vector3(1, 1, 1),
-        rotation: meshRotation0,
+        rotation: rotation0,
       }
       expect(encodeMeshData(defaultBlock)).to.be.equal('2_')
       expect(decodeMeshData('2_')).to.be.equal(defaultBlock)
@@ -292,27 +293,17 @@ export = () => {
       const testPoint2 = new Vector3(1, 0, 0)
       const testPoint3 = new Vector3(0, 0, 1)
       const testPoint4 = new Vector3(-1, 0, 0)
-      expect(getRotatedMeshPoint(testPoint1, meshRotation0)).to.be.equal(
-        testPoint1,
-      )
-      expect(getRotatedMeshPoint(testPoint1, meshRotation90)).to.be.equal(
-        testPoint2,
-      )
-      expect(getRotatedMeshPoint(testPoint1, meshRotation180)).to.be.equal(
-        testPoint3,
-      )
-      expect(getRotatedMeshPoint(testPoint1, meshRotation270)).to.be.equal(
-        testPoint4,
-      )
-      expect(getRotatedMeshPoint(testPoint1, rotation360)).to.be.equal(
-        testPoint1,
-      )
+      expect(getRotatedPoint(testPoint1, rotation0)).to.be.equal(testPoint1)
+      expect(getRotatedPoint(testPoint1, rotation90)).to.be.equal(testPoint2)
+      expect(getRotatedPoint(testPoint1, rotation180)).to.be.equal(testPoint3)
+      expect(getRotatedPoint(testPoint1, rotation270)).to.be.equal(testPoint4)
+      expect(getRotatedPoint(testPoint1, rotation360)).to.be.equal(testPoint1)
       const size1 = new Vector3(6, 1, 2)
       const size2 = new Vector3(2, 1, 6)
-      expect(getRotatedMeshSize(size1, meshRotation0)).to.be.equal(size1)
-      expect(getRotatedMeshSize(size1, meshRotation90)).to.be.equal(size2)
-      expect(getRotatedMeshSize(size1, meshRotation180)).to.be.equal(size1)
-      expect(getRotatedMeshSize(size1, meshRotation270)).to.be.equal(size2)
+      expect(getRotatedMeshSize(size1, rotation0)).to.be.equal(size1)
+      expect(getRotatedMeshSize(size1, rotation90)).to.be.equal(size2)
+      expect(getRotatedMeshSize(size1, rotation180)).to.be.equal(size1)
+      expect(getRotatedMeshSize(size1, rotation270)).to.be.equal(size2)
       expect(getRotatedMeshSize(size1, rotation360)).to.be.equal(size1)
     })
   })
@@ -321,34 +312,26 @@ export = () => {
     const item = INVENTORY.Conveyor
     const testPoint = new Vector3(39, 0, 422)
     expect(
-      getMeshOffsetsFromMeshMidpoint(
-        testPoint,
-        getItemVector3(item.size),
-        meshRotation0,
-        item.outputTo ?? [],
-      ),
+      getMeshOffsetsFromMeshMidpoint(testPoint, rotation0, item.outputTo ?? []),
     ).to.be.equal([new Vector3(39, 0, 421)])
     expect(
       getMeshOffsetsFromMeshMidpoint(
         testPoint,
-        getItemVector3(item.size),
-        meshRotation90,
+        rotation90,
         item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(40, 0, 422)])
     expect(
       getMeshOffsetsFromMeshMidpoint(
         testPoint,
-        getItemVector3(item.size),
-        meshRotation180,
+        rotation180,
         item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(39, 0, 423)])
     expect(
       getMeshOffsetsFromMeshMidpoint(
         testPoint,
-        getItemVector3(item.size),
-        meshRotation270,
+        rotation270,
         item.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(38, 0, 422)])
@@ -358,8 +341,7 @@ export = () => {
     expect(
       getMeshOffsetsFromMeshMidpoint(
         testPoint2,
-        getItemVector3(item2.size),
-        meshRotation0,
+        rotation0,
         item2.outputTo ?? [],
       ),
     ).to.be.equal([new Vector3(40, 0, 420)])
@@ -371,28 +353,28 @@ export = () => {
     const size = new Vector3(1, 1, 1)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, meshRotation0, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, rotation0, baseplate),
         baseplate,
       ),
-    ).to.be.equal(meshRotation0)
+    ).to.be.equal(rotation0)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, meshRotation90, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, rotation90, baseplate),
         baseplate,
       ),
-    ).to.be.equal(meshRotation90)
+    ).to.be.equal(rotation90)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, meshRotation180, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, rotation180, baseplate),
         baseplate,
       ),
-    ).to.be.equal(meshRotation180)
+    ).to.be.equal(rotation180)
     expect(
       getMeshRotationFromCFrame(
-        getCFrameFromMeshMidpoint(midpoint, size, meshRotation270, baseplate),
+        getCFrameFromMeshMidpoint(midpoint, size, rotation270, baseplate),
         baseplate,
       ),
-    ).to.be.equal(meshRotation270)
+    ).to.be.equal(rotation270)
   })
 
   it('should track mesh inputs and outputs', () => {
@@ -403,7 +385,7 @@ export = () => {
       outputTo: {},
     }
     const p = new Vector3(10, 0, 20)
-    meshPlotAdd(meshPlot, p, INVENTORY.Conveyor, meshRotation90)
+    meshPlotAdd(meshPlot, p, rotation90, INVENTORY.Conveyor)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(1)
     expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(1)
     expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(1)
@@ -419,7 +401,7 @@ export = () => {
     expect(decodeMeshMidpoint(outputTo[0])).to.be.equal(p)
 
     const q = new Vector3(11, 0, 20)
-    meshPlotAdd(meshPlot, q, INVENTORY.Conveyor, meshRotation90)
+    meshPlotAdd(meshPlot, q, rotation90, INVENTORY.Conveyor)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(2)
     expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(2)
     expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(2)
@@ -435,7 +417,7 @@ export = () => {
     expect(decodeMeshMidpoint(outputTo[0])).to.be.equal(q)
 
     const r = new Vector3(9, 0, 19)
-    meshPlotAdd(meshPlot, r, INVENTORY.Conveyor, meshRotation0)
+    meshPlotAdd(meshPlot, r, rotation0, INVENTORY.Conveyor)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(3)
     expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(2)
     expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(3)
@@ -451,7 +433,7 @@ export = () => {
     expect(outputTo?.size()).to.be.equal(1)
     expect(decodeMeshMidpoint(outputTo[0])).to.be.equal(r)
 
-    meshPlotRemove(meshPlot, p, INVENTORY.Conveyor, meshRotation90)
+    meshPlotRemove(meshPlot, p, rotation90, INVENTORY.Conveyor)
     expect(Object.keys(meshPlot.mesh).size()).to.be.equal(2)
     expect(Object.keys(meshPlot.inputFrom).size()).to.be.equal(2)
     expect(Object.keys(meshPlot.inputTo).size()).to.be.equal(2)

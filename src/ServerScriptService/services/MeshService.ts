@@ -187,7 +187,7 @@ export class MeshService implements OnStart {
     }
 
     const plot = playerSandbox.plot[playerSandbox.location]
-    const encodedMidpoint = meshPlotAdd(plot, midpoint, item, rotation)
+    const encodedMidpoint = meshPlotAdd(plot, midpoint, rotation, item)
     const clonedSound = Workspace.Audio.BlockPlaced.Clone()
     clonedSound.Parent = clonedModel
     clonedModel.Name = encodedMidpoint
@@ -233,7 +233,7 @@ export class MeshService implements OnStart {
       target.GetPivot(),
       playerSandbox.workspace.Plot.Baseplate,
     )
-    meshPlotRemove(plot, midpoint, item, rotation)
+    meshPlotRemove(plot, midpoint, rotation, item)
     if (item.name === INVENTORY.Container.name) {
       store.breakPlayerContainer(player.UserId, encodedMidpoint)
     }

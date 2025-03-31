@@ -11,11 +11,76 @@ export type EncodedEntityStep = number & {
   readonly _entity_step?: unique symbol
 }
 
+export type EncodedOffsetStep = number & {
+  readonly _mesh_offset_step?: unique symbol
+}
+
+export type Rotation = Vector3 & { readonly _rotation?: unique symbol }
+
+export const rotation0: Rotation = new Vector3(0, 0, 0)
+export const rotation90: Rotation = new Vector3(0, 1, 0)
+export const rotation180: Rotation = new Vector3(0, 2, 0)
+export const rotation270: Rotation = new Vector3(0, 3, 0)
+
+const surfaceRotationSequence = {
+  Y: [
+    Enum.NormalId.Front,
+    Enum.NormalId.Left,
+    Enum.NormalId.Back,
+    Enum.NormalId.Right,
+  ],
+}
+
 let logger: Logger
 
 export function getLogger() {
   if (!logger) logger = Dependency<Logger>()
   return logger
+}
+
+export function getRotationName(rotation: Rotation): string {
+  switch (rotation.Y) {
+    case 0:
+      return 'r0'
+    case 1:
+      return 'r90'
+    case 2:
+      return 'r180'
+    case 3:
+      return 'r270'
+    default:
+      return 'rerr'
+  }
+}
+
+export function getRotatedPoint(v: Vector3, rotation: Rotation) {
+  if (!rotation.Y) return v
+  const angle = math.rad(90 * rotation.Y)
+  const sinAngle = math.sin(angle)
+  const cosAngle = math.cos(angle)
+  return new Vector3(
+    math.round(v.X * cosAngle - v.Z * sinAngle),
+    math.round(v.Y),
+    math.round(v.X * sinAngle + v.Z * cosAngle),
+  )
+}
+
+export function getRotatedSurface(
+  surface: Enum.NormalId,
+  rotation: Rotation,
+): Enum.NormalId {
+  switch (surface) {
+    case Enum.NormalId.Front:
+    case Enum.NormalId.Left:
+    case Enum.NormalId.Back:
+    case Enum.NormalId.Right:
+      return surfaceRotationSequence.Y[
+        (surfaceRotationSequence.Y.indexOf(surface) + rotation.Y) %
+          surfaceRotationSequence.Y.size()
+      ]
+    default:
+      return surface
+  }
 }
 
 export function getStepVector(step: Step) {
@@ -31,14 +96,41 @@ export function getStepVector(step: Step) {
   }
 }
 
-export function getEncodedEntityStep(
+export function getStepFromVector(v: Vector3) {
+  const normalized = v.Unit
+  if (normalized.FuzzyEq(new Vector3(0, 0, -1))) return Step.Forward
+  if (normalized.FuzzyEq(new Vector3(1, 0, 0))) return Step.Right
+  if (normalized.FuzzyEq(new Vector3(0, 0, 1))) return Step.Backward
+  if (normalized.FuzzyEq(new Vector3(-1, 0, 0))) return Step.Left
+  return undefined
+}
+
+export function encodeOffsetStep(offset: Vector3, step: Step) {
+  const { X, Y, Z } = offset.Floor()
+  return (
+    ((X & 0b111111) << 14) |
+    ((Y & 0b111111) << 8) |
+    ((Z & 0b111111) << 2) |
+    step
+  )
+}
+
+export function decodeOffsetStep(encoded: EncodedOffsetStep) {
+  const x = (encoded >> 14) & 0b111111
+  const y = (encoded >> 8) & 0b111111
+  const z = (encoded >> 2) & 0b111111
+  const step = encoded & 0b11
+  return { offset: new Vector3(x, y, z), step }
+}
+
+export function encodeEntityStep(
   entity: number,
   step: Step,
 ): EncodedEntityStep {
   return (entity << 2) | step
 }
 
-export function getEntityStepFromEncodedStep(encoded: EncodedEntityStep): {
+export function decodeEntityStep(encoded: EncodedEntityStep): {
   entity: number
   step: Step
 } {
@@ -48,7 +140,16 @@ export function getEntityStepFromEncodedStep(encoded: EncodedEntityStep): {
   }
 }
 
+export function getOffsetStep(from: Vector3, to: Vector3, rotation: Rotation) {
+  const offset = getRotatedPoint(from, rotation).Floor()
+  const step = getStepFromVector(getRotatedPoint(to, rotation).sub(offset)) ?? 0
+  return { offset, step }
+}
+
 export const getItemVector3 = (v: ItemVector3) => new Vector3(v[0], v[1], v[2])
+
+export const getItemVector3WithDefault = (v?: ItemVector3) =>
+  v ? getItemVector3(v) : new Vector3(0, 0, 0)
 
 export const getItemFromBlock = (block?: Model) => {
   const blockId = block?.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
@@ -61,4 +162,28 @@ export function getItemInputToOffsets(
   item: InventoryItemDescription,
 ): ItemVector3[] | undefined {
   return item.inputTo ?? (item.inputFrom ? [[0, 0, 0]] : undefined)
+}
+
+export function getItemInputOffsetStep(
+  item: InventoryItemDescription,
+  rotation: Rotation,
+  index: number,
+) {
+  return getOffsetStep(
+    getItemVector3WithDefault(item.inputFrom?.[index]),
+    getItemVector3WithDefault(item.inputTo?.[index]),
+    rotation,
+  )
+}
+
+export function getItemOutputOffsetStep(
+  item: InventoryItemDescription,
+  rotation: Rotation,
+  index: number,
+) {
+  return getOffsetStep(
+    getItemVector3WithDefault(item.outputFrom?.[index]),
+    getItemVector3WithDefault(item.outputTo?.[index]),
+    rotation,
+  )
 }

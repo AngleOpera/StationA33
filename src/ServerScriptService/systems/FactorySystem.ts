@@ -1,10 +1,10 @@
 import { OnStart, Service } from '@flamework/core'
-import { ChildOf, Entity, pair, Tag } from '@rbxts/jecs'
+import { Entity, pair, Tag } from '@rbxts/jecs'
 import { Logger } from '@rbxts/log'
 import Object from '@rbxts/object-utils'
 import Phase from '@rbxts/planck/out/Phase'
 import {
-  ENTITY_ATTRIBUTE,
+  BLOCK_ATTRIBUTE,
   INVENTORY,
   INVENTORY_ID,
   InventoryItemDescription,
@@ -21,17 +21,24 @@ import {
 import { selectPlayerContainer } from 'ReplicatedStorage/shared/state'
 import { findPlacedBlockFromDescendent } from 'ReplicatedStorage/shared/utils/block'
 import {
-  getEncodedEntityStep,
+  decodeOffsetStep,
+  EncodedOffsetStep,
+  encodeEntityStep,
+  encodeOffsetStep,
   getItemFromBlock,
+  getItemInputOffsetStep,
   getItemInputToOffsets,
-  getItemVector3,
+  getItemOutputOffsetStep,
+  getRotationName,
+  rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
 import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshMidpoint,
+  encodeMeshMidpoint,
   getMeshOffsetsFromMeshMidpoint,
   getMeshRotationFromCFrame,
-  getMeshRotationName,
+  meshMapGet,
   meshOffsetMapGet,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { Events } from 'ServerScriptService/network'
@@ -42,10 +49,17 @@ export const Factory = world.component<undefined>()
 export const Product = world.component<number>()
 export const Container = world.component<undefined>()
 export const Linear = world.component<undefined>()
+export const OutputOf = world.component<EncodedOffsetStep>()
 export const StorageOf = world.component<undefined>()
 
+export const entityOutputs = (parent: Entity) =>
+  world.each(pair(OutputOf, parent))
+
+export const entityStores = (factoryEntity: Entity) =>
+  world.each(pair(StorageOf, factoryEntity))
+
 export function isEmpty(factoryEntity: Entity) {
-  for (const _product of world.each(pair(StorageOf, factoryEntity))) {
+  for (const _product of entityStores(factoryEntity)) {
     return false
   }
   return true
@@ -112,7 +126,7 @@ export class FactorySystem implements OnStart {
           )
 
           // Handle Container output items
-          for (const outputEntity of world.children(containerEntity)) {
+          for (const outputEntity of entityOutputs(containerEntity)) {
             if (isFull(outputEntity)) continue
 
             // Find next item to remove from container
@@ -136,10 +150,17 @@ export class FactorySystem implements OnStart {
             const productEntity = world.entity()
             world.set(productEntity, Product, blockId)
             world.add(productEntity, pair(StorageOf, outputEntity))
+
+            // Broadcast item to client
+            const { offset, step } = decodeOffsetStep(
+              world.get(outputEntity, pair(OutputOf, containerEntity)) ?? 0,
+            )
             Events.animateNewItem.broadcast(
               blockId,
-              container.Name,
-              getEncodedEntityStep(productEntity, 0),
+              encodeMeshMidpoint(
+                decodeMeshMidpoint(container.Name).add(offset),
+              ),
+              encodeEntityStep(productEntity, step),
             )
             this.logger.Info(
               `Factory ${userId} container ${container.Name} output ${productName}:${productEntity}`,
@@ -155,11 +176,12 @@ export class FactorySystem implements OnStart {
           if (isEmpty(factoryEntity)) continue
 
           // Handle Conveyor output items
-          for (const outputEntity of world.children(factoryEntity)) {
+          for (const outputEntity of entityOutputs(factoryEntity)) {
             if (isFull(outputEntity)) continue
 
             const storageOfFactoryEntity = pair(StorageOf, factoryEntity)
             for (const productEntity of world.each(storageOfFactoryEntity)) {
+              // Remove item from conveyor
               world.remove(productEntity, storageOfFactoryEntity)
               const blockId = world.get(productEntity, Product)
               if (!blockId) continue
@@ -173,6 +195,7 @@ export class FactorySystem implements OnStart {
                 const userId = world.get(player, UserId)
                 if (!userId) continue
 
+                // Add item to container
                 state = store.updatePlayerContainer(
                   userId,
                   container.Name,
@@ -184,8 +207,14 @@ export class FactorySystem implements OnStart {
                   `Factory ${userId} container ${container.Name} input ${productName}:${productEntity}`,
                 )
               } else {
+                // Add item to next conveyor
                 world.add(productEntity, pair(StorageOf, outputEntity))
-                encodedEntitySteps.push(getEncodedEntityStep(productEntity, 0))
+
+                // Broadcast item movement to client
+                const { step } = decodeOffsetStep(
+                  world.get(outputEntity, pair(OutputOf, factoryEntity)) ?? 0,
+                )
+                encodedEntitySteps.push(encodeEntityStep(productEntity, step))
                 this.logger.Info(
                   `Factory conveyor moved ${productName}:${productEntity} from ${factoryEntity} -> ${outputEntity}`,
                 )
@@ -226,62 +255,83 @@ export class FactorySystem implements OnStart {
         break
     }
 
+    const plot = playerSandbox.plot[playerSandbox.location]
     const midpoint = decodeMeshMidpoint(model.Name)
-    const unrotatedSize = getItemVector3(item.size)
     const rotation = getMeshRotationFromCFrame(
       model.GetPivot(),
       playerSandbox.workspace.Plot.Baseplate,
     )
-    const rotationName = getMeshRotationName(rotation)
+    const rotationName = getRotationName(rotation)
     this.logger.Info(
       `Factory ${userId} created ${item.name}:${entity}: ${model.GetFullName()} (${midpoint}) ${rotationName}`,
     )
 
-    const plot = playerSandbox.plot[playerSandbox.location]
-    for (const outputTo of getMeshOffsetsFromMeshMidpoint(
+    // Connect new equipiment to existing equipment
+    getMeshOffsetsFromMeshMidpoint(
       midpoint,
-      unrotatedSize,
       rotation,
       item.outputTo ?? [],
-    )) {
+    ).forEach((outputTo, outputToIndex) => {
       for (const inputTo of meshOffsetMapGet(plot.inputTo, outputTo)) {
         // XXX add entity to MeshService to support off-world factories
         const outputEntity =
           playerSandbox.workspace.PlacedBlocks.FindFirstChild(
             inputTo,
-          )?.GetAttribute(ENTITY_ATTRIBUTE.EntityId) as
+          )?.GetAttribute(BLOCK_ATTRIBUTE.EntityId) as
             | Entity<undefined>
             | undefined
         if (!outputEntity) continue
 
-        world.add(outputEntity, pair(ChildOf, entity))
+        const { offset, step } = getItemOutputOffsetStep(
+          item,
+          rotation,
+          outputToIndex,
+        )
+        world.set(
+          outputEntity,
+          pair(OutputOf, entity),
+          encodeOffsetStep(offset, step),
+        )
         this.logger.Info(
           `Factory ${userId} connected: (${midpoint}) -> (${decodeMeshMidpoint(inputTo)})`,
         )
       }
-    }
+    })
 
-    for (const inputTo of getMeshOffsetsFromMeshMidpoint(
+    // Connect existing equipment to new equipment
+    getMeshOffsetsFromMeshMidpoint(
       midpoint,
-      unrotatedSize,
       rotation,
       getItemInputToOffsets(item) ?? [],
-    )) {
+    ).forEach((inputTo, inputToIndex) => {
       for (const outputTo of meshOffsetMapGet(plot.outputTo, inputTo)) {
         // XXX add entity to MeshService to support off-world factories
-        const inputEntity = playerSandbox.workspace.PlacedBlocks.FindFirstChild(
-          outputTo,
-        )?.GetAttribute(ENTITY_ATTRIBUTE.EntityId) as
-          | Entity<undefined>
-          | undefined
+        const inputModel =
+          playerSandbox.workspace.PlacedBlocks.FindFirstChild(outputTo)
+        const inputEntity = inputModel?.GetAttribute(
+          BLOCK_ATTRIBUTE.EntityId,
+        ) as Entity<undefined> | undefined
         if (!inputEntity) continue
 
-        world.add(entity, pair(ChildOf, inputEntity))
+        const inputMeshData = meshMapGet(
+          plot.mesh,
+          decodeMeshMidpoint(outputTo),
+        )
+        const { offset, step } = getItemInputOffsetStep(
+          item,
+          inputMeshData?.rotation ?? rotation0,
+          inputToIndex,
+        )
+        world.set(
+          entity,
+          pair(OutputOf, inputEntity),
+          encodeOffsetStep(offset, step),
+        )
         this.logger.Info(
           `Factory ${userId} connected: (${decodeMeshMidpoint(outputTo)}) -> (${midpoint})`,
         )
       }
-    }
+    })
 
     // Synchronize conveyor animations - XXX move to client
     for (const [e] of world.query(playerEntity, Model)) {

@@ -3,13 +3,16 @@ import {
   BLOCK_ATTRIBUTE,
   InventoryItemDescription,
 } from 'ReplicatedStorage/shared/constants/core'
-import { getItemVector3, getLogger } from 'ReplicatedStorage/shared/utils/core'
+import {
+  getItemVector3,
+  getLogger,
+  Rotation,
+} from 'ReplicatedStorage/shared/utils/core'
 import { findPathToDescendent } from 'ReplicatedStorage/shared/utils/instance'
 import {
   getCFrameFromMeshMidpoint,
   gridSpacing,
   MeshMidpoint,
-  MeshRotation,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
 
@@ -22,7 +25,7 @@ export const overlapParams = (() => {
 export function cloneBlock(
   item: InventoryItemDescription,
   midpoint: MeshMidpoint,
-  rotation: MeshRotation,
+  rotation: Rotation,
   baseplate: BasePart,
   options?: {
     ignoreExisting?: boolean

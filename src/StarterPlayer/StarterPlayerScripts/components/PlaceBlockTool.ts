@@ -14,6 +14,9 @@ import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import {
   getItemFromBlock,
   getItemVector3,
+  getRotatedSurface,
+  Rotation,
+  rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
 import {
   findDescendentsWhichAre,
@@ -25,11 +28,8 @@ import {
   getCFrameFromMeshMidpoint,
   getMeshMidpointFromWorldPosition,
   getMeshRotationFromCFrame,
-  getRotatedSurface,
   gridSpacing,
   MeshMidpoint,
-  MeshRotation,
-  meshRotation0,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
@@ -44,7 +44,7 @@ export class PlaceBlockToolComponent
 {
   connection: RBXScriptConnection | undefined
   midpoint: MeshMidpoint | undefined
-  rotation: MeshRotation = meshRotation0
+  rotation: Rotation = rotation0
   item: InventoryItemDescription | undefined
   preview: BasePart | Model | undefined
   bounding: BasePart | undefined
