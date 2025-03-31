@@ -32,7 +32,7 @@ interface ClientEvents {
     encodedEntityStep: number,
   ) => void
   animateMoveItems: (encodedEntityStep: number[]) => void
-  animateRemoveItem: (entity: number) => void
+  animateRemoveItems: (entity: number[]) => void
   dispatch: (actions: Array<BroadcastAction>) => void
   message: (
     messageType: string,

@@ -29,6 +29,7 @@ export function cloneBlock(
   baseplate: BasePart,
   options?: {
     ignoreExisting?: boolean
+    offset?: Vector3
   },
 ) {
   const templateModel = ReplicatedStorage.Items.FindFirstChild<Model>(item.name)
@@ -45,7 +46,13 @@ export function cloneBlock(
     clonedModel,
   )
   clonedModel.PivotTo(
-    getCFrameFromMeshMidpoint(midpoint, size, rotation, baseplate),
+    getCFrameFromMeshMidpoint(
+      midpoint,
+      size,
+      rotation,
+      baseplate,
+      options?.offset,
+    ),
   )
 
   if (!options?.ignoreExisting) {

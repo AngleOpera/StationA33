@@ -203,21 +203,22 @@ export function getMeshStartpointEndpointFromMidpointSize(
 }
 
 export function getCFrameFromMeshMidpoint(
-  midpoint: MeshMidpoint,
+  midpoint: Vector3,
   unrotatedSize: Vector3,
   rotation: Rotation,
   baseplate: BasePart,
+  offset?: Vector3,
 ): CFrame {
   const size = getRotatedMeshSize(unrotatedSize, rotation)
   return baseplate.CFrame.ToWorldSpace(
     new CFrame(
-      midpoint.X * gridSpacing -
+      (midpoint.X + (offset?.X ?? 0)) * gridSpacing -
         baseplate.Size.X / 2 +
         (size.X % 2 ? gridSpacing / 2 : gridSpacing),
-      midpoint.Y * gridSpacing +
+      (midpoint.Y + (offset?.Y ?? 0)) * gridSpacing +
         baseplate.Size.Y / 2 +
         (size.Y % 2 ? gridSpacing / 2 : gridSpacing),
-      midpoint.Z * gridSpacing -
+      (midpoint.Z + (offset?.Z ?? 0)) * gridSpacing -
         baseplate.Size.Z / 2 +
         (size.Z % 2 ? gridSpacing / 2 : gridSpacing),
     ).mul(CFrame.Angles(0, math.rad(90 * -rotation.Y), 0)),

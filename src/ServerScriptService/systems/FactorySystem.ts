@@ -170,6 +170,7 @@ export class FactorySystem implements OnStart {
 
         // Conveyors move items
         const encodedEntitySteps: number[] = []
+        const removedEntity: number[] = []
         for (const [factoryEntity] of world
           .query(Factory, Model)
           .without(Container)) {
@@ -187,6 +188,12 @@ export class FactorySystem implements OnStart {
               if (!blockId) continue
               const productName = INVENTORY_ID[blockId].name
 
+              // Broadcast item movement to client
+              const { step } = decodeOffsetStep(
+                world.get(outputEntity, pair(OutputOf, factoryEntity)) ?? 0,
+              )
+              encodedEntitySteps.push(encodeEntityStep(productEntity, step))
+
               if (world.has(outputEntity, Container)) {
                 const container = world.get(outputEntity, Model)
                 if (!container) continue
@@ -202,19 +209,13 @@ export class FactorySystem implements OnStart {
                   productName,
                   1,
                 )
-                Events.animateRemoveItem.broadcast(productEntity)
+                removedEntity.push(productEntity)
                 this.logger.Info(
                   `Factory ${userId} container ${container.Name} input ${productName}:${productEntity}`,
                 )
               } else {
                 // Add item to next conveyor
                 world.add(productEntity, pair(StorageOf, outputEntity))
-
-                // Broadcast item movement to client
-                const { step } = decodeOffsetStep(
-                  world.get(outputEntity, pair(OutputOf, factoryEntity)) ?? 0,
-                )
-                encodedEntitySteps.push(encodeEntityStep(productEntity, step))
                 this.logger.Info(
                   `Factory conveyor moved ${productName}:${productEntity} from ${factoryEntity} -> ${outputEntity}`,
                 )
@@ -225,6 +226,9 @@ export class FactorySystem implements OnStart {
         }
         if (encodedEntitySteps.size() > 0) {
           Events.animateMoveItems.broadcast(encodedEntitySteps)
+        }
+        if (removedEntity.size() > 0) {
+          Events.animateRemoveItems.broadcast(removedEntity)
         }
       },
       { timePassedCondition: 0.25 },

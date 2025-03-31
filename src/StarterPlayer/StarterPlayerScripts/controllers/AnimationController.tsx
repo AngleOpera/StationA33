@@ -74,11 +74,13 @@ export class AnimationController implements OnStart, OnTick {
         this.logger.Error(`AnimationController.handleAnimateMoveItems: ${e}`)
       }
     })
-    Events.animateRemoveItem.connect((entity) => {
-      try {
-        this.handleAnimateRemoveItem(entity)
-      } catch (e) {
-        this.logger.Error(`AnimationController.handleAnimateRemoveItem: ${e}`)
+    Events.animateRemoveItems.connect((entities) => {
+      for (const entity of entities) {
+        try {
+          this.handleAnimateRemoveItem(entity)
+        } catch (e) {
+          this.logger.Error(`AnimationController.handleAnimateRemoveItem: ${e}`)
+        }
       }
     })
   }
@@ -134,10 +136,11 @@ export class AnimationController implements OnStart, OnTick {
       decodeMeshMidpoint(encodedMidpoint),
       rotation0,
       playerSpace.Plot.Baseplate,
-      { ignoreExisting: true },
+      { ignoreExisting: true, offset: new Vector3(0, 1 / 3, 0) },
     )
     if (!model) return
     model.Name = `Item${entity}`
+    model.ScaleTo(1 / 3)
     model.Parent = Workspace.Animating.Items
     this.handleAnimateMoveItems([encodedEntityStep])
   }
