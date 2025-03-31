@@ -1,5 +1,7 @@
 import { TweenService } from '@rbxts/services'
-import { ANIMATIONS } from 'ReplicatedStorage/shared/constants/core'
+import { ANIMATIONS, Step } from 'ReplicatedStorage/shared/constants/core'
+import { getStepVector } from 'ReplicatedStorage/shared/utils/core'
+import { gridSpacing } from 'ReplicatedStorage/shared/utils/mesh'
 import { Animating } from 'StarterPlayer/StarterPlayerScripts/controllers/AnimationController'
 
 export interface AnimatingMoveModel extends Animating {
@@ -28,9 +30,25 @@ export function startMoveModelAnimation(
     type: ANIMATIONS.MoveModel,
     model,
     elapsed: 0,
-    duration: 0.1,
+    duration: 0.25,
     startCFrame: model.GetPivot(),
     endCFrame,
     onTick: animateMoveModel,
   }
+}
+
+export function createStepModelAnimation(
+  model: Model,
+  baseplate: BasePart,
+  step: Step,
+) {
+  return () =>
+    startMoveModelAnimation(
+      model,
+      baseplate.CFrame.ToWorldSpace(
+        baseplate.CFrame.ToObjectSpace(model.GetPivot()).add(
+          getStepVector(step).mul(gridSpacing),
+        ),
+      ),
+    )
 }

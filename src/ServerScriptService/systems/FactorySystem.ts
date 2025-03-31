@@ -5,6 +5,7 @@ import Object from '@rbxts/object-utils'
 import Phase from '@rbxts/planck/out/Phase'
 import {
   BLOCK_ATTRIBUTE,
+  BLOCK_ID_LOOKUP,
   INVENTORY,
   INVENTORY_ID,
   InventoryItemDescription,
@@ -25,18 +26,17 @@ import {
   EncodedOffsetStep,
   encodeEntityStep,
   encodeOffsetStep,
+  findOffsetIndexFromMidpointAndOffsetPoint,
   getItemFromBlock,
-  getItemInputOffsetStep,
   getItemInputToOffsets,
   getItemOutputOffsetStep,
+  getOffsetsFromMidpoint,
   getRotationName,
-  rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
 import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshMidpoint,
   encodeMeshMidpoint,
-  getMeshOffsetsFromMeshMidpoint,
   getMeshRotationFromCFrame,
   meshMapGet,
   meshOffsetMapGet,
@@ -163,7 +163,7 @@ export class FactorySystem implements OnStart {
               encodeEntityStep(productEntity, step),
             )
             this.logger.Info(
-              `Factory ${userId} container ${container.Name} output ${productName}:${productEntity}`,
+              `Factory ${userId} container ${container.Name} output ${productName}:${productEntity} offset (${offset}) step ${step}`,
             )
           }
         }
@@ -227,7 +227,7 @@ export class FactorySystem implements OnStart {
           Events.animateMoveItems.broadcast(encodedEntitySteps)
         }
       },
-      { timePassedCondition: 0.1 },
+      { timePassedCondition: 0.25 },
     )
   }
 
@@ -267,60 +267,79 @@ export class FactorySystem implements OnStart {
     )
 
     // Connect new equipiment to existing equipment
-    getMeshOffsetsFromMeshMidpoint(
-      midpoint,
-      rotation,
-      item.outputTo ?? [],
-    ).forEach((outputTo, outputToIndex) => {
-      for (const inputTo of meshOffsetMapGet(plot.inputTo, outputTo)) {
-        // XXX add entity to MeshService to support off-world factories
-        const outputEntity =
-          playerSandbox.workspace.PlacedBlocks.FindFirstChild(
-            inputTo,
-          )?.GetAttribute(BLOCK_ATTRIBUTE.EntityId) as
-            | Entity<undefined>
-            | undefined
-        if (!outputEntity) continue
+    getOffsetsFromMidpoint(midpoint, rotation, item.outputTo ?? []).forEach(
+      (outputTo, outputToIndex) => {
+        for (const inputTo of meshOffsetMapGet(plot.inputTo, outputTo)) {
+          // XXX add entity to MeshService to support off-world factories
+          const outputEntity =
+            playerSandbox.workspace.PlacedBlocks.FindFirstChild(
+              inputTo,
+            )?.GetAttribute(BLOCK_ATTRIBUTE.EntityId) as
+              | Entity<undefined>
+              | undefined
+          if (!outputEntity) continue
 
-        const { offset, step } = getItemOutputOffsetStep(
-          item,
-          rotation,
-          outputToIndex,
-        )
-        world.set(
-          outputEntity,
-          pair(OutputOf, entity),
-          encodeOffsetStep(offset, step),
-        )
-        this.logger.Info(
-          `Factory ${userId} connected: (${midpoint}) -> (${decodeMeshMidpoint(inputTo)})`,
-        )
-      }
-    })
+          const { offset, step } = getItemOutputOffsetStep(
+            item,
+            rotation,
+            outputToIndex,
+          )
+          world.set(
+            outputEntity,
+            pair(OutputOf, entity),
+            encodeOffsetStep(offset, step),
+          )
+          this.logger.Info(
+            `Factory ${userId} connected: (${midpoint}) -> (${decodeMeshMidpoint(inputTo)}) offset (${offset}) step ${step})`,
+          )
+        }
+      },
+    )
 
     // Connect existing equipment to new equipment
-    getMeshOffsetsFromMeshMidpoint(
+    getOffsetsFromMidpoint(
       midpoint,
       rotation,
       getItemInputToOffsets(item) ?? [],
-    ).forEach((inputTo, inputToIndex) => {
-      for (const outputTo of meshOffsetMapGet(plot.outputTo, inputTo)) {
+    ).forEach((inputTo) => {
+      for (const inputEncodedMidpoint of meshOffsetMapGet(
+        plot.outputTo,
+        inputTo,
+      )) {
         // XXX add entity to MeshService to support off-world factories
         const inputModel =
-          playerSandbox.workspace.PlacedBlocks.FindFirstChild(outputTo)
+          playerSandbox.workspace.PlacedBlocks.FindFirstChild(
+            inputEncodedMidpoint,
+          )
         const inputEntity = inputModel?.GetAttribute(
           BLOCK_ATTRIBUTE.EntityId,
         ) as Entity<undefined> | undefined
         if (!inputEntity) continue
 
-        const inputMeshData = meshMapGet(
-          plot.mesh,
-          decodeMeshMidpoint(outputTo),
+        const inputMidpoint = decodeMeshMidpoint(inputEncodedMidpoint)
+        const inputMesh = meshMapGet(plot.mesh, inputMidpoint)
+        if (!inputMesh) continue
+
+        const inputItem = BLOCK_ID_LOOKUP[inputMesh.blockId]
+        if (!inputItem) continue
+
+        const outputToIndex = findOffsetIndexFromMidpointAndOffsetPoint(
+          inputItem.outputTo ?? [],
+          inputMidpoint,
+          inputTo,
+          inputMesh.rotation,
         )
-        const { offset, step } = getItemInputOffsetStep(
-          item,
-          inputMeshData?.rotation ?? rotation0,
-          inputToIndex,
+        if (outputToIndex < 0) {
+          this.logger.Warn(
+            `Factory ${userId} failed to find outputTo index: (${inputMidpoint}) -> (${inputTo})`,
+          )
+          continue
+        }
+
+        const { offset, step } = getItemOutputOffsetStep(
+          BLOCK_ID_LOOKUP[inputMesh.blockId],
+          inputMesh.rotation,
+          outputToIndex,
         )
         world.set(
           entity,
@@ -328,7 +347,7 @@ export class FactorySystem implements OnStart {
           encodeOffsetStep(offset, step),
         )
         this.logger.Info(
-          `Factory ${userId} connected: (${decodeMeshMidpoint(outputTo)}) -> (${midpoint})`,
+          `Factory ${userId} connected: (${decodeMeshMidpoint(inputEncodedMidpoint)}) -> (${midpoint}) offset (${offset}) step ${step}`,
         )
       }
     })

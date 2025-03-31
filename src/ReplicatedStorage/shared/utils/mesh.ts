@@ -10,6 +10,7 @@ import {
 } from 'ReplicatedStorage/shared/utils/base58'
 import {
   getItemVector3,
+  getOffsetsFromMidpoint,
   getRotatedPoint,
   Rotation,
   rotation0,
@@ -201,16 +202,6 @@ export function getMeshStartpointEndpointFromMidpointSize(
   }
 }
 
-export function getMeshOffsetsFromMeshMidpoint(
-  midpoint: MeshMidpoint,
-  rotation: Rotation,
-  offsets: ItemVector3[],
-): MeshMidpoint[] {
-  return offsets.map((offset) =>
-    midpoint.add(getRotatedPoint(getItemVector3(offset), rotation)).Floor(),
-  )
-}
-
 export function getCFrameFromMeshMidpoint(
   midpoint: MeshMidpoint,
   unrotatedSize: Vector3,
@@ -337,12 +328,12 @@ export function visitMeshOffsets(
   visit = meshOffsetMapAdd,
 ) {
   for (const input of item.inputFrom
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, rotation, item.inputFrom)
+    ? getOffsetsFromMidpoint(midpoint, rotation, item.inputFrom)
     : []) {
     if (validMeshMidpoint(input)) visit(plot.inputFrom, input, encodedMidpoint)
   }
   if (item.inputTo) {
-    for (const input of getMeshOffsetsFromMeshMidpoint(
+    for (const input of getOffsetsFromMidpoint(
       midpoint,
       rotation,
       item.inputTo,
@@ -354,7 +345,7 @@ export function visitMeshOffsets(
     visit(plot.inputTo, midpoint, encodedMidpoint)
   }
   for (const output of item.outputTo
-    ? getMeshOffsetsFromMeshMidpoint(midpoint, rotation, item.outputTo)
+    ? getOffsetsFromMidpoint(midpoint, rotation, item.outputTo)
     : []) {
     if (validMeshMidpoint(output)) visit(plot.outputTo, output, encodedMidpoint)
   }

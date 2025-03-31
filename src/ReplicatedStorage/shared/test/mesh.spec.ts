@@ -6,7 +6,7 @@ import { Workspace } from '@rbxts/services'
 import { padEnd } from '@rbxts/string-utils'
 import { INVENTORY } from 'ReplicatedStorage/shared/constants/core'
 import {
-  getRotatedPoint,
+  getOffsetsFromMidpoint,
   rotation0,
   rotation90,
   rotation180,
@@ -21,7 +21,6 @@ import {
   encodeMeshMidpoint,
   getCFrameFromMeshMidpoint,
   getMeshMidpointSizeFromStartpointEndpoint,
-  getMeshOffsetsFromMeshMidpoint,
   getMeshRotationFromCFrame,
   getMeshStartpointEndpointFromMidpointSize,
   getRotatedMeshSize,
@@ -287,17 +286,8 @@ export = () => {
       })
     })
 
-    it('should rotate mesh points', () => {
+    it('should rotate mesh sizes', () => {
       const rotation360 = new Vector3(0, 4, 0)
-      const testPoint1 = new Vector3(0, 0, -1)
-      const testPoint2 = new Vector3(1, 0, 0)
-      const testPoint3 = new Vector3(0, 0, 1)
-      const testPoint4 = new Vector3(-1, 0, 0)
-      expect(getRotatedPoint(testPoint1, rotation0)).to.be.equal(testPoint1)
-      expect(getRotatedPoint(testPoint1, rotation90)).to.be.equal(testPoint2)
-      expect(getRotatedPoint(testPoint1, rotation180)).to.be.equal(testPoint3)
-      expect(getRotatedPoint(testPoint1, rotation270)).to.be.equal(testPoint4)
-      expect(getRotatedPoint(testPoint1, rotation360)).to.be.equal(testPoint1)
       const size1 = new Vector3(6, 1, 2)
       const size2 = new Vector3(2, 1, 6)
       expect(getRotatedMeshSize(size1, rotation0)).to.be.equal(size1)
@@ -312,38 +302,22 @@ export = () => {
     const item = INVENTORY.Conveyor
     const testPoint = new Vector3(39, 0, 422)
     expect(
-      getMeshOffsetsFromMeshMidpoint(testPoint, rotation0, item.outputTo ?? []),
+      getOffsetsFromMidpoint(testPoint, rotation0, item.outputTo ?? []),
     ).to.be.equal([new Vector3(39, 0, 421)])
     expect(
-      getMeshOffsetsFromMeshMidpoint(
-        testPoint,
-        rotation90,
-        item.outputTo ?? [],
-      ),
+      getOffsetsFromMidpoint(testPoint, rotation90, item.outputTo ?? []),
     ).to.be.equal([new Vector3(40, 0, 422)])
     expect(
-      getMeshOffsetsFromMeshMidpoint(
-        testPoint,
-        rotation180,
-        item.outputTo ?? [],
-      ),
+      getOffsetsFromMidpoint(testPoint, rotation180, item.outputTo ?? []),
     ).to.be.equal([new Vector3(39, 0, 423)])
     expect(
-      getMeshOffsetsFromMeshMidpoint(
-        testPoint,
-        rotation270,
-        item.outputTo ?? [],
-      ),
+      getOffsetsFromMidpoint(testPoint, rotation270, item.outputTo ?? []),
     ).to.be.equal([new Vector3(38, 0, 422)])
 
     const item2 = INVENTORY.Container
     const testPoint2 = new Vector3(39, 0, 422)
     expect(
-      getMeshOffsetsFromMeshMidpoint(
-        testPoint2,
-        rotation0,
-        item2.outputTo ?? [],
-      ),
+      getOffsetsFromMidpoint(testPoint2, rotation0, item2.outputTo ?? []),
     ).to.be.equal([new Vector3(40, 0, 420)])
   })
 

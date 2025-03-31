@@ -106,8 +106,11 @@ export function getStepFromVector(v: Vector3) {
 }
 
 export function encodeOffsetStep(offset: Vector3, step: Step) {
-  const { X, Y, Z } = offset.Floor()
+  const { X, Y, Z } = offset.Abs().Floor()
   return (
+    (offset.X < 0 ? 1 << 22 : 0) |
+    (offset.Y < 0 ? 1 << 21 : 0) |
+    (offset.Z < 0 ? 1 << 20 : 0) |
     ((X & 0b111111) << 14) |
     ((Y & 0b111111) << 8) |
     ((Z & 0b111111) << 2) |
@@ -116,11 +119,14 @@ export function encodeOffsetStep(offset: Vector3, step: Step) {
 }
 
 export function decodeOffsetStep(encoded: EncodedOffsetStep) {
+  const sx = (encoded >> 22) & 1
+  const sy = (encoded >> 21) & 1
+  const sz = (encoded >> 20) & 1
   const x = (encoded >> 14) & 0b111111
   const y = (encoded >> 8) & 0b111111
   const z = (encoded >> 2) & 0b111111
   const step = encoded & 0b11
-  return { offset: new Vector3(x, y, z), step }
+  return { offset: new Vector3(sx ? -x : x, sy ? -y : y, sz ? -z : z), step }
 }
 
 export function encodeEntityStep(
@@ -144,6 +150,30 @@ export function getOffsetStep(from: Vector3, to: Vector3, rotation: Rotation) {
   const offset = getRotatedPoint(from, rotation).Floor()
   const step = getStepFromVector(getRotatedPoint(to, rotation).sub(offset)) ?? 0
   return { offset, step }
+}
+
+export function getOffsetsFromMidpoint(
+  midpoint: Vector3,
+  rotation: Rotation,
+  offsets: ItemVector3[],
+): Vector3[] {
+  return offsets.map((offset) =>
+    midpoint.add(getRotatedPoint(getItemVector3(offset), rotation)).Floor(),
+  )
+}
+
+export function findOffsetIndexFromMidpointAndOffsetPoint(
+  itemOffsets: ItemVector3[],
+  midpoint: Vector3,
+  offsetPoint: Vector3,
+  rotation: Rotation,
+) {
+  const offsets = getOffsetsFromMidpoint(midpoint, rotation, itemOffsets)
+  for (let i = 0; i < offsets.size(); i++) {
+    const offset = offsets[i]
+    if (offset.FuzzyEq(offsetPoint)) return i
+  }
+  return -1
 }
 
 export const getItemVector3 = (v: ItemVector3) => new Vector3(v[0], v[1], v[2])

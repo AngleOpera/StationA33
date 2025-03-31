@@ -57,6 +57,7 @@ export const ANIMATIONS = {
 export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {
   BlockId: 'BlockId' as const,
   Damage: 'Damage' as const,
+  EntityId: 'EntityId' as const,
 }
 
 export const BLOCK_ID_LOOKUP: Record<number, InventoryItemDescription> =
@@ -78,10 +79,6 @@ export const CURRENCY_NAME: {
 }
 
 export const CURRENCY_NAMES: CurrencyName[] = Object.keys(CURRENCY_NAME)
-
-export const ENTITY_ATTRIBUTE: Record<keyof EntityAttributes, string> = {
-  EntityId: 'EntityId' as const,
-}
 
 export const GAME_MODE: {
   [name in GameMode]: GameMode

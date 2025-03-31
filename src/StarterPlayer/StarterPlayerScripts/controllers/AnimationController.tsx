@@ -1,5 +1,6 @@
 import { Controller, OnStart, OnTick } from '@flamework/core'
 import { Logger } from '@rbxts/log'
+import Object from '@rbxts/object-utils'
 import { Workspace } from '@rbxts/services'
 import {
   ANIMATIONS,
@@ -8,7 +9,6 @@ import {
 import { cloneBlock } from 'ReplicatedStorage/shared/utils/block'
 import {
   decodeEntityStep,
-  getStepVector,
   rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
 import { findDescendentWithPath } from 'ReplicatedStorage/shared/utils/instance'
@@ -19,7 +19,7 @@ import {
 } from 'StarterPlayer/StarterPlayerScripts/animations/BreakBlock'
 import {
   AnimatingMoveModel,
-  startMoveModelAnimation,
+  createStepModelAnimation,
 } from 'StarterPlayer/StarterPlayerScripts/animations/MoveModel'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
 import { Events } from 'StarterPlayer/StarterPlayerScripts/network'
@@ -32,9 +32,14 @@ export interface Animating {
 
 export type AnimatingType = AnimatingBreakBlock | AnimatingMoveModel
 
+export interface AnimationQueue {
+  animating: AnimatingType
+  queue: Array<() => AnimatingType | undefined>
+}
+
 @Controller({})
 export class AnimationController implements OnStart, OnTick {
-  animating: AnimatingType[] = []
+  active: Record<string, AnimationQueue> = {}
 
   constructor(
     protected readonly playerController: PlayerController,
@@ -79,17 +84,19 @@ export class AnimationController implements OnStart, OnTick {
   }
 
   onTick(dt: number) {
-    let someAnimationFinished = false
-    for (const animating of this.animating) {
+    for (const [name, animation] of Object.entries(this.active)) {
+      const { animating, queue } = animation
       animating.elapsed += dt
       // XXX how to improve type safety?
       animating.onTick(animating as never)
-      if (animating.elapsed >= animating.duration) someAnimationFinished = true
-    }
-    if (someAnimationFinished) {
-      this.animating = this.animating.filter((animating) => {
-        return animating.elapsed < animating.duration
-      })
+      if (animating.elapsed >= animating.duration) {
+        let nextAnimating
+        do {
+          nextAnimating = queue.shift()?.()
+        } while (!nextAnimating && queue.size() > 0)
+        if (nextAnimating) animation.animating = nextAnimating
+        else delete this.active[name]
+      }
     }
   }
 
@@ -103,7 +110,9 @@ export class AnimationController implements OnStart, OnTick {
     }
     switch (animation) {
       case ANIMATIONS.BreakBlock:
-        this.animating.push(startBreakBlockAnimation(model))
+        this.enqueueAnimation(path.join('.'), () =>
+          startBreakBlockAnimation(model),
+        )
         break
     }
   }
@@ -137,24 +146,39 @@ export class AnimationController implements OnStart, OnTick {
     const baseplate = this.playerController.getPlayerSpace().Plot.Baseplate
     for (const entityStep of encodedEntityStep) {
       const { entity, step } = decodeEntityStep(entityStep)
-      const model = Workspace.Animating.Items.FindFirstChild<Model>(
-        `Item${entity}`,
-      )
+      const name = `Item${entity}`
+      const model = Workspace.Animating.Items.FindFirstChild<Model>(name)
       if (!model) continue
-      this.animating.push(
-        startMoveModelAnimation(
-          model,
-          baseplate.CFrame.ToWorldSpace(
-            baseplate.CFrame.ToObjectSpace(model.GetPivot()).add(
-              getStepVector(step),
-            ),
-          ),
-        ),
+      this.enqueueAnimation(
+        name,
+        createStepModelAnimation(model, baseplate, step),
       )
     }
   }
 
   handleAnimateRemoveItem(entity: number) {
-    Workspace.Animating.Items.FindFirstChild(`Item${entity}`)?.Destroy()
+    const name = `Item${entity}`
+    const removeAnimation = () => {
+      Workspace.Animating.Items.FindFirstChild(name)?.Destroy()
+      return undefined
+    }
+    const animating = this.active[name]
+    if (animating) {
+      animating.queue.push(removeAnimation)
+    } else {
+      removeAnimation()
+    }
+  }
+
+  enqueueAnimation(name: string, animation: () => AnimatingType) {
+    const animating = this.active[name]
+    if (animating) {
+      animating.queue.push(animation)
+    } else {
+      this.active[name] = {
+        animating: animation(),
+        queue: [],
+      }
+    }
   }
 }
