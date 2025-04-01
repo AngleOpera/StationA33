@@ -3,6 +3,7 @@ import { Logger } from '@rbxts/log'
 import ProfileService from '@rbxts/profileservice'
 import { Profile } from '@rbxts/profileservice/globals'
 import { Players, ReplicatedStorage, Workspace } from '@rbxts/services'
+import { setTimeout } from '@rbxts/set-timeout'
 import {
   PLACE_PLOT_LOCATION,
   PROFILESTORE_NAME,
@@ -19,7 +20,10 @@ import { getAttackerUserId } from 'ReplicatedStorage/shared/utils/damage'
 import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
 import { weldParts, weldTool } from 'ReplicatedStorage/shared/utils/part'
-import { forEveryPlayer } from 'ReplicatedStorage/shared/utils/player'
+import {
+  forEveryPlayer,
+  morphPlayer,
+} from 'ReplicatedStorage/shared/utils/player'
 import { Events } from 'ServerScriptService/network'
 import { LeaderboardService } from 'ServerScriptService/services/LeaderboardService'
 import { MeshService } from 'ServerScriptService/services/MeshService'
@@ -37,6 +41,8 @@ export interface PlayerContext {
   profile?: Profile<PlayerProfile>
 }
 
+export const respawnAfter = 3
+
 @Service()
 export class PlayerService implements OnInit {
   private players = new Map<number, PlayerContext>()
@@ -53,6 +59,7 @@ export class PlayerService implements OnInit {
   ) {}
 
   onInit() {
+    Players.CharacterAutoLoads = false
     forEveryPlayer(
       (player) => this.handlePlayerJoined(player),
       (player) => this.handlePlayerLeft(player),
@@ -100,6 +107,11 @@ export class PlayerService implements OnInit {
     this.cleanupPlayerSpace(player)
     const playerSpace = this.createPlayerSpace(player, playerState)
     player.RespawnLocation = playerSpace.Plot.SpawnLocation
+    morphPlayer(
+      player,
+      ReplicatedStorage.Morphs.Spacesuit,
+      player.RespawnLocation,
+    )
 
     // Load player data from ProfileService
     const profileKey = PROFILESTORE_USER_TEMPLATE.format(player.UserId)
@@ -199,9 +211,7 @@ export class PlayerService implements OnInit {
 
   public handleRespawn(player: Player, characterModel: PlayerCharacter) {
     const humanoid = characterModel.Humanoid
-    humanoid.Died.Connect(() =>
-      this.handleKO(humanoid, player.UserId, player.Name),
-    )
+    humanoid.Died.Connect(() => this.handleKO(player, humanoid))
 
     const backpack = player?.FindFirstChild<Backpack>('Backpack')
     if (backpack) {
@@ -211,21 +221,27 @@ export class PlayerService implements OnInit {
     }
   }
 
-  public handleKO(
-    humanoid: Humanoid,
-    _playerUserId: number,
-    playerName: string,
-  ) {
+  public handleKO(player: Player, humanoid: Humanoid) {
     const attackerUserId = getAttackerUserId(humanoid)
     let message
     if (attackerUserId) {
-      message = `${playerName} was KO'd by ${Players.GetPlayerByUserId(attackerUserId)?.Name}`
+      message = `${player.Name} was KO'd by ${Players.GetPlayerByUserId(attackerUserId)?.Name}`
     } else if ((humanoid.RootPart?.Position?.Y ?? 0) < -30) {
-      message = `${playerName} fell to their doom`
+      message = `${player.Name} fell to their doom`
     } else {
-      message = `${playerName} was KO'd`
+      message = `${player.Name} was KO'd`
     }
     Events.message.broadcast('log', message)
+
+    setTimeout(
+      () =>
+        morphPlayer(
+          player,
+          ReplicatedStorage.Morphs.Spacesuit,
+          player.RespawnLocation,
+        ),
+      respawnAfter,
+    )
   }
 
   public getPlayerSpace(player: Player): PlayerSpace {

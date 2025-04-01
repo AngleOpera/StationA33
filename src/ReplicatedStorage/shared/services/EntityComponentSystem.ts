@@ -1,5 +1,5 @@
 import { Controller, OnStart, OnTick, Service } from '@flamework/core'
-import { Entity, OnRemove, OnSet, Tag, World } from '@rbxts/jecs'
+import { Entity, Name, OnRemove, OnSet, Tag, World } from '@rbxts/jecs'
 import { Logger } from '@rbxts/log'
 import { timePassed } from '@rbxts/planck/out/conditions'
 import Phase from '@rbxts/planck/out/Phase'
@@ -9,7 +9,6 @@ import { forEveryTag } from 'ReplicatedStorage/shared/utils/instance'
 import { forEveryPlayer } from 'ReplicatedStorage/shared/utils/player'
 
 export const world = new World()
-export const Name = world.component<string>()
 export const UserId = world.component<number>()
 export const Model = world.component<Model>()
 export const PlayerEntity = world.component<Tag>()

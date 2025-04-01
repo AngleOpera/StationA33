@@ -1,3 +1,4 @@
+import { Entity } from '@rbxts/jecs'
 import Object from '@rbxts/object-utils'
 import {
   BLOCK_ATTRIBUTE,
@@ -43,10 +44,12 @@ export interface MeshData {
 }
 
 export interface MeshPlot {
+  userId: number
   mesh: MeshMap
   inputFrom: MeshOffsetMap
   inputTo: MeshOffsetMap
   outputTo: MeshOffsetMap
+  entity: Record<string, Entity<unknown>>
 }
 
 export const gridSpacing = 3 // 1 voxel is 3x3x3 studs

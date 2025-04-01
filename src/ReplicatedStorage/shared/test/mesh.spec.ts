@@ -353,10 +353,12 @@ export = () => {
 
   it('should track mesh inputs and outputs', () => {
     const meshPlot: MeshPlot = {
+      userId: 0,
       mesh: {},
       inputFrom: {},
       inputTo: {},
       outputTo: {},
+      entity: {},
     }
     const p = new Vector3(10, 0, 20)
     meshPlotAdd(meshPlot, p, rotation90, INVENTORY.Conveyor)

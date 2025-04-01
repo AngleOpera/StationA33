@@ -21,6 +21,7 @@ import {
   AnimatingMoveModel,
   createStepModelAnimation,
 } from 'StarterPlayer/StarterPlayerScripts/animations/MoveModel'
+import { startNewFactoryBlockAnimation } from 'StarterPlayer/StarterPlayerScripts/animations/NewFactoryBlock'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
 import { Events } from 'StarterPlayer/StarterPlayerScripts/network'
 
@@ -116,6 +117,10 @@ export class AnimationController implements OnStart, OnTick {
           startBreakBlockAnimation(model),
         )
         break
+      case ANIMATIONS.NewFactoryBlock:
+        this.enqueueAnimation(path.join('.'), () =>
+          startNewFactoryBlockAnimation(model),
+        )
     }
   }
 
@@ -173,13 +178,15 @@ export class AnimationController implements OnStart, OnTick {
     }
   }
 
-  enqueueAnimation(name: string, animation: () => AnimatingType) {
+  enqueueAnimation(name: string, animation: () => AnimatingType | undefined) {
     const animating = this.active[name]
     if (animating) {
       animating.queue.push(animation)
     } else {
+      const animating = animation()
+      if (!animating) return
       this.active[name] = {
-        animating: animation(),
+        animating,
         queue: [],
       }
     }

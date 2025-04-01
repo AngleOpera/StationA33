@@ -48,7 +48,7 @@ export function MainMenu() {
   const opened = useSelector(selectIsPageOpen(MENU_PAGE.Main))
   return (
     opened && (
-      <screengui>
+      <screengui ResetOnSpawn={false}>
         <frame
           Position={new UDim2(0.05, 0, 0.01, 0)}
           Size={new UDim2(0.9, 0, 0.9, 0)}

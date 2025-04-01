@@ -197,7 +197,7 @@ export function PlaceBlockInventoryMenu() {
     [controller],
   )
   return (
-    <screengui>
+    <screengui ResetOnSpawn={false}>
       <frame Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1}>
         <imagebutton
           BackgroundTransparency={1}
@@ -235,7 +235,7 @@ export function ContainerInventoryMenu(props: { container: string }) {
     [container],
   )
   return (
-    <screengui>
+    <screengui ResetOnSpawn={false}>
       <frame Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1}>
         <imagebutton
           BackgroundTransparency={1}

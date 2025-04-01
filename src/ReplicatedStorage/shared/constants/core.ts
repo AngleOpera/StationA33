@@ -52,6 +52,7 @@ export const USER_NAME = Players.LocalPlayer
 export const ANIMATIONS = {
   BreakBlock: 'BreakBlock' as const,
   MoveModel: 'MoveModel' as const,
+  NewFactoryBlock: 'NewFactoryBlock' as const,
 }
 
 export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {

@@ -8,7 +8,7 @@ export function App() {
   return (
     <ErrorHandler>
       <Music />
-      <screengui>
+      <screengui ResetOnSpawn={false}>
         <MainMenu />
         <InventorySection />
       </screengui>

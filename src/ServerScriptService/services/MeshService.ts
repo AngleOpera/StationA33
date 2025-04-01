@@ -62,10 +62,10 @@ export class MeshService implements OnStart {
   }
 
   getPlayerSandbox(player: Player) {
-    return this.getUserIdSandbox(player.UserId)
+    return this.getUserSandbox(player.UserId)
   }
 
-  getUserIdSandbox(userId: number) {
+  getUserSandbox(userId: number) {
     return this.playerSandbox[`${userId}`]
   }
 
@@ -83,10 +83,12 @@ export class MeshService implements OnStart {
         Object.entries(mesh).map(([key, value]) => [
           key,
           {
+            userId: player.UserId,
             mesh: value,
             inputFrom: {},
             inputTo: {},
             outputTo: {},
+            entity: {},
           },
         ]),
       ),

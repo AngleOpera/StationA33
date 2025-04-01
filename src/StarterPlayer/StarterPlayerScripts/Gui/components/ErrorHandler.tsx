@@ -9,7 +9,7 @@ export function ErrorHandler({ children }: ErrorHandlerProps) {
     <ErrorBoundary
       fallback={(message) => {
         return (
-          <screengui>
+          <screengui ResetOnSpawn={false}>
             <frame Size={new UDim2(1, 0, 1, 0)} BackgroundColor3={palette.base}>
               <uilistlayout
                 FillDirection="Vertical"

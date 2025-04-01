@@ -1,4 +1,4 @@
-import { Players, Workspace } from '@rbxts/services'
+import { Players, StarterPlayer, Workspace } from '@rbxts/services'
 
 export type PlayerReceivingFunction = (player: Player) => unknown
 
@@ -29,7 +29,11 @@ export function forEveryPlayer(
   return events
 }
 
-export function morphPlayer(player: Player, morphTemplate: PlayerCharacter) {
+export function morphPlayer(
+  player: Player,
+  morphTemplate: PlayerCharacter,
+  spawnLocation?: SpawnLocation,
+) {
   const morph = morphTemplate.Clone()
   morph.Name = player.Name
 
@@ -37,11 +41,17 @@ export function morphPlayer(player: Player, morphTemplate: PlayerCharacter) {
     morph.FindFirstChild<BasePart>('HumanoidRootPart') ||
     morph.FindFirstChild<BasePart>('Torso')
   const playerRoot =
+    spawnLocation ||
     player.Character?.FindFirstChild<BasePart>('HumanoidRootPart') ||
     player.Character?.FindFirstChild<BasePart>('Torso')
   if (morphRoot && playerRoot) morphRoot.CFrame = playerRoot.CFrame
-
   player.Character = morph
   morph.Parent = Workspace
+
+  for (const instance of StarterPlayer.StarterCharacterScripts.GetChildren()) {
+    const cloned = instance.Clone()
+    cloned.Parent = morph
+  }
+
   return morph
 }

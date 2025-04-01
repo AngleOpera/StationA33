@@ -168,6 +168,10 @@ interface SpawnerAttributes {
   SpawnItem?: string
 }
 
+interface StarterPlayer extends Instance {
+  StarterCharacterScripts: Folder
+}
+
 interface Swinger extends Tool {
   Handle: BasePart & {
     Sheath?: Sound
