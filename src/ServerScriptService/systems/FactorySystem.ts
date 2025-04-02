@@ -70,6 +70,50 @@ export function isFull(factoryEntity: Entity) {
   return !isEmpty(factoryEntity)
 }
 
+export function outputNewProduct(
+  encodedMidpoint: string,
+  entity: Entity<unknown>,
+  outputEntity: Entity<unknown>,
+  blockId: number,
+) {
+  // Add item to conveyor
+  const productEntity = world.entity()
+  world.set(productEntity, Product, blockId)
+  world.add(productEntity, pair(StorageOf, outputEntity))
+
+  // Broadcast item to client
+  const { offset, step } = decodeOffsetStep(
+    world.get(outputEntity, pair(OutputOf, entity)) ?? 0,
+  )
+  Events.animateNewItem.broadcast(
+    blockId,
+    encodeMeshMidpoint(decodeMeshMidpoint(encodedMidpoint).add(offset)),
+    encodeEntityStep(productEntity, step),
+  )
+
+  return productEntity
+}
+
+export function moveProductToContainer(
+  productEntity: Entity<unknown>,
+  _inputEntity: Entity<unknown>,
+  outputEntity: Entity<unknown>,
+  removedEntity?: number[],
+) {
+  const blockId = world.get(productEntity, Product)
+  const player = world.get(outputEntity, PlayerEntity)
+  const containerName = world.get(outputEntity, Name)
+  if (!blockId || !player || !containerName) return
+  const productName = INVENTORY_ID[blockId].name
+  const userId = world.get(player, UserId)
+  if (!userId) return
+
+  store.updatePlayerContainer(userId, containerName, productName, 1)
+  removedEntity?.push(productEntity)
+
+  return { userId, containerName, productName }
+}
+
 @Service()
 export class FactorySystem implements OnStart {
   constructor(
@@ -94,6 +138,7 @@ export class FactorySystem implements OnStart {
             const playerSandbox = this.meshService.getUserSandbox(userId)
             if (!playerEntity || !playerSandbox) return
 
+            // Track the entity for factory blocks
             const plot = playerSandbox.plot[playerSandbox.location]
             plot.entity[model.Name] = entity
 
@@ -110,9 +155,11 @@ export class FactorySystem implements OnStart {
           },
           (entity, model) => {
             this.logger.Info(`Factory destroyed: ${model.GetFullName()}`)
+
             for (const _productEntity of world.each(pair(StorageOf, entity))) {
-              // foo
+              // Give items on conveyor back to player
             }
+
             const { userId } = findPlacedBlockFromDescendent(model)
             if (!userId) return
             const playerSandbox = this.meshService.getUserSandbox(userId)
@@ -127,8 +174,6 @@ export class FactorySystem implements OnStart {
 
     this.ecs.addSystem(
       (_world) => {
-        let state = store.getState()
-
         // Containers output items
         for (const [containerEntity] of world.query(
           Name,
@@ -140,9 +185,10 @@ export class FactorySystem implements OnStart {
           if (!playerEntity || !containerName) continue
           const userId = world.get(playerEntity, UserId)
           if (!userId) continue
-          const containerSelector = selectPlayerContainer(userId, containerName)
 
           // Handle Container output items
+          let state = store.getState()
+          const containerSelector = selectPlayerContainer(userId, containerName)
           for (const outputEntity of entityOutputs(containerEntity)) {
             if (isFull(outputEntity)) continue
 
@@ -160,26 +206,30 @@ export class FactorySystem implements OnStart {
               -1,
             )
             if (state === oldState) continue
-            /// XXX fix chained containers
 
-            // Add item to conveyor
-            const blockId = INVENTORY[productName].blockId
-            const productEntity = world.entity()
-            world.set(productEntity, Product, blockId)
-            world.add(productEntity, pair(StorageOf, outputEntity))
-
-            // Broadcast item to client
-            const { offset, step } = decodeOffsetStep(
-              world.get(outputEntity, pair(OutputOf, containerEntity)) ?? 0,
-            )
-            Events.animateNewItem.broadcast(
-              blockId,
-              encodeMeshMidpoint(decodeMeshMidpoint(containerName).add(offset)),
-              encodeEntityStep(productEntity, step),
-            )
-            this.logger.Info(
-              `Factory ${userId} container ${containerName} output ${productName}:${productEntity} offset (${offset}) step ${step}`,
-            )
+            if (world.has(outputEntity, Container)) {
+              // Add to chained container without creating a product entity
+              const outputContainerName = world.get(outputEntity, Name)
+              store.updatePlayerContainer(
+                userId,
+                outputContainerName || containerName,
+                productName,
+                1,
+              )
+              this.logger.Info(
+                `Factory ${userId} container ${outputContainerName} input ${productName}`,
+              )
+            } else {
+              const productEntity = outputNewProduct(
+                containerName,
+                containerEntity,
+                outputEntity,
+                INVENTORY[productName].blockId,
+              )
+              this.logger.Info(
+                `Factory ${userId} container ${containerName} output ${productName}:${productEntity}`,
+              )
+            }
           }
         }
 
@@ -199,9 +249,6 @@ export class FactorySystem implements OnStart {
             for (const productEntity of world.each(storageOfFactoryEntity)) {
               // Remove item from conveyor
               world.remove(productEntity, storageOfFactoryEntity)
-              const blockId = world.get(productEntity, Product)
-              if (!blockId) continue
-              const productName = INVENTORY_ID[blockId].name
 
               // Broadcast item movement to client
               const { step } = decodeOffsetStep(
@@ -210,28 +257,21 @@ export class FactorySystem implements OnStart {
               encodedEntitySteps.push(encodeEntityStep(productEntity, step))
 
               if (world.has(outputEntity, Container)) {
-                const containerName = world.get(outputEntity, Name)
-                const player = world.get(outputEntity, PlayerEntity)
-                if (!player || !containerName) continue
-                const userId = world.get(player, UserId)
-                if (!userId) continue
-
-                // Add item to container
-                state = store.updatePlayerContainer(
-                  userId,
-                  containerName,
-                  productName,
-                  1,
+                const moved = moveProductToContainer(
+                  productEntity,
+                  factoryEntity,
+                  outputEntity,
+                  removedEntity,
                 )
-                removedEntity.push(productEntity)
+                if (!moved) continue
                 this.logger.Info(
-                  `Factory ${userId} container ${containerName} input ${productName}:${productEntity}`,
+                  `Factory ${moved.userId} container ${moved.containerName} input ${moved.productName}:${productEntity}`,
                 )
               } else {
                 // Add item to next conveyor
                 world.add(productEntity, pair(StorageOf, outputEntity))
                 this.logger.Info(
-                  `Factory conveyor moved ${productName}:${productEntity} from ${factoryEntity} -> ${outputEntity}`,
+                  `Factory conveyor moved ${productEntity} from ${factoryEntity} -> ${outputEntity}`,
                 )
               }
               break
