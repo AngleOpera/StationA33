@@ -17,9 +17,8 @@ import {
   PlayerState,
 } from 'ReplicatedStorage/shared/state/PlayersState'
 import { getAttackerUserId } from 'ReplicatedStorage/shared/utils/damage'
-import { findDescendentsWhichAre } from 'ReplicatedStorage/shared/utils/instance'
 import { MeshMap } from 'ReplicatedStorage/shared/utils/mesh'
-import { weldParts, weldTool } from 'ReplicatedStorage/shared/utils/part'
+import { weldTool } from 'ReplicatedStorage/shared/utils/part'
 import {
   forEveryPlayer,
   morphPlayer,
@@ -267,15 +266,12 @@ export class PlayerService implements OnInit {
     placeBlockPreview.Name = 'PlaceBlockPreview'
     placeBlockPreview.Parent = folder
 
-    const plot = ReplicatedStorage.Common.Plot.Clone()
+    const plot = ReplicatedStorage.Plot.Clone()
     this.setupPlot(plot, player, playerState)
     plot.Parent = folder
 
     const ships = new Instance('Folder')
     ships.Name = 'Ships'
-    const ship = ReplicatedStorage.Ships.OlReliable.Clone()
-    ship.Parent = ships
-    this.setupShip(ship, player, playerState)
     ships.Parent = folder
 
     folder.Parent = Workspace.PlayerSpaces
@@ -291,11 +287,5 @@ export class PlayerService implements OnInit {
   public setupPlot(plot: Plot, _player: Player, playerState: PlayerState) {
     plot.PrimaryPart = plot.Baseplate
     plot.PivotTo(Workspace.Planet[playerState.plotName].CFrame)
-  }
-
-  public setupShip(ship: Ship, _player: Player, playerState: PlayerState) {
-    ship.PrimaryPart = ship.Body
-    weldParts(findDescendentsWhichAre<BasePart>(ship, 'BasePart'), ship.Body)
-    ship.PivotTo(Workspace.Planet[playerState.plotName].CFrame)
   }
 }

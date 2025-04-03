@@ -1,7 +1,9 @@
-import { Controller, OnStart } from '@flamework/core'
+import { Components } from '@flamework/components'
+import { Controller, Dependency, OnStart } from '@flamework/core'
 import React, { StrictMode } from '@rbxts/react'
 import { createPortal, createRoot } from '@rbxts/react-roblox'
 import { Players } from '@rbxts/services'
+import { ShipSpawnerComponent } from 'StarterPlayer/StarterPlayerScripts/components/ShipSpawner'
 import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
 import { App } from 'StarterPlayer/StarterPlayerScripts/Gui/pages/App'
@@ -18,6 +20,11 @@ export class GuiController implements OnStart {
   ) {}
 
   onStart() {
+    const components = Dependency<Components>()
+    components.onComponentRemoved<ShipSpawnerComponent>((shipSpawner) =>
+      shipSpawner.onRemoved(),
+    )
+
     this.root.render(
       createPortal(
         <StrictMode>

@@ -36,6 +36,38 @@
       "Morphs": {
         "$path": "assets/ReplicatedStorage/Morphs"
       },
+      "Plot": {
+        "$className": "Model",
+        "$properties": {
+          "WorldPivotData": {
+            "OptionalCFrame": {
+              "position": [
+                0.0,
+                0.25,
+                0.0
+              ],
+              "orientation": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            }
+          }
+        },
+        "$path": "assets/ReplicatedStorage/Plot"
+      },
       "Robots": {
         "$path": "assets/ReplicatedStorage/Robots"
       },

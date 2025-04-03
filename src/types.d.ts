@@ -104,13 +104,13 @@ interface ReplicatedStorage extends Instance {
     LootBox: Model
     BreakBlockPreview: BlockPreview
     PlaceBlockPreview: BlockPreview
-    Plot: Plot
   }
   Items: Folder &
     Record<string, InventoryItem> & {
       Conveyor: InventoryItem
     }
   Morphs: Folder & Record<MorphName, PlayerCharacter>
+  Plot: Plot
   Ships: Folder & {
     OlReliable: Ship
   }
@@ -150,6 +150,12 @@ interface ShipMobileGui extends ScreenGui {
 }
 
 type ShipName = 'OlReliable'
+
+interface ShipSpawner extends Model {
+  Screen: BasePart & {
+    SurfaceGui: SurfaceGui
+  }
+}
 
 interface Shooter extends Tool {
   MouseEvent: RemoteEvent

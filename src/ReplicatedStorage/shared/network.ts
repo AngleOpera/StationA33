@@ -22,6 +22,7 @@ interface ServerFunctions {
     itemName: InventoryItemName,
     amount: number,
   ) => void
+  spawnShip: (shipName: string) => void
 }
 
 interface ClientEvents {
