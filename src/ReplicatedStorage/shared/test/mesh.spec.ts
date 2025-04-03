@@ -34,6 +34,20 @@ import {
   meshPlotRemove,
 } from 'ReplicatedStorage/shared/utils/mesh'
 
+/* Container
+
+r0:            r90:           r180           r270:
+
+o = (1, -2)    o = (2, 1)     o = (-1, 2)    o = (-2,-1)
+i = (0, 2)     i = (-2, 0)    i = (-2, 0)    i = (2, 0)
+
+                    o                             i
+   oaaa            aa            iama            aa
+    amai           ma             aaao           am
+                   aa                            aa
+                   i                             o
+*/
+
 export = () => {
   describe('mesh', () => {
     it('should serialize midpoints', () => {
@@ -73,7 +87,7 @@ export = () => {
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(0, 0, 0),
           new Vector3(0, 0, 0),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         midpoint: new Vector3(0, 0, 0),
@@ -85,7 +99,7 @@ export = () => {
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(0, 0, 0),
           new Vector3(1, 1, 1),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         midpoint: new Vector3(0, 0, 0),
@@ -97,7 +111,7 @@ export = () => {
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(0, 0, 0),
           new Vector3(2, 0, 2),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         midpoint: new Vector3(1, 0, 1),
@@ -109,7 +123,7 @@ export = () => {
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(0, 0, 0),
           new Vector3(3, 1, 3),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         midpoint: new Vector3(1, 0, 1),
@@ -135,7 +149,7 @@ export = () => {
         getMeshStartpointEndpointFromMidpointSize(
           new Vector3(0, 0, 0),
           new Vector3(2, 2, 2),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         startpoint: new Vector3(0, 0, 0),
@@ -147,7 +161,7 @@ export = () => {
         getMeshStartpointEndpointFromMidpointSize(
           new Vector3(1, 0, 1),
           new Vector3(3, 1, 3),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         startpoint: new Vector3(0, 0, 0),
@@ -159,7 +173,7 @@ export = () => {
         getMeshStartpointEndpointFromMidpointSize(
           new Vector3(1, 0, 1),
           new Vector3(4, 2, 4),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         startpoint: new Vector3(0, 0, 0),
@@ -228,6 +242,50 @@ export = () => {
       expect(decodeMeshData('2_')).to.be.equal(defaultBlock)
     })
 
+    it('should convert rotated (midpoint, size) to (startpoint, endpoint)', () => {
+      // Midpoint: (39, 0, 422), Size: (2, 2, 3)
+      expect(
+        getMeshStartpointEndpointFromMidpointSize(
+          new Vector3(39, 0, 422),
+          new Vector3(2, 2, 3),
+          rotation0,
+        ),
+      ).to.be.equal({
+        startpoint: new Vector3(39, 0, 421),
+        endpoint: new Vector3(40, 1, 423),
+      })
+      expect(
+        getMeshStartpointEndpointFromMidpointSize(
+          new Vector3(39, 0, 422),
+          new Vector3(2, 2, 3),
+          rotation90,
+        ),
+      ).to.be.equal({
+        startpoint: new Vector3(38, 0, 422),
+        endpoint: new Vector3(40, 1, 423),
+      })
+      expect(
+        getMeshStartpointEndpointFromMidpointSize(
+          new Vector3(39, 0, 422),
+          new Vector3(2, 2, 3),
+          rotation180,
+        ),
+      ).to.be.equal({
+        startpoint: new Vector3(38, 0, 421),
+        endpoint: new Vector3(39, 1, 423),
+      })
+      expect(
+        getMeshStartpointEndpointFromMidpointSize(
+          new Vector3(39, 0, 422),
+          new Vector3(2, 2, 3),
+          rotation270,
+        ),
+      ).to.be.equal({
+        startpoint: new Vector3(38, 0, 421),
+        endpoint: new Vector3(40, 1, 422),
+      })
+    })
+
     it('should convert rotated (startpoint, endpoint) to (midpoint, size)', () => {
       // Midpoint: (0, 0, 0), Size: (1, 1, 1)
       for (let i = 0; i < 4; i++) {
@@ -248,7 +306,7 @@ export = () => {
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(6, 0, 5),
           new Vector3(4, 0, 5),
-          new Vector3(0, 0, 0),
+          rotation0,
         ),
       ).to.be.equal({
         midpoint: new Vector3(5, 0, 5),
@@ -258,17 +316,17 @@ export = () => {
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(6, 0, 5),
           new Vector3(4, 0, 5),
-          new Vector3(0, 1, 0),
+          rotation90,
         ),
       ).to.be.equal({
         midpoint: new Vector3(5, 0, 5),
-        size: new Vector3(1, 1, 3),
+        size: new Vector3(3, 1, 1),
       })
       expect(
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(6, 0, 5),
           new Vector3(4, 0, 5),
-          new Vector3(0, 2, 0),
+          rotation180,
         ),
       ).to.be.equal({
         midpoint: new Vector3(5, 0, 5),
@@ -278,11 +336,96 @@ export = () => {
         getMeshMidpointSizeFromStartpointEndpoint(
           new Vector3(5, 0, 4),
           new Vector3(5, 0, 6),
-          new Vector3(0, 1, 0),
+          rotation90,
         ),
       ).to.be.equal({
         midpoint: new Vector3(5, 0, 5),
-        size: new Vector3(3, 1, 1),
+        size: new Vector3(1, 1, 3),
+      })
+
+      // Midpoint: (39, 0, 422), Size: (2, 2, 3)
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(39, 0, 421),
+          new Vector3(40, 1, 423),
+          rotation0,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(2, 2, 3),
+      })
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(40, 1, 423),
+          new Vector3(39, 0, 421),
+          rotation0,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(2, 2, 3),
+      })
+
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(40, 1, 423),
+          new Vector3(38, 0, 422),
+          rotation90,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(3, 2, 2),
+      })
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(38, 0, 422),
+          new Vector3(40, 1, 423),
+          rotation90,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(3, 2, 2),
+      })
+
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(39, 1, 423),
+          new Vector3(38, 0, 421),
+          rotation180,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(2, 2, 3),
+      })
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(38, 0, 421),
+          new Vector3(39, 1, 423),
+          rotation180,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(2, 2, 3),
+      })
+
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(40, 1, 422),
+          new Vector3(38, 0, 421),
+          rotation270,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(3, 2, 2),
+      })
+      expect(
+        getMeshMidpointSizeFromStartpointEndpoint(
+          new Vector3(38, 0, 421),
+          new Vector3(40, 1, 422),
+          rotation270,
+        ),
+      ).to.be.equal({
+        midpoint: new Vector3(39, 0, 422),
+        size: new Vector3(3, 2, 2),
       })
     })
 
@@ -315,10 +458,18 @@ export = () => {
     ).to.be.equal([new Vector3(38, 0, 422)])
 
     const item2 = INVENTORY.Container
-    const testPoint2 = new Vector3(39, 0, 422)
     expect(
-      getOffsetsFromMidpoint(testPoint2, rotation0, item2.outputTo ?? []),
-    ).to.be.equal([new Vector3(40, 0, 420)])
+      getOffsetsFromMidpoint(testPoint, rotation0, item2.outputTo ?? []),
+    ).to.be.equal([testPoint.add(new Vector3(1, 0, -2))])
+    expect(
+      getOffsetsFromMidpoint(testPoint, rotation90, item2.outputTo ?? []),
+    ).to.be.equal([testPoint.add(new Vector3(2, 0, 1))])
+    expect(
+      getOffsetsFromMidpoint(testPoint, rotation180, item2.outputTo ?? []),
+    ).to.be.equal([testPoint.add(new Vector3(-1, 0, 2))])
+    expect(
+      getOffsetsFromMidpoint(testPoint, rotation270, item2.outputTo ?? []),
+    ).to.be.equal([testPoint.add(new Vector3(-2, 0, -1))])
   })
 
   it('should find rotation for mesh relative to baseplate', () => {

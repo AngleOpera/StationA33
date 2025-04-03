@@ -38,6 +38,10 @@ export function getLogger() {
   return logger
 }
 
+export function isRotation180or270(rotation: Rotation) {
+  return rotation.Y === 2 || rotation.Y === 3
+}
+
 export function getRotationName(rotation: Rotation): string {
   switch (rotation.Y) {
     case 0:

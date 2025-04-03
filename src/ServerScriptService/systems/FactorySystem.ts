@@ -98,7 +98,6 @@ export function moveProductToContainer(
   productEntity: Entity<unknown>,
   _inputEntity: Entity<unknown>,
   outputEntity: Entity<unknown>,
-  removedEntity?: number[],
 ) {
   const blockId = world.get(productEntity, Product)
   const player = world.get(outputEntity, PlayerEntity)
@@ -109,8 +108,6 @@ export function moveProductToContainer(
   if (!userId) return
 
   store.updatePlayerContainer(userId, containerName, productName, 1)
-  removedEntity?.push(productEntity)
-
   return { userId, containerName, productName }
 }
 
@@ -129,6 +126,7 @@ export class FactorySystem implements OnStart {
         bindTaggedModelToComponent(
           FactoryTag,
           Factory,
+          // Create an entity for a tagged model
           (entity, model) => {
             const { userId } = findPlacedBlockFromDescendent(model)
             const item = getItemFromBlock(model)
@@ -153,14 +151,29 @@ export class FactorySystem implements OnStart {
             const path = findPathToDescendent(Workspace, model)
             if (path) Events.animate.broadcast(ANIMATIONS.NewFactoryBlock, path)
           },
+          // Remove the entity when the model is destroyed
           (entity, model) => {
             this.logger.Info(`Factory destroyed: ${model.GetFullName()}`)
+            const { userId } = findPlacedBlockFromDescendent(model)
 
-            for (const _productEntity of world.each(pair(StorageOf, entity))) {
-              // Give items on conveyor back to player
+            // Give items on conveyor back to player
+            const removedEntity: number[] = []
+            for (const productEntity of world.each(pair(StorageOf, entity))) {
+              const blockId = world.get(productEntity, Product)
+              if (userId && blockId)
+                store.updatePlayerInventory(
+                  userId,
+                  BLOCK_ID_LOOKUP[blockId].name,
+                  1,
+                )
+              world.delete(productEntity)
+              removedEntity.push(productEntity)
+            }
+            if (removedEntity.size() > 0) {
+              Events.animateRemoveItems.broadcast(removedEntity)
             }
 
-            const { userId } = findPlacedBlockFromDescendent(model)
+            // Removed named entity mapping
             if (!userId) return
             const playerSandbox = this.meshService.getUserSandbox(userId)
             if (!playerSandbox) return
@@ -208,7 +221,7 @@ export class FactorySystem implements OnStart {
             if (state === oldState) continue
 
             if (world.has(outputEntity, Container)) {
-              // Add to chained container without creating a product entity
+              // Add item to chained container without creating a product entity
               const outputContainerName = world.get(outputEntity, Name)
               store.updatePlayerContainer(
                 userId,
@@ -261,11 +274,11 @@ export class FactorySystem implements OnStart {
                   productEntity,
                   factoryEntity,
                   outputEntity,
-                  removedEntity,
                 )
-                if (!moved) continue
+                world.delete(productEntity)
+                removedEntity.push(productEntity)
                 this.logger.Info(
-                  `Factory ${moved.userId} container ${moved.containerName} input ${moved.productName}:${productEntity}`,
+                  `Factory container ${factoryEntity} input ${moved?.productName}:${productEntity}`,
                 )
               } else {
                 // Add item to next conveyor

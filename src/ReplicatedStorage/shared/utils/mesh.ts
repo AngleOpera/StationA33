@@ -13,6 +13,7 @@ import {
   getItemVector3,
   getOffsetsFromMidpoint,
   getRotatedPoint,
+  isRotation180or270,
   Rotation,
   rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
@@ -149,29 +150,47 @@ export function getMeshMidpointSizeFromStartpointEndpoint(
   endpoint: MeshEndpoint,
   rotation: Vector3,
 ): { midpoint: MeshMidpoint; size: Vector3 } {
-  const size = getRotatedMeshSize(
-    endpoint
-      .sub(startpoint)
-      .Abs()
-      .Floor()
-      .add(new Vector3(1, 1, 1)),
-    rotation,
-  )
+  const size = endpoint
+    .sub(startpoint)
+    .Abs()
+    .Floor()
+    .add(new Vector3(1, 1, 1))
   return {
-    midpoint: startpoint.add(endpoint).div(2).Floor(),
+    midpoint: getMeshQuantizedMidpoint(
+      startpoint.add(endpoint).div(2),
+      rotation,
+    ),
     size,
   }
+}
+
+export function getMeshQuantizedMidpoint(
+  unquantizedMidpoint: Vector3,
+  rotation: Rotation,
+) {
+  const isRot80or270 = isRotation180or270(rotation)
+  return new Vector3(
+    isRot80or270
+      ? math.ceil(unquantizedMidpoint.X)
+      : math.floor(unquantizedMidpoint.X),
+    math.floor(unquantizedMidpoint.Y),
+    isRot80or270
+      ? math.ceil(unquantizedMidpoint.Z)
+      : math.floor(unquantizedMidpoint.Z),
+  )
 }
 
 export function getMeshUnquantizedMidpointFromMidpointRotatedSize(
   midpoint: MeshMidpoint,
   rotatedSize: Vector3,
+  rotation: Rotation,
 ) {
+  const isRot80or270 = isRotation180or270(rotation)
   return midpoint.add(
     new Vector3(
-      rotatedSize.X % 2 ? 0.5 : 1,
+      rotatedSize.X % 2 ? 0.5 : isRot80or270 ? 0 : 1,
       rotatedSize.Y % 2 ? 0.5 : 1,
-      rotatedSize.Z % 2 ? 0.5 : 1,
+      rotatedSize.Z % 2 ? 0.5 : isRot80or270 ? 0 : 1,
     ),
   )
 }
@@ -188,6 +207,7 @@ export function getMeshStartpointEndpointFromMidpointSize(
   const unquantizedMidpoint = getMeshUnquantizedMidpointFromMidpointRotatedSize(
     midpoint,
     size,
+    rotation,
   )
   const lowerCorner = getLowerCorner(unquantizedMidpoint, size)
   const upperCorner = getUpperCorner(unquantizedMidpoint, size)
@@ -212,18 +232,19 @@ export function getCFrameFromMeshMidpoint(
   baseplate: BasePart,
   offset?: Vector3,
 ): CFrame {
+  const isRot80or270 = isRotation180or270(rotation)
   const size = getRotatedMeshSize(unrotatedSize, rotation)
   return baseplate.CFrame.ToWorldSpace(
     new CFrame(
       (midpoint.X + (offset?.X ?? 0)) * gridSpacing -
         baseplate.Size.X / 2 +
-        (size.X % 2 ? gridSpacing / 2 : gridSpacing),
+        (size.X % 2 ? gridSpacing / 2 : isRot80or270 ? 0 : gridSpacing),
       (midpoint.Y + (offset?.Y ?? 0)) * gridSpacing +
         baseplate.Size.Y / 2 +
         (size.Y % 2 ? gridSpacing / 2 : gridSpacing),
       (midpoint.Z + (offset?.Z ?? 0)) * gridSpacing -
         baseplate.Size.Z / 2 +
-        (size.Z % 2 ? gridSpacing / 2 : gridSpacing),
+        (size.Z % 2 ? gridSpacing / 2 : isRot80or270 ? 0 : gridSpacing),
     ).mul(CFrame.Angles(0, math.rad(90 * -rotation.Y), 0)),
   )
 }
