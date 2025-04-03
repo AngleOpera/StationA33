@@ -23,6 +23,7 @@ import { selectPlayerContainer } from 'ReplicatedStorage/shared/state'
 import { findPlacedBlockFromDescendent } from 'ReplicatedStorage/shared/utils/block'
 import {
   decodeOffsetStep,
+  EncodedEntityStep,
   EncodedOffsetStep,
   encodeEntityStep,
   encodeOffsetStep,
@@ -156,6 +157,11 @@ export class FactorySystem implements OnStart {
             this.logger.Info(`Factory destroyed: ${model.GetFullName()}`)
             const { userId } = findPlacedBlockFromDescendent(model)
 
+            // Disconnect any connections
+            for (const outputEntity of world.each(pair(OutputOf, entity))) {
+              world.remove(outputEntity, pair(OutputOf, entity))
+            }
+
             // Give items on conveyor back to player
             const removedEntity: number[] = []
             for (const productEntity of world.each(pair(StorageOf, entity))) {
@@ -187,6 +193,8 @@ export class FactorySystem implements OnStart {
 
     this.ecs.addSystem(
       (_world) => {
+        const seenProduct: Record<number, boolean> = {}
+
         // Containers output items
         for (const [containerEntity] of world.query(
           Name,
@@ -239,6 +247,7 @@ export class FactorySystem implements OnStart {
                 outputEntity,
                 INVENTORY[productName].blockId,
               )
+              seenProduct[productEntity] = true
               this.logger.Info(
                 `Factory ${userId} container ${containerName} output ${productName}:${productEntity}`,
               )
@@ -247,7 +256,7 @@ export class FactorySystem implements OnStart {
         }
 
         // Conveyors move items
-        const encodedEntitySteps: number[] = []
+        const encodedEntitySteps: EncodedEntityStep[] = []
         const removedEntity: number[] = []
         for (const [factoryEntity] of world
           .query(Name, Factory)
@@ -260,6 +269,9 @@ export class FactorySystem implements OnStart {
 
             const storageOfFactoryEntity = pair(StorageOf, factoryEntity)
             for (const productEntity of world.each(storageOfFactoryEntity)) {
+              if (seenProduct[productEntity]) continue
+              seenProduct[productEntity] = true
+
               // Remove item from conveyor
               world.remove(productEntity, storageOfFactoryEntity)
 

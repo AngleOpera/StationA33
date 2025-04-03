@@ -29,9 +29,9 @@ interface ClientEvents {
   animateNewItem: (
     itemType: number,
     encodedMidpoint: string,
-    encodedEntityStep: number,
+    encodedEntityStep: [number, number],
   ) => void
-  animateMoveItems: (encodedEntityStep: number[]) => void
+  animateMoveItems: (encodedEntityStep: Array<[number, number]>) => void
   animateRemoveItems: (entity: number[]) => void
   dispatch: (actions: Array<BroadcastAction>) => void
   message: (

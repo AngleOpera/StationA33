@@ -9,6 +9,7 @@ import {
 import { cloneBlock } from 'ReplicatedStorage/shared/utils/block'
 import {
   decodeEntityStep,
+  EncodedEntityStep,
   rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
 import { findDescendentWithPath } from 'ReplicatedStorage/shared/utils/instance'
@@ -127,7 +128,7 @@ export class AnimationController implements OnStart, OnTick {
   handleAnimateNewItem(
     itemType: number,
     encodedMidpoint: string,
-    encodedEntityStep: number,
+    encodedEntityStep: EncodedEntityStep,
   ) {
     const item = BLOCK_ID_LOOKUP[itemType]
     if (!item) {
@@ -150,13 +151,16 @@ export class AnimationController implements OnStart, OnTick {
     this.handleAnimateMoveItems([encodedEntityStep])
   }
 
-  handleAnimateMoveItems(encodedEntityStep: number[]) {
+  handleAnimateMoveItems(encodedEntityStep: EncodedEntityStep[]) {
     const baseplate = this.playerController.getPlayerSpace().Plot.Baseplate
     for (const entityStep of encodedEntityStep) {
       const { entity, step } = decodeEntityStep(entityStep)
       const name = `Item${entity}`
       const model = Workspace.Animating.Items.FindFirstChild<Model>(name)
-      if (!model) continue
+      if (!model) {
+        this.logger.Warn(`handleAnimateMoveItems ${name} unknown`)
+        continue
+      }
       this.enqueueAnimation(
         name,
         createStepModelAnimation(model, baseplate, step),
@@ -167,7 +171,9 @@ export class AnimationController implements OnStart, OnTick {
   handleAnimateRemoveItem(entity: number) {
     const name = `Item${entity}`
     const removeAnimation = () => {
-      Workspace.Animating.Items.FindFirstChild(name)?.Destroy()
+      const item = Workspace.Animating.Items.FindFirstChild(name)
+      if (!item) this.logger.Warn(`handleAnimateRemoveItem ${name} unknown`)
+      item?.Destroy()
       return undefined
     }
     const animating = this.active[name]

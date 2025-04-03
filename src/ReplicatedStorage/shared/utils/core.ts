@@ -7,7 +7,7 @@ import {
   Step,
 } from 'ReplicatedStorage/shared/constants/core'
 
-export type EncodedEntityStep = number & {
+export type EncodedEntityStep = [number, number] & {
   readonly _entity_step?: unique symbol
 }
 
@@ -137,7 +137,7 @@ export function encodeEntityStep(
   entity: number,
   step: Step,
 ): EncodedEntityStep {
-  return (entity << 2) | step
+  return [entity, step]
 }
 
 export function decodeEntityStep(encoded: EncodedEntityStep): {
@@ -145,8 +145,8 @@ export function decodeEntityStep(encoded: EncodedEntityStep): {
   step: Step
 } {
   return {
-    entity: encoded >> 2,
-    step: encoded & 0b11,
+    entity: encoded[0],
+    step: encoded[1],
   }
 }
 
