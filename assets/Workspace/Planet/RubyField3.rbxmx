@@ -1,7 +1,7 @@
 <roblox version="4">
   <Item class="Part" referent="0">
     <Properties>
-      <string name="Name">RubyField1</string>
+      <string name="Name">RubyField3</string>
       <bool name="Anchored">true</bool>
       <BinaryString name="AttributesSerialize">AQAAAAkAAABTcGF3bkl0ZW0CBwAAAFJ1YnlPcmU=</BinaryString>
       <bool name="AudioCanCollide">true</bool>
@@ -14,18 +14,18 @@
       <token name="BottomSurface">0</token>
       <token name="BottomSurfaceInput">0</token>
       <CoordinateFrame name="CFrame">
-        <X>-757</X>
+        <X>-177.6665</X>
         <Y>0.01</Y>
-        <Z>-177.89948</Z>
-        <R00>1</R00>
+        <Z>757</Z>
+        <R00>0</R00>
         <R01>0</R01>
-        <R02>0</R02>
+        <R02>-1</R02>
         <R10>0</R10>
         <R11>1</R11>
         <R12>0</R12>
-        <R20>0</R20>
+        <R20>1</R20>
         <R21>0</R21>
-        <R22>1</R22>
+        <R22>0</R22>
       </CoordinateFrame>
       <bool name="CanCollide">false</bool>
       <bool name="CanQuery">false</bool>
@@ -38,13 +38,13 @@
       <PhysicalProperties name="CustomPhysicalProperties">
         <CustomPhysics>false</CustomPhysics>
       </PhysicalProperties>
+      <bool name="DefinesCapabilities">false</bool>
       <bool name="EnableFluidForces">true</bool>
       <token name="formFactorRaw">1</token>
       <float name="FrontParamA">-0.5</float>
       <float name="FrontParamB">0.5</float>
       <token name="FrontSurface">0</token>
       <token name="FrontSurfaceInput">0</token>
-      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <float name="LeftParamA">-0.5</float>
       <float name="LeftParamB">0.5</float>
       <token name="LeftSurface">0</token>
@@ -78,12 +78,11 @@
         <Y>0</Y>
         <Z>0</Z>
       </Vector3>
-      <bool name="DefinesCapabilities">false</bool>
       <token name="shape">1</token>
       <Vector3 name="size">
         <X>355.33295</X>
         <Y>0.001</Y>
-        <Z>1514.466</Z>
+        <Z>1514</Z>
       </Vector3>
       <int64 name="SourceAssetId">-1</int64>
       <BinaryString name="Tags">U3Bhd25lcg==</BinaryString>
@@ -92,7 +91,6 @@
       <token name="TopSurface">0</token>
       <token name="TopSurfaceInput">0</token>
       <float name="Transparency">1</float>
-      <UniqueId name="UniqueId">6d1518005718d27307ebf849000009d1</UniqueId>
       <Vector3 name="Velocity">
         <X>0</X>
         <Y>0</Y>

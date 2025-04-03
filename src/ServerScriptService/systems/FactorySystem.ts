@@ -72,6 +72,7 @@ export function isFull(factoryEntity: Entity) {
 }
 
 export function outputNewProduct(
+  userId: number,
   encodedMidpoint: string,
   entity: Entity<unknown>,
   outputEntity: Entity<unknown>,
@@ -87,6 +88,7 @@ export function outputNewProduct(
     world.get(outputEntity, pair(OutputOf, entity)) ?? 0,
   )
   Events.animateNewItem.broadcast(
+    userId,
     blockId,
     encodeMeshMidpoint(decodeMeshMidpoint(encodedMidpoint).add(offset)),
     encodeEntityStep(productEntity, step),
@@ -114,6 +116,8 @@ export function moveProductToContainer(
 
 @Service()
 export class FactorySystem implements OnStart {
+  debug = false
+
   constructor(
     protected readonly ecs: EntityComponentSystem,
     protected readonly meshService: MeshService,
@@ -147,6 +151,7 @@ export class FactorySystem implements OnStart {
               entity,
               playerEntity,
               item,
+              this.debug,
             )
 
             const path = findPathToDescendent(Workspace, model)
@@ -154,7 +159,8 @@ export class FactorySystem implements OnStart {
           },
           // Remove the entity when the model is destroyed
           (entity, model) => {
-            this.logger.Info(`Factory destroyed: ${model.GetFullName()}`)
+            if (this.debug)
+              this.logger.Debug(`Factory destroyed: ${model.GetFullName()}`)
             const { userId } = findPlacedBlockFromDescendent(model)
 
             // Disconnect any connections
@@ -175,7 +181,7 @@ export class FactorySystem implements OnStart {
               world.delete(productEntity)
               removedEntity.push(productEntity)
             }
-            if (removedEntity.size() > 0) {
+            if (removedEntity.size()) {
               Events.animateRemoveItems.broadcast(removedEntity)
             }
 
@@ -237,20 +243,23 @@ export class FactorySystem implements OnStart {
                 productName,
                 1,
               )
-              this.logger.Info(
-                `Factory ${userId} container ${outputContainerName} input ${productName}`,
-              )
+              if (this.debug)
+                this.logger.Debug(
+                  `Factory ${userId} container ${outputContainerName} input ${productName}`,
+                )
             } else {
               const productEntity = outputNewProduct(
+                userId,
                 containerName,
                 containerEntity,
                 outputEntity,
                 INVENTORY[productName].blockId,
               )
               seenProduct[productEntity] = true
-              this.logger.Info(
-                `Factory ${userId} container ${containerName} output ${productName}:${productEntity}`,
-              )
+              if (this.debug)
+                this.logger.Debug(
+                  `Factory ${userId} container ${containerName} output ${productName}:${productEntity}`,
+                )
             }
           }
         }
@@ -289,15 +298,17 @@ export class FactorySystem implements OnStart {
                 )
                 world.delete(productEntity)
                 removedEntity.push(productEntity)
-                this.logger.Info(
-                  `Factory container ${factoryEntity} input ${moved?.productName}:${productEntity}`,
-                )
+                if (this.debug)
+                  this.logger.Debug(
+                    `Factory container ${factoryEntity} input ${moved?.productName}:${productEntity}`,
+                  )
               } else {
                 // Add item to next conveyor
                 world.add(productEntity, pair(StorageOf, outputEntity))
-                this.logger.Info(
-                  `Factory conveyor moved ${productEntity} from ${factoryEntity} -> ${outputEntity}`,
-                )
+                if (this.debug)
+                  this.logger.Debug(
+                    `Factory conveyor moved ${productEntity} from ${factoryEntity} -> ${outputEntity}`,
+                  )
               }
               break
             }
@@ -320,6 +331,7 @@ export class FactorySystem implements OnStart {
     entity: Tag,
     playerEntity: Tag,
     item: InventoryItemDescription,
+    debug: boolean,
   ) {
     const meshData = meshMapGetEncoded(plot.mesh, encodedMidpoint)
     if (!meshData) return
@@ -327,9 +339,10 @@ export class FactorySystem implements OnStart {
     const { rotation } = meshData
     const rotationName = getRotationName(rotation)
     const midpoint = decodeMeshMidpoint(encodedMidpoint)
-    this.logger.Info(
-      `Factory ${plot.userId} created ${item.name}:${entity}: ${encodedMidpoint} (${midpoint}) ${rotationName}`,
-    )
+    if (debug)
+      this.logger.Debug(
+        `Factory ${plot.userId} created ${item.name}:${entity}: ${encodedMidpoint} (${midpoint}) ${rotationName}`,
+      )
 
     // Set entity components
     world.set(entity, PlayerEntity, playerEntity)
@@ -364,9 +377,10 @@ export class FactorySystem implements OnStart {
             pair(OutputOf, entity),
             encodeOffsetStep(offset, step),
           )
-          this.logger.Info(
-            `Factory ${plot.userId} connected: (${midpoint}) -> (${decodeMeshMidpoint(inputTo)}) offset (${offset}) step ${step})`,
-          )
+          if (debug)
+            this.logger.Debug(
+              `Factory ${plot.userId} connected: (${midpoint}) -> (${decodeMeshMidpoint(inputTo)}) offset (${offset}) step ${step})`,
+            )
         }
       },
     )
@@ -412,9 +426,10 @@ export class FactorySystem implements OnStart {
           pair(OutputOf, inputEntity),
           encodeOffsetStep(offset, step),
         )
-        this.logger.Info(
-          `Factory ${plot.userId} connected: (${decodeMeshMidpoint(inputEncodedMidpoint)}) -> (${midpoint}) offset (${offset}) step ${step}`,
-        )
+        if (debug)
+          this.logger.Debug(
+            `Factory ${plot.userId} connected: (${decodeMeshMidpoint(inputEncodedMidpoint)}) -> (${midpoint}) offset (${offset}) step ${step}`,
+          )
       }
     })
   }

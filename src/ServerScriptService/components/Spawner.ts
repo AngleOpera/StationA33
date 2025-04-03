@@ -16,6 +16,7 @@ export class SpawnerComponent
   minDelay = 10
   maxDelay = 60
   maxTotal = 100
+  initTotal = 70
   spawnHeight = 0
   totalSpawned = 0
 
@@ -29,20 +30,30 @@ export class SpawnerComponent
     this.maxTotal = this.attributes.MaxTotal ?? this.maxTotal
     this.spawnHeight = this.attributes.SpawnHeight ?? this.spawnHeight
 
+    if (this.attributes.SpawnItem) {
+      while (
+        this.instance &&
+        this.instance.GetChildren().size() < this.initTotal
+      )
+        this.spawn()
+    }
+
     while (
       this.instance &&
       wait(math.random(this.minDelay, this.maxDelay))[0]
     ) {
       const numChildren = this.instance.GetChildren().size()
       if (numChildren >= this.maxTotal) continue
-      if (this.attributes.SpawnItem)
-        this.spawnItem(
-          ReplicatedStorage.Items.FindFirstChild<Model>(
-            this.attributes.SpawnItem,
-          ),
-          INVENTORY_LOOKUP[this.attributes.SpawnItem],
-        )
+      this.spawn()
     }
+  }
+
+  spawn() {
+    if (!this.attributes.SpawnItem) return
+    this.spawnItem(
+      ReplicatedStorage.Items.FindFirstChild<Model>(this.attributes.SpawnItem),
+      INVENTORY_LOOKUP[this.attributes.SpawnItem],
+    )
   }
 
   spawnItem(resourceTemplate?: Model, item?: InventoryItemDescription) {
@@ -58,13 +69,11 @@ export class SpawnerComponent
   }
 
   getRandomSpawnLocation(height: number) {
-    const radius = math.min(this.instance.Size.X, this.instance.Size.Z) / 2
-    const randomAngle = math.random() * math.pi * 2
     return this.instance.CFrame.ToWorldSpace(
       new CFrame(
-        math.cos(randomAngle) * radius,
+        math.random(-this.instance.Size.X / 2, this.instance.Size.X / 2),
         this.spawnHeight + height,
-        math.sin(randomAngle) * radius,
+        math.random(-this.instance.Size.Z / 2, this.instance.Size.Z / 2),
       ),
     )
   }

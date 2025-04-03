@@ -37,7 +37,7 @@ export class ShipSpawnerComponent
                   BackgroundTransparency={1}
                   Position={new UDim2(0, 0, 0, 0)}
                   Size={new UDim2(1, 0, 1, 0)}
-                  Text={'Spawn Plane'}
+                  Text={'Spawn Ship'}
                   TextColor3={Color3.fromRGB(255, 255, 255)}
                   TextSize={14}
                   TextScaled={true}

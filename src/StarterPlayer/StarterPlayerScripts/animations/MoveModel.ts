@@ -45,10 +45,8 @@ export function createStepModelAnimation(
   return () =>
     startMoveModelAnimation(
       model,
-      baseplate.CFrame.ToWorldSpace(
-        baseplate.CFrame.ToObjectSpace(model.GetPivot()).add(
-          getStepVector(step).mul(gridSpacing),
-        ),
-      ),
+      model
+        .GetPivot()
+        .ToWorldSpace(new CFrame(getStepVector(step).mul(gridSpacing))),
     )
 }

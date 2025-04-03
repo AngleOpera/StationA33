@@ -37,18 +37,24 @@ export class VehicleSpawnerService
     }
 
     // Destroy any existing ships
-    const ships = this.playerService.getPlayerSpace(player).Ships
+    const playerSpace = this.playerService.getPlayerSpace(player)
+    const ships = playerSpace.Ships
     for (const ship of ships.GetChildren()) ship.Destroy()
 
     // Clone the ship template
     const ship = template.Clone()
     ship.PrimaryPart = ship.Body
     weldParts(findDescendentsWhichAre<BasePart>(ship, 'BasePart'), ship.Body)
+
+    const pad = playerSpace.Plot.Pad
     ship.PivotTo(
-      this.instance.Screen.CFrame.ToWorldSpace(
-        new CFrame(new Vector3(20, 0, 0), new Vector3(19, 0, 0)),
-      ),
+      pad
+        .GetPivot()
+        .ToWorldSpace(
+          new CFrame(new Vector3(30, pad.GetBoundingBox()[1].Y / 2, 0)),
+        ),
     )
+
     ship.Parent = ships
   }
 }

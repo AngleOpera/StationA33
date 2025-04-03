@@ -3,6 +3,7 @@ import { createProducer } from '@rbxts/reflex'
 import { Players } from '@rbxts/services'
 import {
   GAME_MODE,
+  INVENTORY,
   InventoryItemName,
   PLOT_NAME,
 } from 'ReplicatedStorage/shared/constants/core'
@@ -72,7 +73,13 @@ export const defaultPlayerSettings: PlayerSettings = {
 
 export const defaultPlayerData: PlayerData = {
   credits: 0,
-  inventory: {},
+  inventory: {
+    [INVENTORY.Bricks.name]: 50,
+    [INVENTORY.Container.name]: 1,
+    [INVENTORY.Conveyor.name]: 25,
+    [INVENTORY.Glass.name]: 50,
+    [INVENTORY.RightConveyor.name]: 10,
+  },
   containers: {},
   settings: defaultPlayerSettings,
   gamePasses: {},

@@ -57,9 +57,10 @@ export class AnimationController implements OnStart, OnTick {
       }
     })
     Events.animateNewItem.connect(
-      (itemType, encodedMidpoint, encodedEntityStep) => {
+      (userId, itemType, encodedMidpoint, encodedEntityStep) => {
         try {
           this.handleAnimateNewItem(
+            userId,
             itemType,
             encodedMidpoint,
             encodedEntityStep,
@@ -126,6 +127,7 @@ export class AnimationController implements OnStart, OnTick {
   }
 
   handleAnimateNewItem(
+    userId: number,
     itemType: number,
     encodedMidpoint: string,
     encodedEntityStep: EncodedEntityStep,
@@ -135,7 +137,11 @@ export class AnimationController implements OnStart, OnTick {
       this.logger.Warn(`handleAnimateNewItem: Item ${itemType} not found`)
       return
     }
-    const playerSpace = this.playerController.getPlayerSpace()
+    const playerSpace = this.playerController.getPlayerSpaceForUserId(userId)
+    if (!playerSpace) {
+      this.logger.Warn(`handleAnimateNewItem: Player ${userId} space not found`)
+      return
+    }
     const { entity } = decodeEntityStep(encodedEntityStep)
     const model = cloneBlock(
       item,

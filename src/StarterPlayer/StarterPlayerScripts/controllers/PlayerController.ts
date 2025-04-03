@@ -5,6 +5,7 @@ import { Logger } from '@rbxts/log'
 import {
   Players,
   RunService,
+  StarterGui,
   UserInputService,
   Workspace,
 } from '@rbxts/services'
@@ -27,6 +28,7 @@ export class PlayerController implements OnStart {
   constructor(protected logger: Logger) {}
 
   onStart() {
+    StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
     CmdrClient.SetActivationKeys([Enum.KeyCode.F2])
 
     const player = Players.LocalPlayer
@@ -42,6 +44,10 @@ export class PlayerController implements OnStart {
     if (!playerSpace) throw 'Player space not found'
     this.playerSpace = playerSpace
     return playerSpace
+  }
+
+  getPlayerSpaceForUserId(userId: number) {
+    return Workspace.PlayerSpaces.FindFirstChild<PlayerSpace>(`${userId}`)
   }
 
   equipShooter(shooter: ShooterComponent | undefined) {

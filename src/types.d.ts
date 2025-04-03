@@ -90,7 +90,7 @@ interface PlayerSpace extends Folder {
 
 interface Plot extends Model {
   Baseplate: BasePart
-  // ShipSpawner: ShipSpawner
+  Pad: Model
   SpawnLocation: SpawnLocation
 }
 
