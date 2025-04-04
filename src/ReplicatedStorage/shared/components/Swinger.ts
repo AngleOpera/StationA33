@@ -37,6 +37,7 @@ export class SwingerComponent
   unsheathSound: Sound | undefined
   swing: Swing | undefined
   active: Swing | undefined
+  debounce = new Set<string>()
   equipped = false
 
   constructor(private readonly logger: Logger) {
@@ -146,6 +147,7 @@ export class SwingerComponent
     if (!swing || (!swing?.r15animation && IS_CLIENT)) return
 
     this.active = swing
+    this.debounce.clear()
     this.instance.Enabled = false
     if (IS_SERVER) {
       this.hitbox?.HitStart()
@@ -192,6 +194,10 @@ export class SwingerComponent
       hitParent.IsA('Model') &&
       CollectionService.HasTag(hitParent, 'Minable')
     ) {
+      const fullName = hitParent.GetFullName()
+      if (this.debounce.has(fullName)) return
+      this.debounce.add(fullName)
+
       this.handleStruckMinable(hitParent)
       return
     }

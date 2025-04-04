@@ -22,7 +22,6 @@ import {
   findDescendentsWhichAre,
   grandParentIs,
 } from 'ReplicatedStorage/shared/utils/instance'
-import { previousOddNumber } from 'ReplicatedStorage/shared/utils/math'
 import {
   decodeMeshMidpoint,
   getCFrameFromMeshMidpoint,
@@ -34,7 +33,10 @@ import {
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
 import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
-import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
+import {
+  PlaceBlockController,
+  PlaceBlockPlot,
+} from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
 
 @Component({ tag: PlaceBlockToolTag })
@@ -43,6 +45,7 @@ export class PlaceBlockToolComponent
   implements OnStart
 {
   connection: RBXScriptConnection | undefined
+  plot: PlaceBlockPlot | undefined
   midpoint: MeshMidpoint | undefined
   rotation: Rotation = rotation0
   item: InventoryItemDescription | undefined
@@ -61,6 +64,7 @@ export class PlaceBlockToolComponent
   }
 
   clear() {
+    this.plot = undefined
     this.midpoint = undefined
     this.preview?.Destroy()
     this.preview = undefined
@@ -69,7 +73,7 @@ export class PlaceBlockToolComponent
   onStart() {
     this.overlapParams.CollisionGroup = 'Bounding'
 
-    const { baseplate, placedBlocksFolder, previewBlockFolder } =
+    const { placeBlockPlots, previewBlockFolder } =
       this.placeBlockController.getFolders()
 
     this.instance.Equipped.Connect(() => {
@@ -94,149 +98,151 @@ export class PlaceBlockToolComponent
           this.clear()
           return
         }
+
+        this.plot = undefined
+        this.midpoint = undefined
+
         let targetItem: InventoryItemDescription | undefined
-        if (mouse.Target === baseplate) {
-          this.midpoint = getMeshMidpointFromWorldPosition(
-            new Vector3(
-              math.floor(mouse.Hit.X) + 0.5,
-              math.floor(
-                (baseplate.Size.Y +
-                  gridSpacing * previousOddNumber(item.size[1])) /
-                  2 +
-                  baseplate.Position.Y,
-              ),
-              math.floor(mouse.Hit.Z) + 0.5,
-            ),
-            baseplate,
-          )
-        } else if (
-          mouse.Target &&
-          grandParentIs(mouse.Target, placedBlocksFolder) &&
-          mouse.Target.Parent?.IsA('Model') &&
-          (targetItem = getItemFromBlock(mouse.Target.Parent))
-        ) {
-          const model = mouse.Target.Parent
-          const targetMidpoint = decodeMeshMidpoint(model.Name)
-          const targetRotation = getMeshRotationFromCFrame(
-            model.GetPivot(),
-            baseplate,
-          )
-          const mouseSurface = mouse.TargetSurface
-          if (
-            mouseSurface ===
-            getRotatedSurface(Enum.NormalId.Left, targetRotation)
-          )
-            this.midpoint = targetMidpoint.add(
+        for (const plot of placeBlockPlots) {
+          const { baseplate, placedBlocksFolder } = plot
+
+          if (mouse.Target === baseplate) {
+            this.plot = plot
+            this.midpoint = getMeshMidpointFromWorldPosition(
               new Vector3(
-                math.floor(-(targetItem.size[0] + item.size[0]) / 2),
-                0,
-                0,
+                math.floor(mouse.Hit.X) + 0.5,
+                baseplate.Position.Y + baseplate.Size.Y / 2,
+                math.floor(mouse.Hit.Z) + 0.5,
               ),
+              baseplate,
             )
-          else if (
-            mouseSurface ===
-            getRotatedSurface(Enum.NormalId.Right, targetRotation)
-          )
-            this.midpoint = targetMidpoint.add(
-              new Vector3(
-                math.floor((targetItem.size[0] + item.size[0]) / 2),
-                0,
-                0,
-              ),
+            break
+          } else if (
+            mouse.Target &&
+            grandParentIs(mouse.Target, placedBlocksFolder) &&
+            mouse.Target.Parent?.IsA('Model') &&
+            (targetItem = getItemFromBlock(mouse.Target.Parent))
+          ) {
+            const model = mouse.Target.Parent
+            const targetMidpoint = decodeMeshMidpoint(model.Name)
+            const targetRotation = getMeshRotationFromCFrame(
+              model.GetPivot(),
+              baseplate,
             )
-          else if (
-            mouseSurface ===
-            getRotatedSurface(Enum.NormalId.Bottom, targetRotation)
-          )
-            this.midpoint = targetMidpoint.add(
-              new Vector3(
-                0,
-                math.floor(-(targetItem.size[1] + item.size[1]) / 2),
-                0,
-              ),
+            const mouseSurface = mouse.TargetSurface
+            if (
+              mouseSurface ===
+              getRotatedSurface(Enum.NormalId.Left, targetRotation)
             )
-          else if (
-            mouseSurface ===
-            getRotatedSurface(Enum.NormalId.Top, targetRotation)
-          )
-            this.midpoint = targetMidpoint.add(
-              new Vector3(
-                0,
-                math.floor((targetItem.size[1] + item.size[1]) / 2),
-                0,
-              ),
+              this.midpoint = targetMidpoint.add(
+                new Vector3(
+                  math.floor(-(targetItem.size[0] + item.size[0]) / 2),
+                  0,
+                  0,
+                ),
+              )
+            else if (
+              mouseSurface ===
+              getRotatedSurface(Enum.NormalId.Right, targetRotation)
             )
-          else if (
-            mouseSurface ===
-            getRotatedSurface(Enum.NormalId.Front, targetRotation)
-          )
-            this.midpoint = targetMidpoint.add(
-              new Vector3(
-                0,
-                0,
-                math.floor(-(targetItem.size[2] + item.size[2]) / 2),
-              ),
+              this.midpoint = targetMidpoint.add(
+                new Vector3(
+                  math.floor((targetItem.size[0] + item.size[0]) / 2),
+                  0,
+                  0,
+                ),
+              )
+            else if (
+              mouseSurface ===
+              getRotatedSurface(Enum.NormalId.Bottom, targetRotation)
             )
-          else if (
-            mouseSurface ===
-            getRotatedSurface(Enum.NormalId.Back, targetRotation)
-          )
-            this.midpoint = targetMidpoint.add(
-              new Vector3(
-                0,
-                0,
-                math.floor((targetItem.size[2] + item.size[2]) / 2),
-              ),
+              this.midpoint = targetMidpoint.add(
+                new Vector3(
+                  0,
+                  math.floor(-(targetItem.size[1] + item.size[1]) / 2),
+                  0,
+                ),
+              )
+            else if (
+              mouseSurface ===
+              getRotatedSurface(Enum.NormalId.Top, targetRotation)
             )
-        } else {
+              this.midpoint = targetMidpoint.add(
+                new Vector3(
+                  0,
+                  math.floor((targetItem.size[1] + item.size[1]) / 2),
+                  0,
+                ),
+              )
+            else if (
+              mouseSurface ===
+              getRotatedSurface(Enum.NormalId.Front, targetRotation)
+            )
+              this.midpoint = targetMidpoint.add(
+                new Vector3(
+                  0,
+                  0,
+                  math.floor(-(targetItem.size[2] + item.size[2]) / 2),
+                ),
+              )
+            else if (
+              mouseSurface ===
+              getRotatedSurface(Enum.NormalId.Back, targetRotation)
+            )
+              this.midpoint = targetMidpoint.add(
+                new Vector3(
+                  0,
+                  0,
+                  math.floor((targetItem.size[2] + item.size[2]) / 2),
+                ),
+              )
+            this.plot = plot
+            break
+          }
+        }
+
+        if (!this.plot || !this.midpoint || !validMeshMidpoint(this.midpoint)) {
           this.clear()
           return
         }
-        if (this.midpoint) {
-          if (!validMeshMidpoint(this.midpoint)) {
-            this.clear()
-            return
-          }
-          if (this.item !== item) {
-            this.item = item
-            this.preview?.Destroy()
-            this.preview = undefined
-          }
-          if (!this.preview) {
-            this.preview =
-              ReplicatedStorage.Items?.FindFirstChild<Model>(
-                item.name,
-              )?.Clone() || ReplicatedStorage.Common.PlaceBlockPreview.Clone()
-            findDescendentsWhichAre<BasePart>(
-              this.preview,
-              TYPE.BasePart,
-            ).forEach((part) => {
-              part.CanCollide = false
-              part.Transparency = 0.5
-            })
-            this.bounding = createBoundingPart(
-              this.preview.GetPivot().Position,
-              getItemVector3(item.size).mul(gridSpacing * 0.99),
-              this.preview,
-            )
-          }
 
-          this.preview.PivotTo(
-            getCFrameFromMeshMidpoint(
-              this.midpoint,
-              getItemVector3(item.size),
-              this.rotation,
-              baseplate,
-            ),
-          )
-          this.conflicting =
-            !!this.bounding &&
-            Workspace.GetPartsInPart(this.bounding, this.overlapParams).size() >
-              0
-          this.preview.Parent = this.conflicting
-            ? undefined
-            : previewBlockFolder
+        if (this.item !== item) {
+          this.item = item
+          this.preview?.Destroy()
+          this.preview = undefined
         }
+
+        if (!this.preview) {
+          this.preview =
+            ReplicatedStorage.Items?.FindFirstChild<Model>(
+              item.name,
+            )?.Clone() || ReplicatedStorage.Common.PlaceBlockPreview.Clone()
+          findDescendentsWhichAre<BasePart>(
+            this.preview,
+            TYPE.BasePart,
+          ).forEach((part) => {
+            part.CanCollide = false
+            part.Transparency = 0.5
+          })
+          this.bounding = createBoundingPart(
+            this.preview.GetPivot().Position,
+            getItemVector3(item.size).mul(gridSpacing * 0.99),
+            this.preview,
+          )
+        }
+
+        this.preview.PivotTo(
+          getCFrameFromMeshMidpoint(
+            this.midpoint,
+            getItemVector3(item.size),
+            this.rotation,
+            this.plot.baseplate,
+          ),
+        )
+        this.conflicting =
+          !!this.bounding &&
+          Workspace.GetPartsInPart(this.bounding, this.overlapParams).size() > 0
+        this.preview.Parent = this.conflicting ? undefined : previewBlockFolder
       })
     })
 
@@ -254,10 +260,11 @@ export class PlaceBlockToolComponent
 
     this.instance.Activated.Connect(async () => {
       const item = this.placeBlockController.getItem()
-      if (item && this.midpoint && !this.invoking) {
+      if (item && this.plot && this.midpoint && !this.invoking) {
         this.invoking = true
         await Functions.placeBlock.invoke(
           item.name,
+          this.plot.plotId,
           this.midpoint,
           this.rotation,
         )

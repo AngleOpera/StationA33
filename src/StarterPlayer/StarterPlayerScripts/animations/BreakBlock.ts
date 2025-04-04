@@ -13,8 +13,8 @@ export interface AnimatingBreakBlock extends Animating {
 export function animateBreakBlock(animating: AnimatingBreakBlock) {
   const value = TweenService.GetValue(
     math.min(animating.elapsed / animating.duration, 1),
-    Enum.EasingStyle.Linear,
-    Enum.EasingDirection.Out,
+    Enum.EasingStyle.Bounce,
+    Enum.EasingDirection.InOut,
   )
   animating.model.ScaleTo(lerp(animating.startValue, animating.endValue, value))
 }
@@ -25,8 +25,8 @@ export function startBreakBlockAnimation(model: Model): AnimatingBreakBlock {
     model,
     elapsed: 0,
     duration: 1,
-    startValue: 1,
-    endValue: 0.5,
+    startValue: 0.5,
+    endValue: 1,
     onTick: animateBreakBlock,
   }
 }

@@ -125,7 +125,9 @@ export function getMeshMidpointFromWorldPosition(
   baseplate: BasePart,
 ): MeshMidpoint {
   return baseplate.CFrame.ToObjectSpace(new CFrame(position))
-    .add(baseplate.Size.div(2))
+    .add(
+      new Vector3(baseplate.Size.X, -baseplate.Size.Y, baseplate.Size.Z).div(2),
+    )
     .Position.div(gridSpacing)
     .Floor()
 }

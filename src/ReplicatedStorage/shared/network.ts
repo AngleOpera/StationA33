@@ -13,10 +13,11 @@ interface ServerEvents {
 interface ServerFunctions {
   placeBlock: (
     itemName: InventoryItemName,
+    plotId: string,
     midpoint: Vector3,
     rotation: Vector3,
   ) => void
-  breakBlock: (midpoint: Vector3) => void
+  breakBlock: (plotId: string, midpoint: Vector3) => void
   moveItem: (
     container: string,
     itemName: InventoryItemName,

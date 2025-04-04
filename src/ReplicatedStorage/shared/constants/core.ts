@@ -58,6 +58,7 @@ export const ANIMATIONS = {
 export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {
   BlockId: 'BlockId' as const,
   Damage: 'Damage' as const,
+  Debounce: 'Debounce' as const,
   EntityId: 'EntityId' as const,
 }
 

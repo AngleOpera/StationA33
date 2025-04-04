@@ -1,6 +1,7 @@
 interface BlockAttributes {
   BlockId: number
   Damage?: number
+  Debounce?: boolean
   EntityId?: number
 }
 
@@ -69,7 +70,6 @@ interface Leaderboard extends Model {
 type MorphName = 'None' | 'Speakerman' | 'Spacesuit'
 
 interface Planet extends Folder {
-  Baseplate: BasePart
   // LeaderboardCredits: Leaderboard
   Plot1: BasePart
   Plot2: BasePart
@@ -198,5 +198,8 @@ interface Workspace extends Instance {
     Items: Folder
   }
   Planet: Planet
-  PlayerSpaces: Folder & Record<string, PlayerSpace>
+  PlayerSpaces: Folder &
+    Record<string, PlayerSpace> & {
+      '0': PlayerSpace
+    }
 }

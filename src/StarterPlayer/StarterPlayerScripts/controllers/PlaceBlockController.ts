@@ -1,6 +1,6 @@
 import { Controller, OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
-import { Players, UserInputService } from '@rbxts/services'
+import { Players, UserInputService, Workspace } from '@rbxts/services'
 import {
   INVENTORY,
   InventoryItemDescription,
@@ -11,6 +11,12 @@ import { PlaceBlockToolComponent } from 'StarterPlayer/StarterPlayerScripts/comp
 import { PlayerController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlayerController'
 import { store } from 'StarterPlayer/StarterPlayerScripts/store'
 import { MENU_PAGE } from 'StarterPlayer/StarterPlayerScripts/store/MenuState'
+
+export interface PlaceBlockPlot {
+  plotId: string
+  baseplate: BasePart
+  placedBlocksFolder: Model
+}
 
 @Controller({})
 export class PlaceBlockController implements OnStart {
@@ -69,7 +75,10 @@ export class PlaceBlockController implements OnStart {
     this.item = item
   }
 
-  getFolders() {
+  getFolders(): {
+    placeBlockPlots: PlaceBlockPlot[]
+    previewBlockFolder: Model
+  } {
     const playerSpace = this.playerController.getPlayerSpace()
     const baseplateSize = playerSpace.Plot.Baseplate.Size
     if (baseplateSize.X % 6 !== 0)
@@ -82,8 +91,18 @@ export class PlaceBlockController implements OnStart {
       )
 
     return {
-      baseplate: playerSpace.Plot.Baseplate,
-      placedBlocksFolder: playerSpace.PlacedBlocks,
+      placeBlockPlots: [
+        {
+          plotId: '0',
+          baseplate: Workspace.PlayerSpaces['0'].Plot.Baseplate,
+          placedBlocksFolder: Workspace.PlayerSpaces['0'].PlacedBlocks,
+        },
+        {
+          plotId: `${Players.LocalPlayer.UserId}`,
+          baseplate: playerSpace.Plot.Baseplate,
+          placedBlocksFolder: playerSpace.PlacedBlocks,
+        },
+      ],
       previewBlockFolder: playerSpace.PlaceBlockPreview,
     }
   }

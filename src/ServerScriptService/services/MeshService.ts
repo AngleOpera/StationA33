@@ -6,6 +6,7 @@ import {
   INVENTORY,
   INVENTORY_ID,
   InventoryItemName,
+  PLACE_PLOT_LOCATION,
 } from 'ReplicatedStorage/shared/constants/core'
 import { selectPlayerInventoryItem } from 'ReplicatedStorage/shared/state'
 import { cloneBlock } from 'ReplicatedStorage/shared/utils/block'
@@ -38,16 +39,24 @@ export class MeshService implements OnStart {
   constructor(protected readonly logger: Logger) {}
 
   onStart() {
-    Functions.placeBlock.setCallback((player, itemName, midpoint, rotation) => {
+    this.loadPlayerSandbox(
+      0,
+      Workspace.PlayerSpaces['0'],
+      PLACE_PLOT_LOCATION,
+      { [PLACE_PLOT_LOCATION]: {} },
+    )
+    Functions.placeBlock.setCallback(
+      (player, itemName, plotId, midpoint, rotation) => {
+        try {
+          this.handlePlaceBlock(player, itemName, plotId, midpoint, rotation)
+        } catch (e) {
+          this.logger.Error(`MeshService.placeBlock: ${e}`)
+        }
+      },
+    )
+    Functions.breakBlock.setCallback((player, plotId, midpoint) => {
       try {
-        this.handlePlaceBlock(player, itemName, midpoint, rotation)
-      } catch (e) {
-        this.logger.Error(`MeshService.placeBlock: ${e}`)
-      }
-    })
-    Functions.breakBlock.setCallback((player, midpoint) => {
-      try {
-        this.handleBreakBlock(player, midpoint)
+        this.handleBreakBlock(player, plotId, midpoint)
       } catch (e) {
         this.logger.Error(`MeshService.breakBlock: ${e}`)
       }
@@ -61,8 +70,10 @@ export class MeshService implements OnStart {
     })
   }
 
-  getPlayerSandbox(player: Player) {
-    return this.getUserSandbox(player.UserId)
+  getPlayerSandbox(player: Player, plotId?: string) {
+    const key = `${player.UserId}`
+    if (plotId && plotId !== '0' && plotId !== key) return undefined
+    return this.playerSandbox[plotId || key]
   }
 
   getUserSandbox(userId: number) {
@@ -70,12 +81,12 @@ export class MeshService implements OnStart {
   }
 
   loadPlayerSandbox(
-    player: Player,
+    userId: number,
     playerSpace: PlayerSpace,
     location: PlotLocation,
     mesh: Partial<Record<PlotLocation, MeshMap>>,
   ) {
-    const key = `${player.UserId}`
+    const key = `${userId}`
     const playerSandbox: PlayerSandbox = {
       location,
       workspace: playerSpace,
@@ -83,7 +94,7 @@ export class MeshService implements OnStart {
         Object.entries(mesh).map(([key, value]) => [
           key,
           {
-            userId: player.UserId,
+            userId,
             mesh: value,
             inputFrom: {},
             inputTo: {},
@@ -94,15 +105,15 @@ export class MeshService implements OnStart {
       ),
     }
     this.playerSandbox[key] = playerSandbox
-    this.loadPlayerSandboxMesh(player, playerSandbox)
+    this.loadPlayerSandboxMesh(playerSandbox)
   }
 
-  unloadPlayerSandbox(player: Player) {
-    const key = `${player.UserId}`
+  unloadPlayerSandbox(userId: number) {
+    const key = `${userId}`
     delete this.playerSandbox[key]
   }
 
-  loadPlayerSandboxMesh(player: Player, playerSandbox: PlayerSandbox) {
+  loadPlayerSandboxMesh(playerSandbox: PlayerSandbox) {
     const plot = playerSandbox.plot[playerSandbox.location]
     const placedBlocksFolder = playerSandbox.workspace.PlacedBlocks
     for (const [encodedMidpoint, encodedData] of Object.entries(plot.mesh)) {
@@ -132,16 +143,17 @@ export class MeshService implements OnStart {
     const playerSandbox = this.getPlayerSandbox(player)
     if (!playerSandbox) return
     playerSandbox.workspace.PlacedBlocks.ClearAllChildren()
-    this.loadPlayerSandboxMesh(player, playerSandbox)
+    this.loadPlayerSandboxMesh(playerSandbox)
   }
 
   handlePlaceBlock(
     player: Player,
     itemName: InventoryItemName,
+    plotId: string,
     midpoint: Vector3,
     rotation: Vector3,
   ) {
-    const playerSandbox = this.getPlayerSandbox(player)
+    const playerSandbox = this.getPlayerSandbox(player, plotId)
     if (!playerSandbox) {
       this.logger.Warn(
         `MeshService.handlePlaceBlock: Player ${player.Name} has no sandbox`,
@@ -197,8 +209,8 @@ export class MeshService implements OnStart {
     clonedSound.Play()
   }
 
-  handleBreakBlock(player: Player, midpoint: Vector3) {
-    const playerSandbox = this.getPlayerSandbox(player)
+  handleBreakBlock(player: Player, plotId: string, midpoint: Vector3) {
+    const playerSandbox = this.getPlayerSandbox(player, plotId)
     if (!playerSandbox) {
       this.logger.Warn(
         `MeshService.handleBreakBlock: Player ${player.Name} has no sandbox`,

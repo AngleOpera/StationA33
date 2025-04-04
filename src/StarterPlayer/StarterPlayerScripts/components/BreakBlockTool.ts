@@ -14,7 +14,10 @@ import {
   gridSpacing,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
-import { PlaceBlockController } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
+import {
+  PlaceBlockController,
+  PlaceBlockPlot,
+} from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
 
 @Component({ tag: BreakBlockToolTag })
@@ -23,6 +26,7 @@ export class BreakBlockToolComponent
   implements OnStart
 {
   connection: RBXScriptConnection | undefined
+  plot: PlaceBlockPlot | undefined
   target: Model | undefined
   preview: BlockPreview | undefined
   invoking = false
@@ -35,13 +39,14 @@ export class BreakBlockToolComponent
   }
 
   clear() {
+    this.plot = undefined
     this.target = undefined
     this.preview?.Destroy()
     this.preview = undefined
   }
 
   onStart() {
-    const { placedBlocksFolder, previewBlockFolder } =
+    const { placeBlockPlots, previewBlockFolder } =
       this.placeBlockController.getFolders()
 
     this.instance.Equipped.Connect(() => {
@@ -60,7 +65,6 @@ export class BreakBlockToolComponent
           !character?.PrimaryPart ||
           !targetParent ||
           !targetParent.IsA(TYPE.Model) ||
-          targetParent.Parent !== placedBlocksFolder ||
           mouse.Hit.Position.sub(character.PrimaryPart.Position).Magnitude >
             this.attributes.MaxDistance
         ) {
@@ -68,19 +72,34 @@ export class BreakBlockToolComponent
           return
         }
 
-        this.target = targetParent
-        const targetBlockId = this.target.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
-        const targetItem = typeIs(targetBlockId, 'number')
-          ? INVENTORY_ID[targetBlockId]
-          : undefined
-        if (!this.preview) {
-          this.preview = ReplicatedStorage.Common.BreakBlockPreview.Clone()
+        this.plot = undefined
+        this.target = undefined
+
+        for (const plot of placeBlockPlots) {
+          const { placedBlocksFolder } = plot
+          if (targetParent.Parent !== placedBlocksFolder) continue
+
+          this.plot = plot
+          this.target = targetParent
+          const targetBlockId = this.target.GetAttribute(
+            BLOCK_ATTRIBUTE.BlockId,
+          )
+          const targetItem = typeIs(targetBlockId, 'number')
+            ? INVENTORY_ID[targetBlockId]
+            : undefined
+          if (!this.preview) {
+            this.preview = ReplicatedStorage.Common.BreakBlockPreview.Clone()
+          }
+          if (targetItem) {
+            this.preview.Size = getItemVector3(targetItem.size).mul(gridSpacing)
+          }
+          this.preview.PivotTo(targetParent.GetPivot())
+          if (!this.preview.Parent) this.preview.Parent = previewBlockFolder
+
+          break
         }
-        if (targetItem) {
-          this.preview.Size = getItemVector3(targetItem.size).mul(gridSpacing)
-        }
-        this.preview.PivotTo(targetParent.GetPivot())
-        if (!this.preview.Parent) this.preview.Parent = previewBlockFolder
+
+        if (!this.plot) this.clear()
       })
     })
 
@@ -93,7 +112,7 @@ export class BreakBlockToolComponent
     })
 
     this.instance.Activated.Connect(async () => {
-      if (this.target && !this.invoking) {
+      if (this.plot && this.target && !this.invoking) {
         this.invoking = true
         let midpoint
         try {
@@ -105,7 +124,7 @@ export class BreakBlockToolComponent
           this.invoking = false
           return
         }
-        await Functions.breakBlock.invoke(midpoint)
+        await Functions.breakBlock.invoke(this.plot.plotId, midpoint)
         this.preview?.Destroy()
         this.preview = undefined
         this.target = undefined

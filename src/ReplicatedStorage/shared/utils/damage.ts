@@ -49,7 +49,7 @@ export function takeBlockDamage(
   const damageAttribute = block.GetAttribute(BLOCK_ATTRIBUTE.Damage)
   const currentDamage = typeIs(damageAttribute, 'number') ? damageAttribute : 0
   const newDamage = currentDamage + damage
-  if (newDamage < 3) {
+  if (newDamage <= 3) {
     block.SetAttribute(BLOCK_ATTRIBUTE.Damage, newDamage)
     return
   }

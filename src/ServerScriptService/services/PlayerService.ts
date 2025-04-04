@@ -81,7 +81,7 @@ export class PlayerService implements OnInit {
     playerContext?.profile?.Release()
     store.closePlayerData(player.UserId)
     this.players.delete(player.UserId)
-    this.placeBlockService.unloadPlayerSandbox(player)
+    this.placeBlockService.unloadPlayerSandbox(player.UserId)
     this.cleanupPlayerSpace(player)
   }
 
@@ -151,7 +151,7 @@ export class PlayerService implements OnInit {
       playerContext.profile.Data.mesh,
     )
     this.placeBlockService.loadPlayerSandbox(
-      player,
+      player.UserId,
       playerSpace,
       PLACE_PLOT_LOCATION,
       playerContext.profile.Data.mesh,
@@ -243,9 +243,10 @@ export class PlayerService implements OnInit {
     )
   }
 
-  public getPlayerSpace(player: Player): PlayerSpace {
+  public getPlayerSpace(player: Player, plotId?: string): PlayerSpace {
     const key = `${player.UserId}`
-    const existing = Workspace.PlayerSpaces.FindFirstChild(key)
+    if (plotId && plotId !== '0' && plotId !== key) throw 'Invalid plotId'
+    const existing = Workspace.PlayerSpaces.FindFirstChild(plotId || key)
     if (!existing) throw 'PlayerSpace not found'
     return existing as PlayerSpace
   }
