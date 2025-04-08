@@ -51,61 +51,14 @@
         </CFrame>
       </OptionalCoordinateFrame>
     </Properties>
-    <Item class="Part" referent="1">
+    <Item class="Model" referent="1">
       <Properties>
         <string name="Name">Door</string>
-        <bool name="Anchored">false</bool>
         <BinaryString name="AttributesSerialize"></BinaryString>
-        <bool name="AudioCanCollide">true</bool>
-        <float name="BackParamA">-0.5</float>
-        <float name="BackParamB">0.5</float>
-        <token name="BackSurface">0</token>
-        <token name="BackSurfaceInput">0</token>
-        <float name="BottomParamA">-0.5</float>
-        <float name="BottomParamB">0.5</float>
-        <token name="BottomSurface">0</token>
-        <token name="BottomSurfaceInput">0</token>
-        <CoordinateFrame name="CFrame">
-          <X>31.16187</X>
-          <Y>8.251639</Y>
-          <Z>-83.51606</Z>
-          <R00>-0</R00>
-          <R01>0</R01>
-          <R02>-1</R02>
-          <R10>-0.99862945</R10>
-          <R11>-0.052335914</R11>
-          <R12>0</R12>
-          <R20>-0.0523359</R20>
-          <R21>0.9986295</R21>
-          <R22>0</R22>
-        </CoordinateFrame>
-        <bool name="CanCollide">true</bool>
-        <bool name="CanQuery">true</bool>
-        <bool name="CanTouch">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-        <bool name="CastShadow">true</bool>
-        <string name="CollisionGroup">Default</string>
-        <int name="CollisionGroupId">0</int>
-        <Color3uint8 name="Color3uint8">5987689</Color3uint8>
-        <PhysicalProperties name="CustomPhysicalProperties">
-          <CustomPhysics>false</CustomPhysics>
-        </PhysicalProperties>
-        <bool name="EnableFluidForces">true</bool>
-        <token name="formFactorRaw">1</token>
-        <float name="FrontParamA">-0.5</float>
-        <float name="FrontParamB">0.5</float>
-        <token name="FrontSurface">0</token>
-        <token name="FrontSurfaceInput">0</token>
         <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-        <float name="LeftParamA">-0.5</float>
-        <float name="LeftParamB">0.5</float>
-        <token name="LeftSurface">0</token>
-        <token name="LeftSurfaceInput">0</token>
-        <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
-        <token name="Material">1328</token>
-        <string name="MaterialVariantSerialized"></string>
-        <CoordinateFrame name="PivotOffset">
+        <token name="LevelOfDetail">0</token>
+        <CoordinateFrame name="ModelMeshCFrame">
           <X>0</X>
           <Y>0</Y>
           <Z>0</Z>
@@ -119,39 +72,139 @@
           <R21>0</R21>
           <R22>1</R22>
         </CoordinateFrame>
-        <float name="Reflectance">0</float>
-        <float name="RightParamA">-0.5</float>
-        <float name="RightParamB">0.5</float>
-        <token name="RightSurface">0</token>
-        <token name="RightSurfaceInput">0</token>
-        <int name="RootPriority">0</int>
-        <Vector3 name="RotVelocity">
+        <SharedString name="ModelMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
+        <Vector3 name="ModelMeshSize">
           <X>0</X>
           <Y>0</Y>
           <Z>0</Z>
         </Vector3>
+        <token name="ModelStreamingMode">0</token>
+        <bool name="NeedsPivotMigration">false</bool>
+        <Ref name="PrimaryPart">null</Ref>
         <bool name="DefinesCapabilities">false</bool>
-        <token name="shape">1</token>
-        <Vector3 name="size">
-          <X>16.525803</X>
-          <Y>1</Y>
-          <Z>29.81567</Z>
-        </Vector3>
+        <float name="ScaleFactor">1</float>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags">RG9vcg==</BinaryString>
-        <float name="TopParamA">-0.5</float>
-        <float name="TopParamB">0.5</float>
-        <token name="TopSurface">0</token>
-        <token name="TopSurfaceInput">0</token>
-        <float name="Transparency">0</float>
-        <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003ac</UniqueId>
-        <Vector3 name="Velocity">
-          <X>0</X>
-          <Y>0</Y>
-          <Z>0</Z>
-        </Vector3>
+        <UniqueId name="UniqueId">6c298b9ab0175579080625fd000067c5</UniqueId>
+        <OptionalCoordinateFrame name="WorldPivotData">
+          <CFrame>
+            <X>31.16187</X>
+            <Y>8.251639</Y>
+            <Z>-83.51606</Z>
+            <R00>-0</R00>
+            <R01>0</R01>
+            <R02>-1</R02>
+            <R10>-0.99862945</R10>
+            <R11>-0.052335914</R11>
+            <R12>0</R12>
+            <R20>-0.0523359</R20>
+            <R21>0.9986295</R21>
+            <R22>0</R22>
+          </CFrame>
+        </OptionalCoordinateFrame>
       </Properties>
-      <Item class="ClickDetector" referent="2">
+      <Item class="Part" referent="2">
+        <Properties>
+          <string name="Name">Door</string>
+          <bool name="Anchored">false</bool>
+          <BinaryString name="AttributesSerialize"></BinaryString>
+          <bool name="AudioCanCollide">true</bool>
+          <float name="BackParamA">-0.5</float>
+          <float name="BackParamB">0.5</float>
+          <token name="BackSurface">0</token>
+          <token name="BackSurfaceInput">0</token>
+          <float name="BottomParamA">-0.5</float>
+          <float name="BottomParamB">0.5</float>
+          <token name="BottomSurface">0</token>
+          <token name="BottomSurfaceInput">0</token>
+          <CoordinateFrame name="CFrame">
+            <X>31.16187</X>
+            <Y>8.251639</Y>
+            <Z>-83.51606</Z>
+            <R00>-0</R00>
+            <R01>0</R01>
+            <R02>-1</R02>
+            <R10>-0.99862945</R10>
+            <R11>-0.052335914</R11>
+            <R12>0</R12>
+            <R20>-0.0523359</R20>
+            <R21>0.9986295</R21>
+            <R22>0</R22>
+          </CoordinateFrame>
+          <bool name="CanCollide">true</bool>
+          <bool name="CanQuery">true</bool>
+          <bool name="CanTouch">true</bool>
+          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+          <bool name="CastShadow">true</bool>
+          <string name="CollisionGroup">Default</string>
+          <int name="CollisionGroupId">0</int>
+          <Color3uint8 name="Color3uint8">5987689</Color3uint8>
+          <PhysicalProperties name="CustomPhysicalProperties">
+            <CustomPhysics>false</CustomPhysics>
+          </PhysicalProperties>
+          <bool name="EnableFluidForces">true</bool>
+          <token name="formFactorRaw">1</token>
+          <float name="FrontParamA">-0.5</float>
+          <float name="FrontParamB">0.5</float>
+          <token name="FrontSurface">0</token>
+          <token name="FrontSurfaceInput">0</token>
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <float name="LeftParamA">-0.5</float>
+          <float name="LeftParamB">0.5</float>
+          <token name="LeftSurface">0</token>
+          <token name="LeftSurfaceInput">0</token>
+          <bool name="Locked">false</bool>
+          <bool name="Massless">false</bool>
+          <token name="Material">1328</token>
+          <string name="MaterialVariantSerialized"></string>
+          <CoordinateFrame name="PivotOffset">
+            <X>0</X>
+            <Y>0</Y>
+            <Z>0</Z>
+            <R00>1</R00>
+            <R01>0</R01>
+            <R02>0</R02>
+            <R10>0</R10>
+            <R11>1</R11>
+            <R12>0</R12>
+            <R20>0</R20>
+            <R21>0</R21>
+            <R22>1</R22>
+          </CoordinateFrame>
+          <float name="Reflectance">0</float>
+          <float name="RightParamA">-0.5</float>
+          <float name="RightParamB">0.5</float>
+          <token name="RightSurface">0</token>
+          <token name="RightSurfaceInput">0</token>
+          <int name="RootPriority">0</int>
+          <Vector3 name="RotVelocity">
+            <X>0</X>
+            <Y>0</Y>
+            <Z>0</Z>
+          </Vector3>
+          <bool name="DefinesCapabilities">false</bool>
+          <token name="shape">1</token>
+          <Vector3 name="size">
+            <X>16.525803</X>
+            <Y>1</Y>
+            <Z>29.81567</Z>
+          </Vector3>
+          <int64 name="SourceAssetId">-1</int64>
+          <BinaryString name="Tags"></BinaryString>
+          <float name="TopParamA">-0.5</float>
+          <float name="TopParamB">0.5</float>
+          <token name="TopSurface">0</token>
+          <token name="TopSurfaceInput">0</token>
+          <float name="Transparency">0</float>
+          <UniqueId name="UniqueId">2420a28e1721eabd07d6b38a000003ac</UniqueId>
+          <Vector3 name="Velocity">
+            <X>0</X>
+            <Y>0</Y>
+            <Z>0</Z>
+          </Vector3>
+        </Properties>
+      </Item>
+      <Item class="ClickDetector" referent="3">
         <Properties>
           <string name="Name">ClickDetector</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -169,7 +222,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Part" referent="3">
+    <Item class="Part" referent="4">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -270,7 +323,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="4">
+    <Item class="Part" referent="5">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -371,7 +424,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="5">
+    <Item class="Part" referent="6">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -472,7 +525,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="6">
+    <Item class="Part" referent="7">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -573,7 +626,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="7">
+    <Item class="Part" referent="8">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -674,7 +727,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="8">
+    <Item class="Part" referent="9">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -775,7 +828,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="9">
+    <Item class="Part" referent="10">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -876,7 +929,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="10">
+    <Item class="Part" referent="11">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -977,7 +1030,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="11">
+    <Item class="Part" referent="12">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1078,7 +1131,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="12">
+    <Item class="Part" referent="13">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1179,7 +1232,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="13">
+    <Item class="Part" referent="14">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1280,7 +1333,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="14">
+    <Item class="Part" referent="15">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1381,7 +1434,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="15">
+    <Item class="Part" referent="16">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1482,7 +1535,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="16">
+    <Item class="Part" referent="17">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1583,7 +1636,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="17">
+    <Item class="Part" referent="18">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1684,7 +1737,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="18">
+    <Item class="Part" referent="19">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1785,7 +1838,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="19">
+    <Item class="Part" referent="20">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1886,7 +1939,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="20">
+    <Item class="Part" referent="21">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -1987,7 +2040,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="21">
+    <Item class="Part" referent="22">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2088,7 +2141,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="22">
+    <Item class="Part" referent="23">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2189,7 +2242,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="23">
+    <Item class="Part" referent="24">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2290,7 +2343,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="24">
+    <Item class="Part" referent="25">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2391,7 +2444,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="25">
+    <Item class="Part" referent="26">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2492,7 +2545,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="26">
+    <Item class="Part" referent="27">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2593,7 +2646,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="27">
+    <Item class="Part" referent="28">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2694,7 +2747,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="28">
+    <Item class="Part" referent="29">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2795,7 +2848,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="29">
+    <Item class="Part" referent="30">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2896,7 +2949,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="30">
+    <Item class="Part" referent="31">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -2997,7 +3050,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="31">
+    <Item class="Part" referent="32">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3098,7 +3151,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="32">
+    <Item class="Part" referent="33">
       <Properties>
         <string name="Name">Body</string>
         <bool name="Anchored">false</bool>
@@ -3199,7 +3252,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="RemoteEvent" referent="33">
+    <Item class="RemoteEvent" referent="34">
       <Properties>
         <string name="Name">Shoot</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -3211,7 +3264,7 @@
         <UniqueId name="UniqueId">0da55ac67e93939106e7d21400000493</UniqueId>
       </Properties>
     </Item>
-    <Item class="Part" referent="34">
+    <Item class="Part" referent="35">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3312,7 +3365,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="35">
+    <Item class="Part" referent="36">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3413,7 +3466,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="36">
+    <Item class="Part" referent="37">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3514,7 +3567,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="37">
+    <Item class="Part" referent="38">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3615,7 +3668,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="38">
+    <Item class="Part" referent="39">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3716,7 +3769,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="39">
+    <Item class="Part" referent="40">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3817,7 +3870,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="40">
+    <Item class="Part" referent="41">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -3918,7 +3971,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="41">
+    <Item class="Part" referent="42">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4019,7 +4072,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="42">
+    <Item class="Part" referent="43">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4120,7 +4173,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="43">
+    <Item class="Part" referent="44">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4221,7 +4274,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="44">
+    <Item class="Part" referent="45">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4322,7 +4375,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="45">
+    <Item class="Part" referent="46">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4423,7 +4476,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Seat" referent="46">
+    <Item class="Seat" referent="47">
       <Properties>
         <string name="Name">Seat</string>
         <bool name="Anchored">false</bool>
@@ -4525,7 +4578,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="47">
+    <Item class="Part" referent="48">
       <Properties>
         <string name="Name">LeftThrusterBase</string>
         <bool name="Anchored">false</bool>
@@ -4626,7 +4679,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="48">
+    <Item class="Part" referent="49">
       <Properties>
         <string name="Name">RightThrusterBase</string>
         <bool name="Anchored">false</bool>
@@ -4727,7 +4780,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="49">
+    <Item class="Part" referent="50">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4828,7 +4881,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="50">
+    <Item class="Part" referent="51">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -4929,7 +4982,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Part" referent="51">
+    <Item class="Part" referent="52">
       <Properties>
         <string name="Name">Part</string>
         <bool name="Anchored">false</bool>
@@ -5030,7 +5083,7 @@
         </Vector3>
       </Properties>
     </Item>
-    <Item class="Model" referent="52">
+    <Item class="Model" referent="53">
       <Properties>
         <string name="Name">PlasmaBasedAxe</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -5082,7 +5135,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="53">
+      <Item class="Part" referent="54">
         <Properties>
           <string name="Name">PlasmaContainer</string>
           <bool name="Anchored">false</bool>
@@ -5183,7 +5236,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="54">
+      <Item class="Part" referent="55">
         <Properties>
           <string name="Name">WoolHilt</string>
           <bool name="Anchored">false</bool>
@@ -5284,7 +5337,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="55">
+      <Item class="Part" referent="56">
         <Properties>
           <string name="Name">Blade</string>
           <bool name="Anchored">false</bool>
@@ -5385,7 +5438,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="56">
+      <Item class="Part" referent="57">
         <Properties>
           <string name="Name">Handle</string>
           <bool name="Anchored">false</bool>
@@ -5487,7 +5540,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="57">
+    <Item class="Model" referent="58">
       <Properties>
         <string name="Name">PlasmaBuildingHammer</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -5539,7 +5592,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="58">
+      <Item class="Part" referent="59">
         <Properties>
           <string name="Name">Handle</string>
           <bool name="Anchored">false</bool>
@@ -5640,7 +5693,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="59">
+      <Item class="Part" referent="60">
         <Properties>
           <string name="Name">HammerHead</string>
           <bool name="Anchored">false</bool>
@@ -5741,7 +5794,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="60">
+      <Item class="Part" referent="61">
         <Properties>
           <string name="Name">HandlePlasma</string>
           <bool name="Anchored">false</bool>
@@ -5842,7 +5895,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="61">
+      <Item class="Part" referent="62">
         <Properties>
           <string name="Name">Plasma1</string>
           <bool name="Anchored">false</bool>
@@ -5943,7 +5996,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="62">
+      <Item class="Part" referent="63">
         <Properties>
           <string name="Name">Plasma2</string>
           <bool name="Anchored">false</bool>
@@ -6044,7 +6097,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="63">
+      <Item class="Part" referent="64">
         <Properties>
           <string name="Name">Projection1</string>
           <bool name="Anchored">false</bool>
@@ -6145,7 +6198,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="64">
+      <Item class="Part" referent="65">
         <Properties>
           <string name="Name">Plasma3</string>
           <bool name="Anchored">false</bool>
@@ -6246,7 +6299,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="65">
+      <Item class="Part" referent="66">
         <Properties>
           <string name="Name">Projection2</string>
           <bool name="Anchored">false</bool>
@@ -6347,7 +6400,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="66">
+      <Item class="Part" referent="67">
         <Properties>
           <string name="Name">Projection3</string>
           <bool name="Anchored">false</bool>
@@ -6448,7 +6501,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="67">
+      <Item class="Part" referent="68">
         <Properties>
           <string name="Name">Projection4</string>
           <bool name="Anchored">false</bool>
@@ -6550,7 +6603,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="68">
+    <Item class="Model" referent="69">
       <Properties>
         <string name="Name">RightThruster</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -6602,7 +6655,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="69">
+      <Item class="Part" referent="70">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -6702,7 +6755,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="70">
+        <Item class="Fire" referent="71">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -6729,7 +6782,7 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="71">
+      <Item class="Part" referent="72">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -6829,7 +6882,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="72">
+        <Item class="Fire" referent="73">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -6856,7 +6909,7 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="73">
+      <Item class="Part" referent="74">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -6957,7 +7010,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="74">
+      <Item class="Part" referent="75">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -7058,7 +7111,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="75">
+      <Item class="Part" referent="76">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -7159,7 +7212,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="76">
+      <Item class="Part" referent="77">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -7260,7 +7313,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="UnionOperation" referent="77">
+      <Item class="UnionOperation" referent="78">
         <Properties>
           <string name="Name">Union</string>
           <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -7399,7 +7452,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="78">
+    <Item class="Model" referent="79">
       <Properties>
         <string name="Name">LeftThruster</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -7451,7 +7504,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Part" referent="79">
+      <Item class="Part" referent="80">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -7551,7 +7604,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="80">
+        <Item class="Fire" referent="81">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -7578,7 +7631,7 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="81">
+      <Item class="Part" referent="82">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -7678,7 +7731,7 @@
             <Z>0</Z>
           </Vector3>
         </Properties>
-        <Item class="Fire" referent="82">
+        <Item class="Fire" referent="83">
           <Properties>
             <string name="Name">Fire</string>
             <BinaryString name="AttributesSerialize"></BinaryString>
@@ -7705,7 +7758,7 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="Part" referent="83">
+      <Item class="Part" referent="84">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -7806,7 +7859,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="84">
+      <Item class="Part" referent="85">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -7907,7 +7960,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="85">
+      <Item class="Part" referent="86">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -8008,7 +8061,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="Part" referent="86">
+      <Item class="Part" referent="87">
         <Properties>
           <string name="Name">Part</string>
           <bool name="Anchored">false</bool>
@@ -8109,7 +8162,7 @@
           </Vector3>
         </Properties>
       </Item>
-      <Item class="UnionOperation" referent="87">
+      <Item class="UnionOperation" referent="88">
         <Properties>
           <string name="Name">Union</string>
           <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -8248,7 +8301,7 @@
         </Properties>
       </Item>
     </Item>
-    <Item class="Model" referent="88">
+    <Item class="Model" referent="89">
       <Properties>
         <string name="Name">Guns</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8300,7 +8353,7 @@
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Model" referent="89">
+      <Item class="Model" referent="90">
         <Properties>
           <string name="Name">Gun2</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8352,7 +8405,7 @@
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="UnionOperation" referent="90">
+        <Item class="UnionOperation" referent="91">
           <Properties>
             <string name="Name">Union</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -8489,7 +8542,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="Weld" referent="91">
+          <Item class="Weld" referent="92">
             <Properties>
               <string name="Name">Weld</string>
               <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAAMjQyMGEyOGUxNzIxZWFiZDA3ZDZiMzhhMDAwMDAzZTYRAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADI0MjBhMjhlMTcyMWVhYmQwN2Q2YjM4YTAwMDAwM2U4</BinaryString>
@@ -8524,8 +8577,8 @@
               <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
               <bool name="Enabled">true</bool>
               <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-              <Ref name="Part0">90</Ref>
-              <Ref name="Part1">92</Ref>
+              <Ref name="Part0">91</Ref>
+              <Ref name="Part1">93</Ref>
               <bool name="DefinesCapabilities">false</bool>
               <int64 name="SourceAssetId">-1</int64>
               <BinaryString name="Tags"></BinaryString>
@@ -8533,7 +8586,7 @@
             </Properties>
           </Item>
         </Item>
-        <Item class="Part" referent="92">
+        <Item class="Part" referent="93">
           <Properties>
             <string name="Name">Muzzle</string>
             <bool name="Anchored">false</bool>
@@ -8633,7 +8686,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="CylinderMesh" referent="93">
+          <Item class="CylinderMesh" referent="94">
             <Properties>
               <string name="Name">Mesh</string>
               <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8665,7 +8718,7 @@
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="94">
+      <Item class="Model" referent="95">
         <Properties>
           <string name="Name">Gun1</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8717,7 +8770,7 @@
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="UnionOperation" referent="95">
+        <Item class="UnionOperation" referent="96">
           <Properties>
             <string name="Name">Union</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -8854,7 +8907,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="Weld" referent="96">
+          <Item class="Weld" referent="97">
             <Properties>
               <string name="Name">Weld</string>
               <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAAMjQyMGEyOGUxNzIxZWFiZDA3ZDZiMzhhMDAwMDAzZWIRAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADI0MjBhMjhlMTcyMWVhYmQwN2Q2YjM4YTAwMDAwM2Vk</BinaryString>
@@ -8889,8 +8942,8 @@
               <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
               <bool name="Enabled">true</bool>
               <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-              <Ref name="Part0">95</Ref>
-              <Ref name="Part1">97</Ref>
+              <Ref name="Part0">96</Ref>
+              <Ref name="Part1">98</Ref>
               <bool name="DefinesCapabilities">false</bool>
               <int64 name="SourceAssetId">-1</int64>
               <BinaryString name="Tags"></BinaryString>
@@ -8898,7 +8951,7 @@
             </Properties>
           </Item>
         </Item>
-        <Item class="Part" referent="97">
+        <Item class="Part" referent="98">
           <Properties>
             <string name="Name">Muzzle</string>
             <bool name="Anchored">false</bool>
@@ -8998,7 +9051,7 @@
               <Z>0</Z>
             </Vector3>
           </Properties>
-          <Item class="CylinderMesh" referent="98">
+          <Item class="CylinderMesh" referent="99">
             <Properties>
               <string name="Name">Mesh</string>
               <BinaryString name="AttributesSerialize"></BinaryString>

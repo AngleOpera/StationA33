@@ -3,6 +3,8 @@ interface BlockAttributes {
   Damage?: number
   Debounce?: boolean
   EntityId?: number
+  OriginalColor?: Color3
+  OriginalMaterial?: Enum.Material
 }
 
 interface BlockBase {
@@ -29,7 +31,7 @@ interface PlaceBlockToolAttributes {
 
 type CurrencyName = 'Credits'
 
-interface Door extends BasePart {
+interface Door extends Model {
   ClickDetector: ClickDetector
 }
 

@@ -60,6 +60,8 @@ export const BLOCK_ATTRIBUTE: Record<keyof BlockAttributes, string> = {
   Damage: 'Damage' as const,
   Debounce: 'Debounce' as const,
   EntityId: 'EntityId' as const,
+  OriginalColor: 'OriginalColor' as const,
+  OriginalMaterial: 'OriginalMaterial' as const,
 }
 
 export const BLOCK_ID_LOOKUP: Record<number, InventoryItemDescription> =
@@ -126,6 +128,9 @@ export const INVENTORY_LOOKUP = inventoryConstants as Record<
 export const INVENTORY_NAMES: InventoryItemName[] = Object.values(INVENTORY)
   .filter((x) => !x.parent)
   .map((item) => item.name)
+
+export const MATERIAL_LOOKUP: Record<string, Enum.Material> =
+  Object.fromEntries(Enum.Material.GetEnumItems().map((x) => [x.Name, x]))
 
 export const PLACEABLE_INVENTORY: Record<InventoryItemName, number> =
   Object.fromEntries(
