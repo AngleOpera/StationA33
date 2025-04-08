@@ -8,6 +8,7 @@ import {
   getItemOutputOffsetStep,
   getItemVector3,
   getRotatedPoint,
+  getRotatedSize,
   rotation0,
   rotation90,
   rotation180,
@@ -27,6 +28,17 @@ export = () => {
       expect(getRotatedPoint(testPoint1, rotation180)).to.be.equal(testPoint3)
       expect(getRotatedPoint(testPoint1, rotation270)).to.be.equal(testPoint4)
       expect(getRotatedPoint(testPoint1, rotation360)).to.be.equal(testPoint1)
+    })
+
+    it('should rotate mesh sizes', () => {
+      const rotation360 = new Vector3(0, 4, 0)
+      const size1 = new Vector3(6, 1, 2)
+      const size2 = new Vector3(2, 1, 6)
+      expect(getRotatedSize(size1, rotation0)).to.be.equal(size1)
+      expect(getRotatedSize(size1, rotation90)).to.be.equal(size2)
+      expect(getRotatedSize(size1, rotation180)).to.be.equal(size1)
+      expect(getRotatedSize(size1, rotation270)).to.be.equal(size2)
+      expect(getRotatedSize(size1, rotation360)).to.be.equal(size1)
     })
 
     it('should encode offset steps', () => {

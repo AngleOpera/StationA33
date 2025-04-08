@@ -2,16 +2,14 @@ import { BaseComponent, Component } from '@flamework/components'
 import { OnStart } from '@flamework/core'
 import { Logger } from '@rbxts/log'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
-import {
-  BLOCK_ATTRIBUTE,
-  INVENTORY_ID,
-  TYPE,
-} from 'ReplicatedStorage/shared/constants/core'
+import { TYPE } from 'ReplicatedStorage/shared/constants/core'
 import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
 import {
   decodeMeshMidpoint,
+  getMeshDataFromModel,
   gridSpacing,
+  isMeshed,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import {
@@ -58,13 +56,13 @@ export class BreakBlockToolComponent
 
       this.connection = RunService.RenderStepped.Connect((_deltaTime) => {
         if (!mouse.Target) return
-        const targetParent = mouse.Target?.Parent
+        const target = mouse.Target?.Parent
         if (
           !humanoid ||
           humanoid.Health <= 0 ||
           !character?.PrimaryPart ||
-          !targetParent ||
-          !targetParent.IsA(TYPE.Model) ||
+          !target ||
+          !target.IsA(TYPE.Model) ||
           mouse.Hit.Position.sub(character.PrimaryPart.Position).Magnitude >
             this.attributes.MaxDistance
         ) {
@@ -77,23 +75,27 @@ export class BreakBlockToolComponent
 
         for (const plot of placeBlockPlots) {
           const { placedBlocksFolder } = plot
-          if (targetParent.Parent !== placedBlocksFolder) continue
+          if (target.Parent !== placedBlocksFolder) continue
 
           this.plot = plot
-          this.target = targetParent
-          const targetBlockId = this.target.GetAttribute(
-            BLOCK_ATTRIBUTE.BlockId,
-          )
-          const targetItem = typeIs(targetBlockId, 'number')
-            ? INVENTORY_ID[targetBlockId]
-            : undefined
+          this.target = target
+
+          const { item, size } = getMeshDataFromModel(this.target)
+
+          let cframe: CFrame
+          if (item && isMeshed(item.size, size)) {
+            cframe = target.GetPivot()
+          } else {
+            cframe = target.GetPivot()
+          }
+
           if (!this.preview) {
             this.preview = ReplicatedStorage.Common.BreakBlockPreview.Clone()
           }
-          if (targetItem) {
-            this.preview.Size = getItemVector3(targetItem.size).mul(gridSpacing)
+          if (item) {
+            this.preview.Size = getItemVector3(item.size).mul(gridSpacing)
           }
-          this.preview.PivotTo(targetParent.GetPivot())
+          this.preview.PivotTo(cframe)
           if (!this.preview.Parent) this.preview.Parent = previewBlockFolder
 
           break

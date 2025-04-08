@@ -6,6 +6,7 @@ import {
   InventoryItemDescription,
   Step,
 } from 'ReplicatedStorage/shared/constants/core'
+import { roundVector3 } from 'ReplicatedStorage/shared/utils/math'
 
 export type EncodedEntityStep = [number, number] & {
   readonly _entity_step?: unique symbol
@@ -21,6 +22,8 @@ export const rotation0: Rotation = new Vector3(0, 0, 0)
 export const rotation90: Rotation = new Vector3(0, 1, 0)
 export const rotation180: Rotation = new Vector3(0, 2, 0)
 export const rotation270: Rotation = new Vector3(0, 3, 0)
+
+export const rotations = [rotation0, rotation90, rotation180, rotation270]
 
 const surfaceRotationSequence = {
   Y: [
@@ -85,6 +88,10 @@ export function getRotatedSurface(
     default:
       return surface
   }
+}
+
+export function getRotatedSize(size: Vector3, rotation: Rotation): Vector3 {
+  return rotation.Y ? roundVector3(getRotatedPoint(size, rotation).Abs()) : size
 }
 
 export function getStepVector(step: Step) {

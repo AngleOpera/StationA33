@@ -8,10 +8,14 @@ import {
   getLogger,
   Rotation,
 } from 'ReplicatedStorage/shared/utils/core'
-import { findPathToDescendent } from 'ReplicatedStorage/shared/utils/instance'
+import {
+  findDescendentsWhichAre,
+  findPathToDescendent,
+} from 'ReplicatedStorage/shared/utils/instance'
 import {
   getCFrameFromMeshMidpoint,
   gridSpacing,
+  isMeshed,
   MeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
@@ -25,6 +29,7 @@ export const overlapParams = (() => {
 export function cloneBlock(
   item: InventoryItemDescription,
   midpoint: MeshMidpoint,
+  meshSize: Vector3,
   rotation: Rotation,
   baseplate: BasePart,
   options?: {
@@ -39,7 +44,17 @@ export function cloneBlock(
   }
 
   const clonedModel = templateModel.Clone()
-  const size = getItemVector3(item.size)
+
+  let size
+  if (isMeshed(item.size, meshSize)) {
+    findDescendentsWhichAre<BasePart>(clonedModel, 'BasePart').forEach(
+      (part) => (part.Size = part.Size.mul(meshSize)),
+    )
+    size = meshSize
+  } else {
+    size = getItemVector3(item.size)
+  }
+
   const bounding = createBoundingPart(
     clonedModel.GetPivot().Position,
     size.mul(gridSpacing * 0.99),

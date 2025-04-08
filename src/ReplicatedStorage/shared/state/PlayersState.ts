@@ -225,14 +225,17 @@ export const playersSlice = createProducer(initialState, {
     const playerItems = playerState?.inventory[itemName] || 0
     if (!playerState || (delta < 0 && playerItems < math.abs(delta)))
       return state
+    const newPlayerItems = math.max(0, playerItems + (delta || 0))
+    const newInventoryState = {
+      ...playerState.inventory,
+      [itemName]: newPlayerItems,
+    }
+    if (newPlayerItems === 0) delete newInventoryState[itemName]
     return {
       ...state,
       [playerKey]: {
         ...playerState,
-        inventory: {
-          ...playerState.inventory,
-          [itemName]: math.max(0, playerItems + (delta || 0)),
-        },
+        inventory: newInventoryState,
       },
     }
   },
@@ -325,13 +328,15 @@ export const playersSlice = createProducer(initialState, {
     const playerKey = getPlayerKey(userID)
     const playerState = state[playerKey]
     const containerState = playerState?.containers[containerName]
-    if (!playerState || !containerState) return state
+    if (!playerState) return state
     const containers = { ...playerState.containers }
     delete containers[containerName]
     const inventory = { ...playerState.inventory }
-    for (const [itemName, count] of Object.entries(containerState)) {
+    for (const [itemName, count] of Object.entries(containerState ?? {})) {
       inventory[itemName] = (inventory[itemName] || 0) + count
     }
+    inventory[INVENTORY.Container.name] =
+      (inventory[INVENTORY.Container.name] || 0) + 1
     return {
       ...state,
       [playerKey]: {

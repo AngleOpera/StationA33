@@ -3,26 +3,30 @@ import { Logger } from '@rbxts/log'
 import Object from '@rbxts/object-utils'
 import { Workspace } from '@rbxts/services'
 import {
+  BLOCK_ID_LOOKUP,
   INVENTORY,
   INVENTORY_ID,
   InventoryItemName,
   PLACE_PLOT_LOCATION,
 } from 'ReplicatedStorage/shared/constants/core'
 import { selectPlayerInventoryItem } from 'ReplicatedStorage/shared/state'
-import { cloneBlock } from 'ReplicatedStorage/shared/utils/block'
-import { getItemFromBlock } from 'ReplicatedStorage/shared/utils/core'
+import { cloneBlock, overlapParams } from 'ReplicatedStorage/shared/utils/block'
+import { rotation0 } from 'ReplicatedStorage/shared/utils/core'
+import { grandParentIs } from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshData,
   decodeMeshMidpoint,
+  encodeMeshData,
   encodeMeshMidpoint,
-  getMeshRotationFromCFrame,
   gridSpacing,
   MeshMap,
+  meshMapGetEncoded,
   MeshPlot,
   meshPlotAdd,
   meshPlotRemove,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
+import { createBoundingPart } from 'ReplicatedStorage/shared/utils/part'
 import { Functions } from 'ServerScriptService/network'
 import { store } from 'ServerScriptService/store'
 
@@ -35,6 +39,7 @@ export interface PlayerSandbox {
 @Service()
 export class MeshService implements OnStart {
   playerSandbox: Record<string, PlayerSandbox> = {}
+  debug = true
 
   constructor(protected readonly logger: Logger) {}
 
@@ -43,7 +48,15 @@ export class MeshService implements OnStart {
       0,
       Workspace.PlayerSpaces['0'],
       PLACE_PLOT_LOCATION,
-      { [PLACE_PLOT_LOCATION]: {} },
+      {
+        [PLACE_PLOT_LOCATION]: {
+          [encodeMeshMidpoint(new Vector3(397, 4, 341))]: encodeMeshData({
+            blockId: INVENTORY.Bricks.blockId,
+            rotation: rotation0,
+            size: new Vector3(4, 4, 110),
+          }),
+        },
+      },
     )
     Functions.placeBlock.setCallback(
       (player, itemName, plotId, midpoint, rotation) => {
@@ -129,6 +142,7 @@ export class MeshService implements OnStart {
       const model = cloneBlock(
         item,
         midpoint,
+        data.size,
         data.rotation,
         playerSandbox.workspace.Plot.Baseplate,
       )
@@ -192,6 +206,7 @@ export class MeshService implements OnStart {
     const clonedModel = cloneBlock(
       item,
       midpoint,
+      new Vector3(1, 1, 1),
       rotation,
       playerSandbox.workspace.Plot.Baseplate,
     )
@@ -207,49 +222,80 @@ export class MeshService implements OnStart {
     clonedModel.Name = encodedMidpoint
     clonedModel.Parent = playerSandbox.workspace.PlacedBlocks
     clonedSound.Play()
+    if (this.debug) {
+      this.logger.Debug(
+        `MeshService.placeBlock: Player ${player.UserId} placed ${itemName} at ${midpoint}`,
+      )
+    }
   }
 
-  handleBreakBlock(player: Player, plotId: string, midpoint: Vector3) {
+  handleBreakBlock(player: Player, plotId: string, targetMidpoint: Vector3) {
     const playerSandbox = this.getPlayerSandbox(player, plotId)
     if (!playerSandbox) {
       this.logger.Warn(
-        `MeshService.handleBreakBlock: Player ${player.Name} has no sandbox`,
+        `MeshService.handleBreakBlock: Player ${player.UserId} has no sandbox`,
       )
       return
     }
-    if (!validMeshMidpoint(midpoint)) {
+    if (!validMeshMidpoint(targetMidpoint)) {
       this.logger.Warn(
-        `MeshService.handleBreakBlock: Player ${player.Name} sent invalid midpoint ${midpoint}`,
-      )
-      return
-    }
-    const encodedMidpoint = encodeMeshMidpoint(midpoint)
-    const target =
-      playerSandbox.workspace.PlacedBlocks.FindFirstChild<Model>(
-        encodedMidpoint,
-      )
-    if (!target) {
-      this.logger.Warn(
-        `MeshService.handleBreakBlock: Player ${player.Name} sent unknown midpoint ${encodedMidpoint}`,
-      )
-      return
-    }
-    const item = getItemFromBlock(target)
-    if (!item) {
-      this.logger.Warn(
-        `MeshService.handleBreakBlock: Player ${player.Name} broke ${encodedMidpoint} missing item`,
+        `MeshService.handleBreakBlock: Player ${player.UserId} sent invalid midpoint ${targetMidpoint}`,
       )
       return
     }
 
     const plot = playerSandbox.plot[playerSandbox.location]
-    const rotation = getMeshRotationFromCFrame(
-      target.GetPivot(),
-      playerSandbox.workspace.Plot.Baseplate,
-    )
-    meshPlotRemove(plot, midpoint, rotation, item)
+    const encodedTargetMidpoint = encodeMeshMidpoint(targetMidpoint)
+    let meshMidpoint = targetMidpoint
+    let encodedMeshMidpoint = encodedTargetMidpoint
+    let data = meshMapGetEncoded(plot.mesh, encodedMeshMidpoint)
+    if (!data) {
+      const bounding = createBoundingPart(
+        targetMidpoint,
+        new Vector3(1, 1, 1).mul(gridSpacing * 0.99),
+      )
+      const touchingParts = Workspace.GetPartsInPart(bounding, overlapParams)
+      if (
+        touchingParts.size() === 1 &&
+        grandParentIs(touchingParts[0], playerSandbox.workspace.PlacedBlocks)
+      ) {
+        encodedMeshMidpoint = touchingParts[0].Name
+        meshMidpoint = decodeMeshMidpoint(encodedMeshMidpoint)
+        data = meshMapGetEncoded(plot.mesh, encodedMeshMidpoint)
+      }
+      bounding.Destroy()
+    }
+    if (!data) {
+      this.logger.Warn(
+        `MeshService.handleBreakBlock: Player ${player.UserId} broke (${meshMidpoint}) missing mesh data`,
+      )
+      return
+    }
+    const item = BLOCK_ID_LOOKUP[data.blockId]
+    if (!item) {
+      this.logger.Warn(
+        `MeshService.handleBreakBlock: Player ${player.UserId} broke (${meshMidpoint}) missing block`,
+      )
+      return
+    }
+
+    const target =
+      playerSandbox.workspace.PlacedBlocks.FindFirstChild<Model>(
+        encodedMeshMidpoint,
+      )
+    if (!target) {
+      this.logger.Warn(
+        `MeshService.handleBreakBlock: Player ${player.UserId} sent unknown midpoint (${meshMidpoint})`,
+      )
+      return
+    }
+
+    meshPlotRemove(plot, meshMidpoint, data.rotation, item)
+
     if (item.name === INVENTORY.Container.name) {
-      store.breakPlayerContainer(player.UserId, encodedMidpoint)
+      store.breakPlayerContainer(player.UserId, encodedMeshMidpoint)
+    } else {
+      store.updatePlayerInventory(player.UserId, item.name, 1)
     }
 
     const clonedSoundBlock = new Instance('Part')

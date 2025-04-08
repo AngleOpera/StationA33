@@ -146,6 +146,7 @@ export class AnimationController implements OnStart, OnTick {
     const model = cloneBlock(
       item,
       decodeMeshMidpoint(encodedMidpoint),
+      new Vector3(1, 1, 1),
       rotation0,
       playerSpace.Plot.Baseplate,
       { ignoreExisting: true, offset: new Vector3(0, 1 / 3, 0) },

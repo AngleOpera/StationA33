@@ -153,6 +153,7 @@ export const TYPE = {
   Folder: 'Folder' as const,
   Humanoid: 'Humanoid' as const,
   Model: 'Model' as const,
+  ProximityPrompt: 'ProximityPrompt' as const,
   TextLabel: 'TextLabel' as const,
   UIStroke: 'UIStroke' as const,
 }

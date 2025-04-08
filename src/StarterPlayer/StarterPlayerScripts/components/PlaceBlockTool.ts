@@ -11,9 +11,11 @@ import {
   TYPE,
 } from 'ReplicatedStorage/shared/constants/core'
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
+import { selectLocalPlayerState } from 'ReplicatedStorage/shared/state'
 import {
-  getItemFromBlock,
   getItemVector3,
+  getRotatedPoint,
+  getRotatedSize,
   getRotatedSurface,
   Rotation,
   rotation0,
@@ -25,8 +27,9 @@ import {
 import {
   decodeMeshMidpoint,
   getCFrameFromMeshMidpoint,
+  getMeshDataFromModel,
   getMeshMidpointFromWorldPosition,
-  getMeshRotationFromCFrame,
+  getVoxelMidpointFromExactMidpointOffset,
   gridSpacing,
   MeshMidpoint,
   validMeshMidpoint,
@@ -38,6 +41,7 @@ import {
   PlaceBlockPlot,
 } from 'StarterPlayer/StarterPlayerScripts/controllers/PlaceBlockController'
 import { Functions } from 'StarterPlayer/StarterPlayerScripts/network'
+import { store } from 'StarterPlayer/StarterPlayerScripts/store'
 
 @Component({ tag: PlaceBlockToolTag })
 export class PlaceBlockToolComponent
@@ -93,7 +97,8 @@ export class PlaceBlockToolComponent
           !character.PrimaryPart ||
           humanoid.Health <= 0 ||
           mouse.Hit.Position.sub(character.PrimaryPart.Position).Magnitude >
-            this.attributes.MaxDistance
+            this.attributes.MaxDistance ||
+          !selectLocalPlayerState()(store.getState())?.inventory?.[item.name]
         ) {
           this.clear()
           return
@@ -102,7 +107,6 @@ export class PlaceBlockToolComponent
         this.plot = undefined
         this.midpoint = undefined
 
-        let targetItem: InventoryItemDescription | undefined
         for (const plot of placeBlockPlots) {
           const { baseplate, placedBlocksFolder } = plot
 
@@ -121,81 +125,114 @@ export class PlaceBlockToolComponent
             mouse.Target &&
             grandParentIs(mouse.Target, placedBlocksFolder) &&
             mouse.Target.Parent?.IsA('Model') &&
-            (targetItem = getItemFromBlock(mouse.Target.Parent))
+            item.stackable
           ) {
-            const model = mouse.Target.Parent
-            const targetMidpoint = decodeMeshMidpoint(model.Name)
-            const targetRotation = getMeshRotationFromCFrame(
-              model.GetPivot(),
-              baseplate,
+            const targetModel = mouse.Target.Parent
+            const targetMidpoint = decodeMeshMidpoint(targetModel.Name)
+            const {
+              rotation: targetRotation,
+              item: targetItem,
+              size: targetMeshSize,
+            } = getMeshDataFromModel(targetModel, baseplate)
+            if (!targetItem) break
+            const targetHit = getRotatedPoint(
+              targetModel
+                .GetPivot()
+                .ToObjectSpace(new CFrame(mouse.Hit.Position)).Position,
+              targetRotation,
+            )
+            const targetSize = getRotatedSize(targetMeshSize, targetRotation)
+            const itemSize = getRotatedSize(
+              getItemVector3(item.size),
+              this.rotation,
             )
             const mouseSurface = mouse.TargetSurface
+
             if (
               mouseSurface ===
               getRotatedSurface(Enum.NormalId.Left, targetRotation)
-            )
-              this.midpoint = targetMidpoint.add(
+            ) {
+              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+                targetMidpoint,
+                targetSize,
+                targetRotation,
                 new Vector3(
-                  math.floor(-(targetItem.size[0] + item.size[0]) / 2),
-                  0,
-                  0,
+                  -(targetSize.X + itemSize.X) / 2,
+                  targetHit.Y / gridSpacing,
+                  targetHit.Z / gridSpacing,
                 ),
               )
-            else if (
+            } else if (
               mouseSurface ===
               getRotatedSurface(Enum.NormalId.Right, targetRotation)
-            )
-              this.midpoint = targetMidpoint.add(
+            ) {
+              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+                targetMidpoint,
+                targetSize,
+                targetRotation,
                 new Vector3(
-                  math.floor((targetItem.size[0] + item.size[0]) / 2),
-                  0,
-                  0,
+                  (targetSize.X + itemSize.X) / 2,
+                  targetHit.Y / gridSpacing,
+                  targetHit.Z / gridSpacing,
                 ),
               )
-            else if (
+            } else if (
               mouseSurface ===
               getRotatedSurface(Enum.NormalId.Bottom, targetRotation)
-            )
-              this.midpoint = targetMidpoint.add(
+            ) {
+              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+                targetMidpoint,
+                targetSize,
+                targetRotation,
                 new Vector3(
-                  0,
-                  math.floor(-(targetItem.size[1] + item.size[1]) / 2),
-                  0,
+                  targetHit.X / gridSpacing,
+                  -(targetSize.Y + itemSize.Y) / 2,
+                  targetHit.Z / gridSpacing,
                 ),
               )
-            else if (
+            } else if (
               mouseSurface ===
               getRotatedSurface(Enum.NormalId.Top, targetRotation)
-            )
-              this.midpoint = targetMidpoint.add(
+            ) {
+              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+                targetMidpoint,
+                targetSize,
+                targetRotation,
                 new Vector3(
-                  0,
-                  math.floor((targetItem.size[1] + item.size[1]) / 2),
-                  0,
+                  targetHit.X / gridSpacing,
+                  (targetSize.Y + itemSize.Y) / 2,
+                  targetHit.Z / gridSpacing,
                 ),
               )
-            else if (
+            } else if (
               mouseSurface ===
               getRotatedSurface(Enum.NormalId.Front, targetRotation)
-            )
-              this.midpoint = targetMidpoint.add(
+            ) {
+              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+                targetMidpoint,
+                targetSize,
+                targetRotation,
                 new Vector3(
-                  0,
-                  0,
-                  math.floor(-(targetItem.size[2] + item.size[2]) / 2),
+                  targetHit.X / gridSpacing,
+                  targetHit.Y / gridSpacing,
+                  -(targetSize.Z + itemSize.Z) / 2,
                 ),
               )
-            else if (
+            } else if (
               mouseSurface ===
               getRotatedSurface(Enum.NormalId.Back, targetRotation)
-            )
-              this.midpoint = targetMidpoint.add(
+            ) {
+              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+                targetMidpoint,
+                targetSize,
+                targetRotation,
                 new Vector3(
-                  0,
-                  0,
-                  math.floor((targetItem.size[2] + item.size[2]) / 2),
+                  targetHit.X / gridSpacing,
+                  targetHit.Y / gridSpacing,
+                  (targetSize.Z + itemSize.Z) / 2,
                 ),
               )
+            }
             this.plot = plot
             break
           }
@@ -224,6 +261,12 @@ export class PlaceBlockToolComponent
             part.CanCollide = false
             part.Transparency = 0.5
           })
+          findDescendentsWhichAre<ProximityPrompt>(
+            this.preview,
+            TYPE.ProximityPrompt,
+          ).forEach((prompt) => {
+            prompt.Enabled = false
+          })
           this.bounding = createBoundingPart(
             this.preview.GetPivot().Position,
             getItemVector3(item.size).mul(gridSpacing * 0.99),
@@ -250,6 +293,7 @@ export class PlaceBlockToolComponent
       this.placeBlockController.handlePlaceBlockToolEquipped(undefined)
       this.connection?.Disconnect()
       this.connection = undefined
+      this.plot = undefined
       this.midpoint = undefined
       this.item = undefined
       this.preview?.Destroy()
