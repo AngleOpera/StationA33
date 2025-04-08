@@ -14,6 +14,7 @@ import {
   getItemVector3,
   getOffsetsFromMidpoint,
   getRotatedSize,
+  gridSpacing,
   isRotation180or270,
   Rotation,
   rotation0,
@@ -54,7 +55,6 @@ export interface MeshPlot {
   entity: Record<string, Entity<unknown>>
 }
 
-export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
 export const coordinateEncodingLength = 2
 export const maxCoordinateValue =
   base58ColumnValues[coordinateEncodingLength] - 1

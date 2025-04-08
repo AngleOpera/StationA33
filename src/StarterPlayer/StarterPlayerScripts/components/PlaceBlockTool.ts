@@ -13,10 +13,12 @@ import {
 import { PlaceBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
 import { selectLocalPlayerState } from 'ReplicatedStorage/shared/state'
 import {
+  getExactOffsetForSurface,
   getItemVector3,
   getRotatedPoint,
   getRotatedSize,
   getRotatedSurface,
+  gridSpacing,
   Rotation,
   rotation0,
 } from 'ReplicatedStorage/shared/utils/core'
@@ -30,7 +32,6 @@ import {
   getMeshDataFromModel,
   getMeshMidpointFromWorldPosition,
   getVoxelMidpointFromExactMidpointOffset,
-  gridSpacing,
   MeshMidpoint,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
@@ -135,105 +136,34 @@ export class PlaceBlockToolComponent
               size: targetMeshSize,
             } = getMeshDataFromModel(targetModel, baseplate)
             if (!targetItem) break
-            const targetHit = getRotatedPoint(
+
+            const targetRotatedHit = getRotatedPoint(
               targetModel
                 .GetPivot()
                 .ToObjectSpace(new CFrame(mouse.Hit.Position)).Position,
               targetRotation,
             )
-            const targetSize = getRotatedSize(targetMeshSize, targetRotation)
-            const itemSize = getRotatedSize(
+            const targetRotatedSize = getRotatedSize(
+              targetMeshSize,
+              targetRotation,
+            )
+            const itemRotatedSize = getRotatedSize(
               getItemVector3(item.size),
               this.rotation,
             )
-            const mouseSurface = mouse.TargetSurface
 
-            if (
-              mouseSurface ===
-              getRotatedSurface(Enum.NormalId.Left, targetRotation)
-            ) {
-              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
-                targetMidpoint,
-                targetSize,
-                targetRotation,
-                new Vector3(
-                  -(targetSize.X + itemSize.X) / 2,
-                  targetHit.Y / gridSpacing,
-                  targetHit.Z / gridSpacing,
-                ),
-              )
-            } else if (
-              mouseSurface ===
-              getRotatedSurface(Enum.NormalId.Right, targetRotation)
-            ) {
-              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
-                targetMidpoint,
-                targetSize,
-                targetRotation,
-                new Vector3(
-                  (targetSize.X + itemSize.X) / 2,
-                  targetHit.Y / gridSpacing,
-                  targetHit.Z / gridSpacing,
-                ),
-              )
-            } else if (
-              mouseSurface ===
-              getRotatedSurface(Enum.NormalId.Bottom, targetRotation)
-            ) {
-              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
-                targetMidpoint,
-                targetSize,
-                targetRotation,
-                new Vector3(
-                  targetHit.X / gridSpacing,
-                  -(targetSize.Y + itemSize.Y) / 2,
-                  targetHit.Z / gridSpacing,
-                ),
-              )
-            } else if (
-              mouseSurface ===
-              getRotatedSurface(Enum.NormalId.Top, targetRotation)
-            ) {
-              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
-                targetMidpoint,
-                targetSize,
-                targetRotation,
-                new Vector3(
-                  targetHit.X / gridSpacing,
-                  (targetSize.Y + itemSize.Y) / 2,
-                  targetHit.Z / gridSpacing,
-                ),
-              )
-            } else if (
-              mouseSurface ===
-              getRotatedSurface(Enum.NormalId.Front, targetRotation)
-            ) {
-              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
-                targetMidpoint,
-                targetSize,
-                targetRotation,
-                new Vector3(
-                  targetHit.X / gridSpacing,
-                  targetHit.Y / gridSpacing,
-                  -(targetSize.Z + itemSize.Z) / 2,
-                ),
-              )
-            } else if (
-              mouseSurface ===
-              getRotatedSurface(Enum.NormalId.Back, targetRotation)
-            ) {
-              this.midpoint = getVoxelMidpointFromExactMidpointOffset(
-                targetMidpoint,
-                targetSize,
-                targetRotation,
-                new Vector3(
-                  targetHit.X / gridSpacing,
-                  targetHit.Y / gridSpacing,
-                  (targetSize.Z + itemSize.Z) / 2,
-                ),
-              )
-            }
             this.plot = plot
+            this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+              targetMidpoint,
+              targetRotatedSize,
+              targetRotation,
+              getExactOffsetForSurface(
+                getRotatedSurface(mouse.TargetSurface, targetRotation.mul(-1)),
+                targetRotatedHit,
+                targetRotatedSize,
+                itemRotatedSize,
+              ),
+            )
             break
           }
         }

@@ -1,7 +1,6 @@
 import { TweenService } from '@rbxts/services'
 import { ANIMATIONS, Step } from 'ReplicatedStorage/shared/constants/core'
-import { getStepVector } from 'ReplicatedStorage/shared/utils/core'
-import { gridSpacing } from 'ReplicatedStorage/shared/utils/mesh'
+import { getStepVector, gridSpacing } from 'ReplicatedStorage/shared/utils/core'
 import { Animating } from 'StarterPlayer/StarterPlayerScripts/controllers/AnimationController'
 
 export interface AnimatingMoveModel extends Animating {

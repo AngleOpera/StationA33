@@ -18,6 +18,8 @@ export type EncodedOffsetStep = number & {
 
 export type Rotation = Vector3 & { readonly _rotation?: unique symbol }
 
+export const gridSpacing = 3 // 1 voxel is 3x3x3 studs
+
 export const rotation0: Rotation = new Vector3(0, 0, 0)
 export const rotation90: Rotation = new Vector3(0, 1, 0)
 export const rotation180: Rotation = new Vector3(0, 2, 0)
@@ -227,4 +229,57 @@ export function getItemOutputOffsetStep(
     getItemVector3WithDefault(item.outputTo?.[index]),
     rotation,
   )
+}
+
+export function getExactOffsetForSurface(
+  surface: Enum.NormalId,
+  targetHit: Vector3,
+  targetRotatedSize: Vector3,
+  itemRotatedSize: Vector3,
+): Vector3 {
+  switch (surface) {
+    case Enum.NormalId.Left:
+      return new Vector3(
+        -(targetRotatedSize.X + itemRotatedSize.X) / 2,
+        targetHit.Y / gridSpacing,
+        targetHit.Z / gridSpacing,
+      )
+
+    case Enum.NormalId.Right:
+      return new Vector3(
+        (targetRotatedSize.X + itemRotatedSize.X) / 2,
+        targetHit.Y / gridSpacing,
+        targetHit.Z / gridSpacing,
+      )
+
+    case Enum.NormalId.Bottom:
+      return new Vector3(
+        targetHit.X / gridSpacing,
+        -(targetRotatedSize.Y + itemRotatedSize.Y) / 2,
+        targetHit.Z / gridSpacing,
+      )
+    case Enum.NormalId.Top:
+      return new Vector3(
+        targetHit.X / gridSpacing,
+        (targetRotatedSize.Y + itemRotatedSize.Y) / 2,
+        targetHit.Z / gridSpacing,
+      )
+
+    case Enum.NormalId.Front:
+      return new Vector3(
+        targetHit.X / gridSpacing,
+        targetHit.Y / gridSpacing,
+        -(targetRotatedSize.Z + itemRotatedSize.Z) / 2,
+      )
+
+    case Enum.NormalId.Back:
+      return new Vector3(
+        targetHit.X / gridSpacing,
+        targetHit.Y / gridSpacing,
+        (targetRotatedSize.Z + itemRotatedSize.Z) / 2,
+      )
+
+    default:
+      return new Vector3(0, 0, 0)
+  }
 }

@@ -11,14 +11,13 @@ import {
 } from 'ReplicatedStorage/shared/constants/core'
 import { selectPlayerInventoryItem } from 'ReplicatedStorage/shared/state'
 import { cloneBlock, overlapParams } from 'ReplicatedStorage/shared/utils/block'
-import { rotation0 } from 'ReplicatedStorage/shared/utils/core'
+import { gridSpacing, rotation0 } from 'ReplicatedStorage/shared/utils/core'
 import { grandParentIs } from 'ReplicatedStorage/shared/utils/instance'
 import {
   decodeMeshData,
   decodeMeshMidpoint,
   encodeMeshData,
   encodeMeshMidpoint,
-  gridSpacing,
   MeshMap,
   meshMapGetEncoded,
   MeshPlot,

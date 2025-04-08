@@ -4,12 +4,21 @@ import { Logger } from '@rbxts/log'
 import { Players, ReplicatedStorage, RunService } from '@rbxts/services'
 import { TYPE } from 'ReplicatedStorage/shared/constants/core'
 import { BreakBlockToolTag } from 'ReplicatedStorage/shared/constants/tags'
-import { getItemVector3 } from 'ReplicatedStorage/shared/utils/core'
+import {
+  getExactOffsetForSurface,
+  getItemVector3,
+  getRotatedPoint,
+  getRotatedSize,
+  getRotatedSurface,
+  gridSpacing,
+} from 'ReplicatedStorage/shared/utils/core'
 import {
   decodeMeshMidpoint,
+  getCFrameFromMeshMidpoint,
   getMeshDataFromModel,
-  gridSpacing,
+  getVoxelMidpointFromExactMidpointOffset,
   isMeshed,
+  MeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
 import { getCharacter } from 'ReplicatedStorage/shared/utils/player'
 import {
@@ -25,7 +34,7 @@ export class BreakBlockToolComponent
 {
   connection: RBXScriptConnection | undefined
   plot: PlaceBlockPlot | undefined
-  target: Model | undefined
+  midpoint: MeshMidpoint | undefined
   preview: BlockPreview | undefined
   invoking = false
 
@@ -38,7 +47,7 @@ export class BreakBlockToolComponent
 
   clear() {
     this.plot = undefined
-    this.target = undefined
+    this.midpoint = undefined
     this.preview?.Destroy()
     this.preview = undefined
   }
@@ -56,13 +65,13 @@ export class BreakBlockToolComponent
 
       this.connection = RunService.RenderStepped.Connect((_deltaTime) => {
         if (!mouse.Target) return
-        const target = mouse.Target?.Parent
+        const targetModel = mouse.Target?.Parent
         if (
           !humanoid ||
           humanoid.Health <= 0 ||
           !character?.PrimaryPart ||
-          !target ||
-          !target.IsA(TYPE.Model) ||
+          !targetModel ||
+          !targetModel.IsA(TYPE.Model) ||
           mouse.Hit.Position.sub(character.PrimaryPart.Position).Magnitude >
             this.attributes.MaxDistance
         ) {
@@ -71,33 +80,70 @@ export class BreakBlockToolComponent
         }
 
         this.plot = undefined
-        this.target = undefined
 
         for (const plot of placeBlockPlots) {
           const { placedBlocksFolder } = plot
-          if (target.Parent !== placedBlocksFolder) continue
+          if (targetModel.Parent !== placedBlocksFolder) continue
+
+          const { item, size, rotation } = getMeshDataFromModel(
+            targetModel,
+            plot.baseplate,
+          )
+          if (!item) continue
+
+          let midpoint: MeshMidpoint
+          try {
+            midpoint = decodeMeshMidpoint(targetModel.Name)
+          } catch {
+            this.logger.Error(
+              `BreakBlockToolComponent: Invalid midpoint ${targetModel.Name}`,
+            )
+            continue
+          }
 
           this.plot = plot
-          this.target = target
-
-          const { item, size } = getMeshDataFromModel(this.target)
-
-          let cframe: CFrame
-          if (item && isMeshed(item.size, size)) {
-            cframe = target.GetPivot()
-          } else {
-            cframe = target.GetPivot()
-          }
 
           if (!this.preview) {
             this.preview = ReplicatedStorage.Common.BreakBlockPreview.Clone()
           }
-          if (item) {
-            this.preview.Size = getItemVector3(item.size).mul(gridSpacing)
-          }
-          this.preview.PivotTo(cframe)
-          if (!this.preview.Parent) this.preview.Parent = previewBlockFolder
 
+          const unrotatedSize = getItemVector3(item.size)
+          this.preview.Size = unrotatedSize.mul(gridSpacing)
+
+          if (isMeshed(item.size, size)) {
+            const targetRotatedHit = getRotatedPoint(
+              targetModel
+                .GetPivot()
+                .ToObjectSpace(new CFrame(mouse.Hit.Position)).Position,
+              rotation,
+            )
+            const targetRotatedSize = getRotatedSize(size, rotation)
+
+            this.midpoint = getVoxelMidpointFromExactMidpointOffset(
+              midpoint,
+              targetRotatedSize,
+              rotation,
+              getExactOffsetForSurface(
+                getRotatedSurface(mouse.TargetSurface, rotation.mul(-1)),
+                targetRotatedHit,
+                targetRotatedSize,
+                new Vector3(-0.5, -0.5, -0.5),
+              ),
+            )
+          } else {
+            this.midpoint = midpoint
+          }
+
+          this.preview.PivotTo(
+            getCFrameFromMeshMidpoint(
+              this.midpoint,
+              unrotatedSize,
+              rotation,
+              plot.baseplate,
+            ),
+          )
+
+          if (!this.preview.Parent) this.preview.Parent = previewBlockFolder
           break
         }
 
@@ -108,28 +154,14 @@ export class BreakBlockToolComponent
     this.instance.Unequipped.Connect(() => {
       this.connection?.Disconnect()
       this.connection = undefined
-      this.target = undefined
-      this.preview?.Destroy()
-      this.preview = undefined
+      this.clear()
     })
 
     this.instance.Activated.Connect(async () => {
-      if (this.plot && this.target && !this.invoking) {
+      if (this.plot && this.midpoint && !this.invoking) {
         this.invoking = true
-        let midpoint
-        try {
-          midpoint = decodeMeshMidpoint(this.target.Name)
-        } catch {
-          this.logger.Error(
-            `BreakBlockToolComponent: Invalid midpoint ${this.target.Name}`,
-          )
-          this.invoking = false
-          return
-        }
-        await Functions.breakBlock.invoke(this.plot.plotId, midpoint)
-        this.preview?.Destroy()
-        this.preview = undefined
-        this.target = undefined
+        await Functions.breakBlock.invoke(this.plot.plotId, this.midpoint)
+        this.clear()
         this.invoking = false
       }
     })

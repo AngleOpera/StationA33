@@ -6,6 +6,7 @@ import {
 import {
   getItemVector3,
   getLogger,
+  gridSpacing,
   Rotation,
 } from 'ReplicatedStorage/shared/utils/core'
 import {
@@ -14,7 +15,6 @@ import {
 } from 'ReplicatedStorage/shared/utils/instance'
 import {
   getCFrameFromMeshMidpoint,
-  gridSpacing,
   isMeshed,
   MeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
