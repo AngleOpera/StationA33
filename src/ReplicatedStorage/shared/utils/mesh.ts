@@ -115,73 +115,6 @@ export function decodeMeshData(encoded: EncodedMeshData): MeshData {
   }
 }
 
-export function getMeshDataFromModel(
-  model: Model,
-  baseplate?: BasePart,
-): MeshData & { item: InventoryItemDescription | undefined } {
-  const blockId = model.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
-  const size =
-    model.FindFirstChild<BasePart>('Bounding')?.Size?.div(0.99) ??
-    model.PrimaryPart?.Size
-  return {
-    blockId: blockId && typeIs(blockId, 'number') ? blockId : 1,
-    size: size ? size.div(gridSpacing).Floor() : new Vector3(1, 1, 1),
-    rotation: baseplate
-      ? getMeshRotationFromCFrame(model.GetPivot(), baseplate)
-      : rotation0,
-    item:
-      blockId && typeIs(blockId, 'number')
-        ? BLOCK_ID_LOOKUP[blockId]
-        : undefined,
-  }
-}
-
-export function getMeshMidpointFromWorldPosition(
-  position: Vector3,
-  baseplate: BasePart,
-): MeshMidpoint {
-  return baseplate.CFrame.ToObjectSpace(new CFrame(position))
-    .add(
-      new Vector3(baseplate.Size.X, -baseplate.Size.Y, baseplate.Size.Z).div(2),
-    )
-    .Position.div(gridSpacing)
-    .Floor()
-}
-
-export function getMeshRotationFromCFrame(
-  cframe: CFrame,
-  baseplate: BasePart,
-): MeshMidpoint {
-  const [_x, y, _z] = baseplate.CFrame.ToObjectSpace(cframe).ToOrientation()
-  const rotation = new Vector3(0, y > 0 ? y - math.rad(360) : y, 0).div(
-    math.rad(-90),
-  )
-  const quantized = roundVector3(rotation)
-  if (rotation.sub(quantized).Magnitude > 0.01) {
-    throw `Invalid rotation ${cframe.ToOrientation()} for baseplate ${baseplate.CFrame.ToOrientation()}`
-  }
-  return new Vector3(0, quantized.Y % 4, 0)
-}
-
-export function getMeshMidpointSizeFromStartpointEndpoint(
-  startpoint: MeshStartpoint,
-  endpoint: MeshEndpoint,
-  rotation: Vector3,
-): { midpoint: MeshMidpoint; size: Vector3 } {
-  const size = endpoint
-    .sub(startpoint)
-    .Abs()
-    .Floor()
-    .add(new Vector3(1, 1, 1))
-  return {
-    midpoint: getMeshQuantizedMidpoint(
-      startpoint.add(endpoint).div(2),
-      rotation,
-    ),
-    size,
-  }
-}
-
 export function getMeshQuantizedMidpoint(
   unquantizedMidpoint: Vector3,
   rotation: Rotation,
@@ -227,6 +160,25 @@ export function getVoxelMidpointFromExactMidpointOffset(
   return exactMidpoint.add(offset).Floor()
 }
 
+export function getMeshMidpointSizeFromStartpointEndpoint(
+  startpoint: MeshStartpoint,
+  endpoint: MeshEndpoint,
+  rotation: Vector3,
+): { midpoint: MeshMidpoint; size: Vector3 } {
+  const size = endpoint
+    .sub(startpoint)
+    .Abs()
+    .Floor()
+    .add(new Vector3(1, 1, 1))
+  return {
+    midpoint: getMeshQuantizedMidpoint(
+      startpoint.add(endpoint).div(2),
+      rotation,
+    ),
+    size,
+  }
+}
+
 export function getMeshStartpointEndpointFromMidpointSize(
   midpoint: MeshMidpoint,
   unrotatedSize: Vector3,
@@ -257,6 +209,29 @@ export function getMeshStartpointEndpointFromMidpointSize(
   }
 }
 
+export function getMeshMidpointFromWorldPosition(
+  position: Vector3,
+  baseplate: BasePart,
+): MeshMidpoint {
+  return baseplate.CFrame.ToObjectSpace(new CFrame(position))
+    .add(
+      new Vector3(baseplate.Size.X, -baseplate.Size.Y, baseplate.Size.Z).div(2),
+    )
+    .Position.div(gridSpacing)
+    .Floor()
+}
+
+export function getBaseplatePositionFromMeshMidpoint(
+  midpoint: MeshMidpoint,
+  baseplate: BasePart,
+) {
+  return new Vector3(
+    midpoint.X * gridSpacing - baseplate.Size.X / 2,
+    midpoint.Y * gridSpacing + baseplate.Size.Y / 2,
+    midpoint.Z * gridSpacing - baseplate.Size.Z / 2,
+  )
+}
+
 export function getCFrameFromMeshMidpoint(
   midpoint: Vector3,
   unrotatedSize: Vector3,
@@ -272,11 +247,45 @@ export function getCFrameFromMeshMidpoint(
   ).add(offset ?? new Vector3(0, 0, 0))
   return baseplate.CFrame.ToWorldSpace(
     new CFrame(
-      exactMidpoint.X * gridSpacing - baseplate.Size.X / 2,
-      exactMidpoint.Y * gridSpacing + baseplate.Size.Y / 2,
-      exactMidpoint.Z * gridSpacing - baseplate.Size.Z / 2,
+      getBaseplatePositionFromMeshMidpoint(exactMidpoint, baseplate),
     ).mul(CFrame.Angles(0, math.rad(90 * -rotation.Y), 0)),
   )
+}
+
+export function getMeshRotationFromBaseplate(
+  cframe: CFrame,
+  baseplate: BasePart,
+): MeshMidpoint {
+  const [_x, y, _z] = baseplate.CFrame.ToObjectSpace(cframe).ToOrientation()
+  const rotation = new Vector3(0, y > 0 ? y - math.rad(360) : y, 0).div(
+    math.rad(-90),
+  )
+  const quantized = roundVector3(rotation)
+  if (rotation.sub(quantized).Magnitude > 0.01) {
+    throw `Invalid rotation ${cframe.ToOrientation()} for baseplate ${baseplate.CFrame.ToOrientation()}`
+  }
+  return new Vector3(0, quantized.Y % 4, 0)
+}
+
+export function getMeshDataFromModel(
+  model: Model,
+  baseplate?: BasePart,
+): MeshData & { item: InventoryItemDescription | undefined } {
+  const blockId = model.GetAttribute(BLOCK_ATTRIBUTE.BlockId)
+  const size =
+    model.FindFirstChild<BasePart>('Bounding')?.Size?.div(0.99) ??
+    model.PrimaryPart?.Size
+  return {
+    blockId: blockId && typeIs(blockId, 'number') ? blockId : 1,
+    size: size ? size.div(gridSpacing).Floor() : new Vector3(1, 1, 1),
+    rotation: baseplate
+      ? getMeshRotationFromBaseplate(model.GetPivot(), baseplate)
+      : rotation0,
+    item:
+      blockId && typeIs(blockId, 'number')
+        ? BLOCK_ID_LOOKUP[blockId]
+        : undefined,
+  }
 }
 
 export function meshMapAdd(
@@ -407,9 +416,10 @@ export function meshPlotAdd(
   midpoint: MeshMidpoint,
   rotation: Rotation,
   item: InventoryItemDescription,
+  unrotatedSize?: Vector3,
 ): EncodedMeshMidpoint {
   const encodedMidpoint = encodeMeshMidpoint(midpoint)
-  const size = getItemVector3(item.size)
+  const size = unrotatedSize || getItemVector3(item.size)
   meshMapAddEncoded(plot.mesh, encodedMidpoint, {
     ...item,
     rotation,

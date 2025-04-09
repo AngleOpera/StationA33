@@ -21,7 +21,7 @@ import {
   encodeMeshMidpoint,
   getCFrameFromMeshMidpoint,
   getMeshMidpointSizeFromStartpointEndpoint,
-  getMeshRotationFromCFrame,
+  getMeshRotationFromBaseplate,
   getMeshStartpointEndpointFromMidpointSize,
   maxCoordinateValue,
   MeshData,
@@ -465,25 +465,25 @@ export = () => {
     const midpoint = new Vector3(3, 3, 3)
     const size = new Vector3(1, 1, 1)
     expect(
-      getMeshRotationFromCFrame(
+      getMeshRotationFromBaseplate(
         getCFrameFromMeshMidpoint(midpoint, size, rotation0, baseplate),
         baseplate,
       ),
     ).to.be.equal(rotation0)
     expect(
-      getMeshRotationFromCFrame(
+      getMeshRotationFromBaseplate(
         getCFrameFromMeshMidpoint(midpoint, size, rotation90, baseplate),
         baseplate,
       ),
     ).to.be.equal(rotation90)
     expect(
-      getMeshRotationFromCFrame(
+      getMeshRotationFromBaseplate(
         getCFrameFromMeshMidpoint(midpoint, size, rotation180, baseplate),
         baseplate,
       ),
     ).to.be.equal(rotation180)
     expect(
-      getMeshRotationFromCFrame(
+      getMeshRotationFromBaseplate(
         getCFrameFromMeshMidpoint(midpoint, size, rotation270, baseplate),
         baseplate,
       ),

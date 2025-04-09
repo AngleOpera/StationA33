@@ -10,6 +10,21 @@ export function getUpperCorner(position: Vector3, size: Vector3): Vector3 {
   return position.add(size.div(2))
 }
 
+export function isWithinVector3(
+  p: Vector3,
+  startPoint: Vector3,
+  endPoint: Vector3,
+) {
+  return (
+    p.X >= startPoint.X &&
+    p.X <= endPoint.X &&
+    p.Y >= startPoint.Y &&
+    p.Y <= endPoint.Y &&
+    p.Z >= startPoint.Z &&
+    p.Z <= endPoint.Z
+  )
+}
+
 export function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t
 }

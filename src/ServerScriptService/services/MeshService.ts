@@ -13,11 +13,16 @@ import { selectPlayerInventoryItem } from 'ReplicatedStorage/shared/state'
 import { cloneBlock, overlapParams } from 'ReplicatedStorage/shared/utils/block'
 import { gridSpacing, rotation0 } from 'ReplicatedStorage/shared/utils/core'
 import { grandParentIs } from 'ReplicatedStorage/shared/utils/instance'
+import { isWithinVector3 } from 'ReplicatedStorage/shared/utils/math'
 import {
   decodeMeshData,
   decodeMeshMidpoint,
   encodeMeshData,
   encodeMeshMidpoint,
+  getCFrameFromMeshMidpoint,
+  getMeshMidpointSizeFromStartpointEndpoint,
+  getMeshStartpointEndpointFromMidpointSize,
+  isMeshed,
   MeshMap,
   meshMapGetEncoded,
   MeshPlot,
@@ -52,7 +57,7 @@ export class MeshService implements OnStart {
           [encodeMeshMidpoint(new Vector3(397, 4, 341))]: encodeMeshData({
             blockId: INVENTORY.Bricks.blockId,
             rotation: rotation0,
-            size: new Vector3(4, 4, 110),
+            size: new Vector3(4, 4, 10),
           }),
         },
       },
@@ -228,7 +233,7 @@ export class MeshService implements OnStart {
     }
   }
 
-  handleBreakBlock(player: Player, plotId: string, targetMidpoint: Vector3) {
+  handleBreakBlock(player: Player, plotId: string, targetVoxel: Vector3) {
     const playerSandbox = this.getPlayerSandbox(player, plotId)
     if (!playerSandbox) {
       this.logger.Warn(
@@ -236,21 +241,27 @@ export class MeshService implements OnStart {
       )
       return
     }
-    if (!validMeshMidpoint(targetMidpoint)) {
+    if (!validMeshMidpoint(targetVoxel)) {
       this.logger.Warn(
-        `MeshService.handleBreakBlock: Player ${player.UserId} sent invalid midpoint ${targetMidpoint}`,
+        `MeshService.handleBreakBlock: Player ${player.UserId} sent invalid midpoint ${targetVoxel}`,
       )
       return
     }
 
     const plot = playerSandbox.plot[playerSandbox.location]
-    const encodedTargetMidpoint = encodeMeshMidpoint(targetMidpoint)
-    let meshMidpoint = targetMidpoint
+    const baseplate = playerSandbox.workspace.Plot.Baseplate
+    const encodedTargetMidpoint = encodeMeshMidpoint(targetVoxel)
+    let meshMidpoint = targetVoxel
     let encodedMeshMidpoint = encodedTargetMidpoint
     let data = meshMapGetEncoded(plot.mesh, encodedMeshMidpoint)
     if (!data) {
       const bounding = createBoundingPart(
-        targetMidpoint,
+        getCFrameFromMeshMidpoint(
+          targetVoxel,
+          new Vector3(1, 1, 1),
+          new Vector3(0, 0, 0),
+          baseplate,
+        ).Position,
         new Vector3(1, 1, 1).mul(gridSpacing * 0.99),
       )
       const touchingParts = Workspace.GetPartsInPart(bounding, overlapParams)
@@ -258,9 +269,14 @@ export class MeshService implements OnStart {
         touchingParts.size() === 1 &&
         grandParentIs(touchingParts[0], playerSandbox.workspace.PlacedBlocks)
       ) {
-        encodedMeshMidpoint = touchingParts[0].Name
-        meshMidpoint = decodeMeshMidpoint(encodedMeshMidpoint)
+        encodedMeshMidpoint = touchingParts[0].Parent?.Name ?? ''
         data = meshMapGetEncoded(plot.mesh, encodedMeshMidpoint)
+        meshMidpoint = decodeMeshMidpoint(encodedMeshMidpoint)
+      } else {
+        this.logger.Warn(
+          `MeshService.handleBreakBlock: Player ${player.UserId} broke (${meshMidpoint}) touching ${touchingParts.size()}`,
+        )
+        return
       }
       bounding.Destroy()
     }
@@ -290,6 +306,82 @@ export class MeshService implements OnStart {
     }
 
     meshPlotRemove(plot, meshMidpoint, data.rotation, item)
+
+    if (
+      isMeshed(item.size, data.size) &&
+      encodedMeshMidpoint !== encodedTargetMidpoint
+    ) {
+      const { startpoint, endpoint } =
+        getMeshStartpointEndpointFromMidpointSize(
+          meshMidpoint,
+          data.size,
+          data.rotation,
+        )
+      if (isWithinVector3(targetVoxel, startpoint, endpoint)) {
+        if (this.debug)
+          this.logger.Debug(
+            `Player ${player.UserId} shattered [(${startpoint}), (${endpoint})] at (${targetVoxel})`,
+          )
+
+        const addFragment = (sp: Vector3, ep: Vector3) => {
+          const { midpoint, size } = getMeshMidpointSizeFromStartpointEndpoint(
+            sp,
+            ep,
+            data.rotation,
+          )
+          const model = cloneBlock(
+            item,
+            midpoint,
+            size,
+            data.rotation,
+            baseplate,
+            { ignoreExisting: true },
+          )
+          if (model) {
+            model.Name = encodeMeshMidpoint(midpoint)
+            model.Parent = playerSandbox.workspace.PlacedBlocks
+            meshPlotAdd(plot, midpoint, data.rotation, item, size)
+          }
+        }
+
+        if (targetVoxel.Z > startpoint.Z) {
+          addFragment(
+            startpoint,
+            new Vector3(endpoint.X, endpoint.Y, targetVoxel.Z - 1),
+          )
+        }
+        if (targetVoxel.Z < endpoint.Z) {
+          addFragment(
+            new Vector3(startpoint.X, startpoint.Y, targetVoxel.Z + 1),
+            new Vector3(endpoint.X, endpoint.Y, endpoint.Z),
+          )
+        }
+        if (targetVoxel.X > startpoint.X) {
+          addFragment(
+            new Vector3(startpoint.X, startpoint.Y, targetVoxel.Z),
+            new Vector3(targetVoxel.X - 1, endpoint.Y, targetVoxel.Z),
+          )
+        }
+        if (targetVoxel.X < endpoint.X) {
+          addFragment(
+            new Vector3(targetVoxel.X + 1, startpoint.Y, targetVoxel.Z),
+            new Vector3(endpoint.X, endpoint.Y, targetVoxel.Z),
+          )
+        }
+        if (targetVoxel.Y > startpoint.Y) {
+          addFragment(
+            new Vector3(targetVoxel.X, startpoint.Y, targetVoxel.Z),
+            new Vector3(targetVoxel.X, targetVoxel.Y - 1, targetVoxel.Z),
+          )
+        }
+        if (targetVoxel.Y < endpoint.Y) {
+          addFragment(
+            new Vector3(targetVoxel.X, targetVoxel.Y + 1, targetVoxel.Z),
+            new Vector3(targetVoxel.X, endpoint.Y, targetVoxel.Z),
+          )
+        }
+      }
+    }
 
     if (item.name === INVENTORY.Container.name) {
       store.breakPlayerContainer(player.UserId, encodedMeshMidpoint)
