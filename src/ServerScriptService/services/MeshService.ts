@@ -59,6 +59,36 @@ export class MeshService implements OnStart {
             rotation: rotation0,
             size: new Vector3(1, 9, 112),
           }),
+          [encodeMeshMidpoint(new Vector3(321, 4, 281))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
+            rotation: rotation0,
+            size: new Vector3(37, 9, 1),
+          }),
+          [encodeMeshMidpoint(new Vector3(321, 4, 404))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
+            rotation: rotation0,
+            size: new Vector3(37, 9, 1),
+          }),
+          [encodeMeshMidpoint(new Vector3(341, 6, 281))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
+            rotation: rotation0,
+            size: new Vector3(4, 4, 1),
+          }),
+          [encodeMeshMidpoint(new Vector3(341, 6, 404))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
+            rotation: rotation0,
+            size: new Vector3(4, 4, 1),
+          }),
+          [encodeMeshMidpoint(new Vector3(362, 4, 281))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
+            rotation: rotation0,
+            size: new Vector3(37, 9, 1),
+          }),
+          [encodeMeshMidpoint(new Vector3(362, 4, 404))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
+            rotation: rotation0,
+            size: new Vector3(37, 9, 1),
+          }),
           [encodeMeshMidpoint(new Vector3(386, 4, 342))]: encodeMeshData({
             blockId: INVENTORY.Stone.blockId,
             rotation: rotation0,
