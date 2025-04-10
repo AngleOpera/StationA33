@@ -125,6 +125,7 @@ export class SwingerComponent
 
   handleUnequipped() {
     this.hitbox?.Destroy()
+    this.hitbox = undefined
     this.equipped = false
     if (IS_SERVER) {
       this.unsheathSound?.Stop()
@@ -190,16 +191,19 @@ export class SwingerComponent
 
     const hitParent = hit.Parent
     if (hitParent === this.character) return
-    if (
-      hitParent.IsA('Model') &&
-      CollectionService.HasTag(hitParent, 'Minable')
-    ) {
-      const fullName = hitParent.GetFullName()
-      if (this.debounce.has(fullName)) return
-      this.debounce.add(fullName)
+    if (hitParent.IsA('Model')) {
+      if (CollectionService.HasTag(hitParent, 'Minable')) {
+        const fullName = hitParent.GetFullName()
+        if (this.debounce.has(fullName)) return
+        this.debounce.add(fullName)
 
-      this.handleStruckMinable(hitParent)
-      return
+        this.handleStruckMinable(hitParent)
+        return
+      }
+      if (hitParent?.Parent?.Name === 'PlacedBlocks') {
+        this.handleStruckBlock(hitParent)
+        return
+      }
     }
 
     const humanoid = hitParent.FindFirstChildOfClass('Humanoid')
@@ -211,6 +215,19 @@ export class SwingerComponent
       this.handleStruckPlayer(player, humanoid)
       return
     }
+  }
+
+  handleStruckBlock(_block: Model) {
+    /*
+    const item = getItemFromBlock(block)
+    if (!item) return
+    this.logger.Info(
+      `${this.character?.Name} strikes ${block.Name} for ${this.active?.baseDamage} damage`,
+    )
+    const path = findPathToDescendent(Workspace, block)
+    if (path && this.serverEvents)
+      this.serverEvents.animate.broadcast(ANIMATIONS.BreakBlock, path)
+    */
   }
 
   handleStruckMinable(minable: Model) {

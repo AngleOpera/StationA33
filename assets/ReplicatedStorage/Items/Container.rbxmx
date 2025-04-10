@@ -381,13 +381,13 @@
           <BinaryString name="AttributesSerialize"></BinaryString>
           <bool name="AutoLocalize">true</bool>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-          <bool name="ClickablePrompt">true</bool>
+          <bool name="ClickablePrompt">false</bool>
           <bool name="Enabled">true</bool>
           <token name="Exclusivity">0</token>
           <token name="GamepadKeyCode">1000</token>
           <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
           <float name="HoldDuration">0</float>
-          <token name="KeyboardKeyCode">101</token>
+          <token name="KeyboardKeyCode">102</token>
           <float name="MaxActivationDistance">10</float>
           <string name="ObjectText">Container</string>
           <bool name="RequiresLineOfSight">true</bool>

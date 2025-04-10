@@ -56,6 +56,13 @@ export class AnimationController implements OnStart, OnTick {
         this.logger.Error(`AnimationController.animate: ${e}`)
       }
     })
+    Events.animateBlock.connect((animation, plotId, voxel) => {
+      try {
+        this.handleAnimateBlock(animation, plotId, voxel)
+      } catch (e) {
+        this.logger.Error(`AnimationController.animateBlock: ${e}`)
+      }
+    })
     Events.animateNewItem.connect(
       (userId, itemType, encodedMidpoint, encodedEntityStep) => {
         try {
@@ -126,6 +133,14 @@ export class AnimationController implements OnStart, OnTick {
     }
   }
 
+  handleAnimateBlock(_animation: string, plotId: string, _voxel: Vector3) {
+    const plot = this.playerController.getPlayerSpaceWithId(plotId)
+    if (!plot) {
+      this.logger.Warn(`handleAnimateBlock: Plot ${plotId} not found`)
+      return
+    }
+  }
+
   handleAnimateNewItem(
     userId: number,
     itemType: number,
@@ -137,7 +152,7 @@ export class AnimationController implements OnStart, OnTick {
       this.logger.Warn(`handleAnimateNewItem: Item ${itemType} not found`)
       return
     }
-    const playerSpace = this.playerController.getPlayerSpaceForUserId(userId)
+    const playerSpace = this.playerController.getPlayerSpaceWithId(userId)
     if (!playerSpace) {
       this.logger.Warn(`handleAnimateNewItem: Player ${userId} space not found`)
       return

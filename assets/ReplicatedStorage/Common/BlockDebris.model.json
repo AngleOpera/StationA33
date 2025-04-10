@@ -1,0 +1,109 @@
+{
+  "className": "ParticleEmitter",
+  "properties": {
+    "Acceleration": [
+      0.0,
+      -40.0,
+      0.0
+    ],
+    "Color": {
+      "ColorSequence": {
+        "keypoints": [
+          {
+            "time": 0.0,
+            "color": [
+              0.8117647,
+              0.7921569,
+              0.72156864
+            ]
+          },
+          {
+            "time": 0.19301164,
+            "color": [
+              0.6664057,
+              0.64865094,
+              0.58754367
+            ]
+          },
+          {
+            "time": 1.0,
+            "color": [
+              0.59607846,
+              0.5803922,
+              0.5254902
+            ]
+          }
+        ]
+      }
+    },
+    "Enabled": false,
+    "Lifetime": {
+      "NumberRange": [
+        1.0,
+        2.0
+      ]
+    },
+    "LightInfluence": 1.0,
+    "Rate": 500.0,
+    "RotSpeed": {
+      "NumberRange": [
+        -100.0,
+        100.0
+      ]
+    },
+    "Rotation": {
+      "NumberRange": [
+        -180.0,
+        180.0
+      ]
+    },
+    "Size": {
+      "NumberSequence": {
+        "keypoints": [
+          {
+            "time": 0.0,
+            "value": 0.7499999,
+            "envelope": 0.3124994
+          },
+          {
+            "time": 1.0,
+            "value": 0.7499999,
+            "envelope": 0.24999976
+          }
+        ]
+      }
+    },
+    "Speed": {
+      "NumberRange": [
+        20.0,
+        40.0
+      ]
+    },
+    "SpreadAngle": [
+      60.0,
+      60.0
+    ],
+    "Texture": "rbxassetid://1462103057",
+    "Transparency": {
+      "NumberSequence": {
+        "keypoints": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "envelope": 0.0
+          },
+          {
+            "time": 0.49958643,
+            "value": 0.0,
+            "envelope": 0.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "envelope": 0.0
+          }
+        ]
+      }
+    }
+  }
+}

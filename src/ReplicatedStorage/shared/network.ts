@@ -17,7 +17,7 @@ interface ServerFunctions {
     midpoint: Vector3,
     rotation: Vector3,
   ) => void
-  breakBlock: (plotId: string, midpoint: Vector3) => void
+  breakBlock: (plotId: string, voxel: Vector3, damage?: number) => void
   moveItem: (
     container: string,
     itemName: InventoryItemName,
@@ -28,6 +28,7 @@ interface ServerFunctions {
 
 interface ClientEvents {
   animate: (animation: string, path: string[]) => void
+  animateBlock: (animation: string, plotId: string, voxel: Vector3) => void
   animateNewItem: (
     userId: number,
     itemType: number,

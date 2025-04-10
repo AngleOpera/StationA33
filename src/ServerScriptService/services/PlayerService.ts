@@ -216,7 +216,6 @@ export class PlayerService implements OnInit {
     if (backpack) {
       ReplicatedStorage.Tools.PickAxe.Clone().Parent = backpack
       weldTool(ReplicatedStorage.Tools.PlaceBlock.Clone()).Parent = backpack
-      weldTool(ReplicatedStorage.Tools.BreakBlock.Clone()).Parent = backpack
     }
   }
 

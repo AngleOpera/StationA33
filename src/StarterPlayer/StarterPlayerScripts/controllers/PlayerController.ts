@@ -46,8 +46,8 @@ export class PlayerController implements OnStart {
     return playerSpace
   }
 
-  getPlayerSpaceForUserId(userId: number) {
-    return Workspace.PlayerSpaces.FindFirstChild<PlayerSpace>(`${userId}`)
+  getPlayerSpaceWithId(plotId: number | string) {
+    return Workspace.PlayerSpaces.FindFirstChild<PlayerSpace>(`${plotId}`)
   }
 
   equipShooter(shooter: ShooterComponent | undefined) {

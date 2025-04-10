@@ -54,10 +54,15 @@ export class MeshService implements OnStart {
       PLACE_PLOT_LOCATION,
       {
         [PLACE_PLOT_LOCATION]: {
-          [encodeMeshMidpoint(new Vector3(397, 4, 341))]: encodeMeshData({
-            blockId: INVENTORY.Bricks.blockId,
+          [encodeMeshMidpoint(new Vector3(297, 4, 342))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
             rotation: rotation0,
-            size: new Vector3(4, 4, 10),
+            size: new Vector3(1, 9, 112),
+          }),
+          [encodeMeshMidpoint(new Vector3(386, 4, 342))]: encodeMeshData({
+            blockId: INVENTORY.Stone.blockId,
+            rotation: rotation0,
+            size: new Vector3(1, 9, 112),
           }),
         },
       },
@@ -71,9 +76,9 @@ export class MeshService implements OnStart {
         }
       },
     )
-    Functions.breakBlock.setCallback((player, plotId, midpoint) => {
+    Functions.breakBlock.setCallback((player, plotId, midpoint, damage) => {
       try {
-        this.handleBreakBlock(player, plotId, midpoint)
+        this.handleBreakBlock(player, plotId, midpoint, damage)
       } catch (e) {
         this.logger.Error(`MeshService.breakBlock: ${e}`)
       }
@@ -233,7 +238,12 @@ export class MeshService implements OnStart {
     }
   }
 
-  handleBreakBlock(player: Player, plotId: string, targetVoxel: Vector3) {
+  handleBreakBlock(
+    player: Player,
+    plotId: string,
+    targetVoxel: Vector3,
+    _damage?: number,
+  ) {
     const playerSandbox = this.getPlayerSandbox(player, plotId)
     if (!playerSandbox) {
       this.logger.Warn(

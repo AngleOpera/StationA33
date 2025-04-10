@@ -1,0 +1,23 @@
+<roblox version="4">
+  <Item class="Decal" referent="0">
+    <Properties>
+      <string name="Name">BlockDamage6</string>
+      <BinaryString name="AttributesSerialize"></BinaryString>
+      <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+      <Color3 name="Color3">
+        <R>0.37254903</R>
+        <G>0.21960786</G>
+        <B>0.21960786</B>
+      </Color3>
+      <bool name="DefinesCapabilities">false</bool>
+      <token name="Face">5</token>
+      <int64 name="SourceAssetId">2603096012</int64>
+      <BinaryString name="Tags"></BinaryString>
+      <Content name="Texture">
+        <url>rbxassetid://5332944154</url>
+      </Content>
+      <float name="Transparency">-1</float>
+      <int name="ZIndex">2</int>
+    </Properties>
+  </Item>
+</roblox>

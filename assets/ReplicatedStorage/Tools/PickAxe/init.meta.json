@@ -16,7 +16,8 @@
     ],
     "SourceAssetId": 11241995604.0,
     "Tags": [
-      "Swinger"
+      "Swinger",
+      "BreakBlockTool"
     ],
     "TextureId": "rbxassetid://704114646",
     "WorldPivotData": {
@@ -47,6 +48,7 @@
     }
   },
   "attributes": {
+    "MaxDistance": 20.0,
     "SwingName": "PickAxe"
   },
   "className": "Tool"

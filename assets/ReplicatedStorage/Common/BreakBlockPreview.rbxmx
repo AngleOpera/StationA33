@@ -38,13 +38,13 @@
       <PhysicalProperties name="CustomPhysicalProperties">
         <CustomPhysics>false</CustomPhysics>
       </PhysicalProperties>
-      <bool name="DefinesCapabilities">false</bool>
       <bool name="EnableFluidForces">true</bool>
       <token name="formFactorRaw">1</token>
       <float name="FrontParamA">-0.5</float>
       <float name="FrontParamB">0.5</float>
       <token name="FrontSurface">0</token>
       <token name="FrontSurfaceInput">0</token>
+      <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
       <float name="LeftParamA">-0.5</float>
       <float name="LeftParamB">0.5</float>
       <token name="LeftSurface">0</token>
@@ -78,6 +78,7 @@
         <Y>0</Y>
         <Z>0</Z>
       </Vector3>
+      <bool name="DefinesCapabilities">false</bool>
       <token name="shape">1</token>
       <Vector3 name="size">
         <X>3</X>
@@ -91,6 +92,7 @@
       <token name="TopSurface">0</token>
       <token name="TopSurfaceInput">0</token>
       <float name="Transparency">1</float>
+      <UniqueId name="UniqueId">6f3177ab45fe1d7a0808518a00000389</UniqueId>
       <Vector3 name="Velocity">
         <X>0</X>
         <Y>0</Y>
@@ -105,11 +107,12 @@
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <Color3 name="Color3">
           <R>1</R>
-          <G>0</G>
-          <B>0</B>
+          <G>1</G>
+          <B>1</B>
         </Color3>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+        <float name="LineThickness">0.05</float>
         <bool name="DefinesCapabilities">false</bool>
-        <float name="LineThickness">0.15</float>
         <int64 name="SourceAssetId">-1</int64>
         <bool name="StudioSelectionBox">false</bool>
         <Color3 name="SurfaceColor3">
@@ -120,6 +123,7 @@
         <float name="SurfaceTransparency">1</float>
         <BinaryString name="Tags"></BinaryString>
         <float name="Transparency">0</float>
+        <UniqueId name="UniqueId">6f3177ab45fe1d7a0808518a0000038a</UniqueId>
         <bool name="Visible">true</bool>
       </Properties>
     </Item>
