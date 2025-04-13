@@ -7,6 +7,7 @@ import {
   InventoryItemDescription,
 } from 'ReplicatedStorage/shared/constants/core'
 import { SpawnerTag } from 'ReplicatedStorage/shared/constants/tags'
+import { getRandomLocation } from 'ReplicatedStorage/shared/utils/part'
 
 @Component({ tag: SpawnerTag })
 export class SpawnerComponent
@@ -63,18 +64,11 @@ export class SpawnerComponent
     resource.Name = `${resource.Name}${this.totalSpawned}`
     resource.SetAttribute(BLOCK_ATTRIBUTE.BlockId, item.blockId)
     resource.PivotTo(
-      this.getRandomSpawnLocation(resource.GetBoundingBox()[1].Y / 2),
-    )
-    resource.Parent = this.instance
-  }
-
-  getRandomSpawnLocation(height: number) {
-    return this.instance.CFrame.ToWorldSpace(
-      new CFrame(
-        math.random(-this.instance.Size.X / 2, this.instance.Size.X / 2),
-        this.spawnHeight + height,
-        math.random(-this.instance.Size.Z / 2, this.instance.Size.Z / 2),
+      getRandomLocation(
+        this.instance,
+        this.spawnHeight + resource.GetBoundingBox()[1].Y / 2,
       ),
     )
+    resource.Parent = this.instance
   }
 }

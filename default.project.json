@@ -30,6 +30,9 @@
       "BehaviorTrees": {
         "$path": "assets/ReplicatedStorage/BehaviorTrees"
       },
+      "Bots": {
+        "$path": "assets/ReplicatedStorage/Bots"
+      },
       "Common": {
         "$path": "assets/ReplicatedStorage/Common"
       },
@@ -70,9 +73,6 @@
           }
         },
         "$path": "assets/ReplicatedStorage/Plot"
-      },
-      "Robots": {
-        "$path": "assets/ReplicatedStorage/Robots"
       },
       "Ships": {
         "$path": "assets/ReplicatedStorage/Ships"

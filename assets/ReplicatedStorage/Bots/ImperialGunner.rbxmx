@@ -19405,6 +19405,46 @@ Tool.Unequipped:connect(Unequip)
         </Properties>
       </Item>
     </Item>
+    <Item class="Humanoid" referent="196">
+      <Properties>
+        <string name="Name">Humanoid</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <bool name="AutoJumpEnabled">true</bool>
+        <bool name="AutoRotate">true</bool>
+        <bool name="AutomaticScalingEnabled">true</bool>
+        <bool name="BreakJointsOnDeath">true</bool>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <token name="CollisionType">0</token>
+        <token name="DisplayDistanceType">0</token>
+        <string name="DisplayName"></string>
+        <bool name="EvaluateStateMachine">true</bool>
+        <float name="HealthDisplayDistance">100</float>
+        <token name="HealthDisplayType">0</token>
+        <float name="Health_XML">100</float>
+        <float name="HipHeight">0</float>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+        <Vector3 name="InternalBodyScale">
+          <X>1</X>
+          <Y>1</Y>
+          <Z>1</Z>
+        </Vector3>
+        <float name="InternalHeadScale">1</float>
+        <float name="JumpHeight">7.2</float>
+        <float name="JumpPower">50</float>
+        <float name="MaxHealth">100</float>
+        <float name="MaxSlopeAngle">89</float>
+        <float name="NameDisplayDistance">100</float>
+        <token name="NameOcclusion">2</token>
+        <bool name="RequiresNeck">true</bool>
+        <token name="RigType">0</token>
+        <bool name="DefinesCapabilities">false</bool>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+        <UniqueId name="UniqueId">1f31bf1d48f59678080ce44b000067ec</UniqueId>
+        <bool name="UseJumpPower">true</bool>
+        <float name="WalkSpeed">16</float>
+      </Properties>
+    </Item>
   </Item>
   <SharedStrings>
     <SharedString md5="ARnZN6kjhzmVZw48kQH0xw==">Q1NHUEhTBgAAANdBk0AAAAAAAAAAAAAAAAB3rBpAAAAAAAAAAAAcWLlAAAAAAMQmnkAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIA/JAAAAAQAAACAr7S/rA8BvxbsTj+Br7S/og8BvxbsTr+Ar7Q/og8BvxjsTj+qx6k/pg8BPxbsTj+ux6m/rA8BPxbsTr+Ar7Q/UaQ+PhfsTr+ux6m/rA8BPxvsTj+Ar7Q/og8BvxfsTr+ox6k/qA8BPxbsTr+Ar7S/uaQ+PhfsTj+Ar7Q/UaQ+PhjsTj+Ar7S/tKQ+PhjsTr88AAAAAAAAAAEAAAACAAAAAAAAAAIAAAADAAAABAAAAAUAAAABAAAABgAAAAAAAAADAAAABgAAAAMAAAAEAAAABwAAAAIAAAABAAAABwAAAAEAAAAFAAAABwAAAAUAAAACAAAACAAAAAMAAAAFAAAACAAAAAUAAAAEAAAACAAAAAQAAAADAAAACQAAAAAAAAAGAAAACQAAAAYAAAAEAAAACQAAAAEAAAAAAAAACgAAAAUAAAADAAAACgAAAAMAAAACAAAACgAAAAIAAAAFAAAACwAAAAQAAAABAAAACwAAAAEAAAAJAAAACwAAAAkAAAAEAAAA</SharedString>

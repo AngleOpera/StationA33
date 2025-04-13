@@ -85,3 +85,13 @@ export function weldAssemblage(instance: Instance) {
     part.Anchored = false
   }
 }
+
+export function getRandomLocation(part: BasePart, height: number) {
+  return part.CFrame.ToWorldSpace(
+    new CFrame(
+      math.random(-part.Size.X / 2, part.Size.X / 2),
+      height,
+      math.random(-part.Size.Z / 2, part.Size.Z / 2),
+    ),
+  )
+}

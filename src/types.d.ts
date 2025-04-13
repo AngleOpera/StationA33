@@ -1,3 +1,5 @@
+type BotName = 'CircuitBreaker' | 'CyberClaw' | 'ImperialGunner'
+
 interface BlockAttributes {
   BlockId: number
   Damage?: number
@@ -104,6 +106,7 @@ interface ReplicatedStorage extends Instance {
   BehaviorTrees: Folder & {
     Bot: Folder
   }
+  Bots: Folder & Record<BotName, Model>
   Common: Folder & {
     Beam: Beam
     LootBox: Model
@@ -202,6 +205,7 @@ interface Workspace extends Instance {
   Animating: Folder & {
     Items: Folder
   }
+  Bots: Folder
   Planet: Planet
   PlayerSpaces: Folder &
     Record<string, PlayerSpace> & {
