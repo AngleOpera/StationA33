@@ -39,9 +39,7 @@ export const schedules: Record<string, SpawnWave[]> = {
         {
           duration: 1,
           spawn: {
-            CircuitBreaker: 1,
-            CyberClaw: 1,
-            ImperialGunner: 1,
+            CircuitBreaker: 10,
           },
         },
       ],
@@ -96,7 +94,10 @@ export class BotSystem implements OnStart {
               this.logger.Debug(`Bot created: ${model.GetFullName()}`)
             this.entity[model.Name] = entity
             world.set(entity, Behavior, {
-              Blackboard: {},
+              Blackboard: {
+                sourceInstance: model,
+                sourceHumanoid: model.WaitForChild<Humanoid>('Humanoid'),
+              },
               treeRunning: false,
             })
           },

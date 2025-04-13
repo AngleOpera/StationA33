@@ -1,3 +1,7 @@
+interface Bot extends Model {
+  Humanoid: Humanoid
+}
+
 type BotName = 'CircuitBreaker' | 'CyberClaw' | 'ImperialGunner'
 
 interface BlockAttributes {
@@ -205,7 +209,7 @@ interface Workspace extends Instance {
   Animating: Folder & {
     Items: Folder
   }
-  Bots: Folder
+  Bots: Folder & Record<string, Bot>
   Planet: Planet
   PlayerSpaces: Folder &
     Record<string, PlayerSpace> & {

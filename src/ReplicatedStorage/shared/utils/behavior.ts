@@ -103,15 +103,8 @@ export function runBehaviorTree(
 ) {
   try {
     const wasRunning = obj.treeRunning
-    if (wasRunning) {
-      const blackboard = obj.Blackboard
-      blackboard.state = state
-      delete blackboard.time
-    } else {
-      obj.Blackboard = {
-        state,
-      }
-    }
+    const blackboard = obj.Blackboard
+    blackboard.state = state
     const treeRunning = behaviorTree?.run(obj) === BEHAVIOR_TREE_STATUS.RUNNING
     obj.treeRunning = treeRunning
     if (treeRunning) {
