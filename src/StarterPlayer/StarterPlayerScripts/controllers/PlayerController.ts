@@ -3,6 +3,7 @@ import { CmdrClient } from '@rbxts/cmdr'
 import { DeviceType } from '@rbxts/device'
 import { Logger } from '@rbxts/log'
 import {
+  LocalizationService,
   Players,
   RunService,
   StarterGui,
@@ -19,6 +20,7 @@ export class PlayerController implements OnStart {
   collectionAnimationPlaying = false
   playerSpace: PlayerSpace | undefined
   shooter: ShooterComponent | undefined
+  translator: Translator | undefined
   isDesktop = USER_DEVICE === DeviceType.Desktop
   isSeated = false
   isShooting = false
@@ -35,6 +37,7 @@ export class PlayerController implements OnStart {
 
     this.startInputHandling()
     this.startMyRespawnHandler(player)
+    this.startTranslator(player)
   }
 
   getPlayerSpace() {
@@ -101,6 +104,20 @@ export class PlayerController implements OnStart {
     })
   }
 
+  startTranslator(player: Player) {
+    try {
+      this.translator = LocalizationService.GetTranslatorForPlayerAsync(player)
+    } catch (e) {
+      this.logger.Error(`GetTranslatorForPlayerAsync: ${e}`)
+    }
+    if (this.translator) return
+    try {
+      this.translator = LocalizationService.GetTranslatorForLocaleAsync('en')
+    } catch (e) {
+      this.logger.Error(`GetTranslatorForLocaleAsync: ${e}`)
+    }
+  }
+
   startMyRespawnHandler(player: Player) {
     player.CharacterAdded.Connect((character) =>
       this.handleRespawn(player, character),
@@ -115,4 +132,14 @@ export class PlayerController implements OnStart {
   }
 
   handleLoaded(_player: Player) {}
+
+  translateByKey(key: string, ...args: Array<string | number>) {
+    if (!this.translator) return key
+    try {
+      return this.translator.FormatByKey(key, args)
+    } catch (e) {
+      this.logger.Error(`translateByKey: ${e}`)
+      return key
+    }
+  }
 }

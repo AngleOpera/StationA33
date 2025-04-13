@@ -240,7 +240,14 @@ export class SwingerComponent
     if (path && this.serverEvents)
       this.serverEvents.animate.broadcast(ANIMATIONS.BreakBlock, path)
     if (this.player && this.serverStore)
-      takeBlockDamage(minable, 1, item, this.serverStore, this.player.UserId)
+      takeBlockDamage(
+        minable,
+        1,
+        item,
+        this.serverStore,
+        this.serverEvents,
+        this.player,
+      )
   }
 
   handleStruckPlayer(player: Player, humanoid: Humanoid) {

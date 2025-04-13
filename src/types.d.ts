@@ -75,6 +75,15 @@ interface Leaderboard extends Model {
   }
 }
 
+type MessageType = 'key' | 'text'
+
+interface MessageContent {
+  value: string
+  type?: MessageType
+  color?: Color3
+  colorSecondary?: Color3
+}
+
 type MorphName = 'None' | 'Speakerman' | 'Spacesuit'
 
 interface Planet extends Folder {

@@ -5,6 +5,7 @@ import { Profile } from '@rbxts/profileservice/globals'
 import { Players, ReplicatedStorage, Workspace } from '@rbxts/services'
 import { setTimeout } from '@rbxts/set-timeout'
 import {
+  MESSAGE_TYPE,
   PLACE_PLOT_LOCATION,
   PROFILESTORE_NAME,
   PROFILESTORE_USER_TEMPLATE,
@@ -210,7 +211,7 @@ export class PlayerService implements OnInit {
 
   public handleRespawn(player: Player, characterModel: PlayerCharacter) {
     const humanoid = characterModel.Humanoid
-    humanoid.Died.Connect(() => this.handleKO(player, humanoid))
+    humanoid.Died.Connect(() => this.handleHardTeleport(player, humanoid))
 
     const backpack = player?.FindFirstChild<Backpack>('Backpack')
     if (backpack) {
@@ -219,17 +220,32 @@ export class PlayerService implements OnInit {
     }
   }
 
-  public handleKO(player: Player, humanoid: Humanoid) {
+  public handleHardTeleport(player: Player, humanoid: Humanoid) {
     const attackerUserId = getAttackerUserId(humanoid)
-    let message
+    let content: MessageContent[]
     if (attackerUserId) {
-      message = `${player.Name} was KO'd by ${Players.GetPlayerByUserId(attackerUserId)?.Name}`
+      content = [
+        {
+          value: `${player.Name} was teleported by ${Players.GetPlayerByUserId(attackerUserId)?.Name}`,
+          type: MESSAGE_TYPE.text,
+        },
+      ]
     } else if ((humanoid.RootPart?.Position?.Y ?? 0) < -30) {
-      message = `${player.Name} fell to their doom`
+      content = [
+        {
+          value: `${player.Name} teleported rapidly`,
+          type: MESSAGE_TYPE.text,
+        },
+      ]
     } else {
-      message = `${player.Name} was KO'd`
+      content = [
+        {
+          value: `${player.Name} teleported hard`,
+          type: MESSAGE_TYPE.text,
+        },
+      ]
     }
-    Events.message.broadcast('log', message)
+    Events.message.broadcast('log', content)
 
     setTimeout(
       () =>

@@ -91,6 +91,13 @@ export const GAME_MODE: {
   Default: 'Default' as const,
 }
 
+export const MESSAGE_TYPE: {
+  [name in MessageType]: MessageType
+} = {
+  key: 'key' as const,
+  text: 'text' as const,
+}
+
 export const MORPH_NAME: {
   [name in MorphName]: MorphName
 } = {
@@ -142,6 +149,13 @@ export const PLACEABLE_INVENTORY: Record<InventoryItemName, number> =
 export const INVENTORY_ID = Object.fromEntries(
   Object.values(INVENTORY).map((item) => [item.blockId, item]),
 )
+
+export const LOCALIZATION: Record<string, string> = {
+  RubyOre: 'RubyOre' as const,
+  YouMined: 'YouMined' as const,
+}
+
+export type LocalizationKey = keyof typeof LOCALIZATION
 
 export const PLOT_NAME: PlotName[] = [
   'Plot1' as const,

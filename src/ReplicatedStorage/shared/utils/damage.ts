@@ -2,7 +2,10 @@ import { Debris } from '@rbxts/services'
 import {
   BLOCK_ATTRIBUTE,
   InventoryItemDescription,
+  LOCALIZATION,
+  MESSAGE_TYPE,
 } from 'ReplicatedStorage/shared/constants/core'
+import { ServerNetworkEvents } from 'ReplicatedStorage/shared/network'
 import { SharedStore } from 'ReplicatedStorage/shared/state'
 
 export const attackerInstanceName = 'attacker'
@@ -44,7 +47,8 @@ export function takeBlockDamage(
   damage: number,
   item?: InventoryItemDescription,
   serverStore?: SharedStore,
-  attackerUserId?: number,
+  serverEvents?: ServerNetworkEvents,
+  attacker?: Player,
 ) {
   const damageAttribute = block.GetAttribute(BLOCK_ATTRIBUTE.Damage)
   const currentDamage = typeIs(damageAttribute, 'number') ? damageAttribute : 0
@@ -54,7 +58,17 @@ export function takeBlockDamage(
     return
   }
   block.Destroy()
-  if (item && serverStore && attackerUserId) {
-    serverStore.updatePlayerInventory(attackerUserId, item.name, 1)
+  if (item && serverStore && attacker?.UserId) {
+    serverStore.updatePlayerInventory(attacker.UserId, item.name, 1)
+    if (serverEvents) {
+      const itemKey = LOCALIZATION[item.name]
+      serverEvents.message.fire(attacker, 'log', [
+        { value: LOCALIZATION.YouMined },
+        { value: '1', type: MESSAGE_TYPE.text },
+        itemKey
+          ? { value: itemKey }
+          : { value: item.name, type: MESSAGE_TYPE.text },
+      ])
+    }
   }
 }

@@ -38,14 +38,7 @@ interface ClientEvents {
   animateMoveItems: (entityStep: Array<[number, number]>) => void
   animateRemoveItems: (entity: number[]) => void
   dispatch: (actions: Array<BroadcastAction>) => void
-  message: (
-    messageType: string,
-    message: string,
-    emoji?: string,
-    color?: Color3,
-    colorSecondary?: Color3,
-    duration?: number,
-  ) => void
+  message: (type: string, content: MessageContent[], duration?: number) => void
   start: () => void
 }
 

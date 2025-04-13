@@ -122,6 +122,9 @@
       },
       "StarterPlayerScripts": {
         "$path": "out/StarterPlayer/StarterPlayerScripts"
+      },
+      "$properties": {
+        "EnableMouseLockOption": false
       }
     },
     "Workspace": {
