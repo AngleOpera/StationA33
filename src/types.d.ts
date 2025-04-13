@@ -101,6 +101,9 @@ type PlotLocation = 'Acraos' | 'Apeace' | 'Earth'
 type PlotName = 'Plot1' | 'Plot2' | 'Plot3' | 'Plot4'
 
 interface ReplicatedStorage extends Instance {
+  BehaviorTrees: Folder & {
+    Bot: Folder
+  }
   Common: Folder & {
     Beam: Beam
     LootBox: Model

@@ -1,3 +1,4 @@
+export const BotTag = 'Bot'
 export const BreakBlockToolTag = 'BreakBlockTool'
 export const PlaceBlockToolTag = 'PlaceBlockTool'
 export const DoorTag = 'Door'

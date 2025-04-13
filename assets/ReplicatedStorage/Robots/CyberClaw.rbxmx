@@ -32,7 +32,7 @@
       <bool name="DefinesCapabilities">false</bool>
       <float name="ScaleFactor">1</float>
       <int64 name="SourceAssetId">37999656</int64>
-      <BinaryString name="Tags"></BinaryString>
+      <BinaryString name="Tags">Qm90</BinaryString>
       <UniqueId name="UniqueId">73bfec25492f9ca6080a0a3e0001992e</UniqueId>
       <OptionalCoordinateFrame name="WorldPivotData">
         <CFrame>
@@ -2962,7 +2962,7 @@ script.Parent.Zombie.Died:connect(OnDeath) ]]></string>
           <Y>1.8394574</Y>
           <Z>347.96982</Z>
           <R00>-1</R00>
-          <R01>0</R01>
+          <R01>-0</R01>
           <R02>-0</R02>
           <R10>0</R10>
           <R11>-0.9971584</R11>
