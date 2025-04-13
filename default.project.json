@@ -27,6 +27,9 @@
       "$path": "assets/MaterialService"
     },
     "ReplicatedStorage": {
+      "BehaviorTrees": {
+        "$path": "assets/ReplicatedStorage/BehaviorTrees"
+      },
       "Common": {
         "$path": "assets/ReplicatedStorage/Common"
       },
