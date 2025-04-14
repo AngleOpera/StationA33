@@ -454,6 +454,23 @@ export function meshPlotRemove(
   )
 }
 
+export function meshPlotLoad(plot: MeshPlot) {
+  for (const [encodedMidpoint, encodedData] of Object.entries(plot.mesh)) {
+    const midpoint = decodeMeshMidpoint(encodedMidpoint)
+    const data = decodeMeshData(encodedData)
+    const item = BLOCK_ID_LOOKUP[data.blockId]
+    visitMeshOffsets(
+      plot,
+      midpoint,
+      encodedMidpoint,
+      data.rotation,
+      item,
+      meshOffsetMapAdd,
+    )
+  }
+  return plot
+}
+
 export function doGreedyMeshingFromPoint(
   map: MeshMap,
   seen: MeshSet,

@@ -13,7 +13,7 @@ export type SwingName = 'Left' | 'Lunge' | 'PickAxe' | 'Right' | 'Slash'
 export const SWINGS: Record<SwingName, Swing> = {
   PickAxe: {
     name: 'PickAxe',
-    duration: 0.75,
+    duration: 1,
     r15animationId: 704173649,
   },
   Slash: {

@@ -16,14 +16,12 @@ import { ShooterComponent } from 'StarterPlayer/StarterPlayerScripts/components/
 
 @Controller({})
 export class PlayerController implements OnStart {
-  firstRespawn = true
-  collectionAnimationPlaying = false
   playerSpace: PlayerSpace | undefined
   shooter: ShooterComponent | undefined
   translator: Translator | undefined
   isDesktop = USER_DEVICE === DeviceType.Desktop
-  isSeated = false
   isShooting = false
+  firstRespawn = true
   runSpeed = 32
   walkSpeed = 16
 

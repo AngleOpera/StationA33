@@ -11,6 +11,7 @@ import {
 import { Swing, SWINGS_LOOKUP } from 'ReplicatedStorage/shared/constants/swings'
 import { SwingerTag } from 'ReplicatedStorage/shared/constants/tags'
 import { ServerNetworkEvents } from 'ReplicatedStorage/shared/network'
+import { InputTracker } from 'ReplicatedStorage/shared/services/InputTracker'
 import { SharedStore } from 'ReplicatedStorage/shared/state'
 import { createAnimation } from 'ReplicatedStorage/shared/utils/animation'
 import { getItemFromBlock } from 'ReplicatedStorage/shared/utils/core'
@@ -40,7 +41,10 @@ export class SwingerComponent
   debounce = new Set<string>()
   equipped = false
 
-  constructor(private readonly logger: Logger) {
+  constructor(
+    protected readonly inputTracker: InputTracker,
+    protected readonly logger: Logger,
+  ) {
     super()
     if (IS_SERVER) {
       const { Events } = import('ServerScriptService/network').expect()
@@ -158,12 +162,16 @@ export class SwingerComponent
       const track = this.humanoid.LoadAnimation(swing.r15animation)
       track.Play(0)
     }
+    task.wait(swing.duration)
     if (IS_SERVER) {
-      wait(swing.duration)
       this.hitbox?.HitStop()
     }
     this.active = undefined
     this.instance.Enabled = true
+
+    if (!IS_SERVER && this.inputTracker.mouse1Down) {
+      this.instance.Activate()
+    }
   }
 
   handleStruckTarget(hit: Instance) {

@@ -27,6 +27,7 @@ import {
   meshMapGetEncoded,
   MeshPlot,
   meshPlotAdd,
+  meshPlotLoad,
   meshPlotRemove,
   validMeshMidpoint,
 } from 'ReplicatedStorage/shared/utils/mesh'
@@ -145,14 +146,14 @@ export class MeshService implements OnStart {
       plot: Object.fromEntries(
         Object.entries(mesh).map(([key, value]) => [
           key,
-          {
+          meshPlotLoad({
             userId,
             mesh: value,
             inputFrom: {},
             inputTo: {},
             outputTo: {},
             entity: {},
-          },
+          }),
         ]),
       ),
     }
@@ -304,11 +305,11 @@ export class MeshService implements OnStart {
         ).Position,
         new Vector3(1, 1, 1).mul(gridSpacing * 0.99),
       )
-      const touchingParts = Workspace.GetPartsInPart(bounding, overlapParams)
-      if (
-        touchingParts.size() === 1 &&
-        grandParentIs(touchingParts[0], playerSandbox.workspace.PlacedBlocks)
-      ) {
+      const touchingParts = Workspace.GetPartsInPart(
+        bounding,
+        overlapParams,
+      ).filter((x) => grandParentIs(x, playerSandbox.workspace.PlacedBlocks))
+      if (touchingParts.size() === 1) {
         encodedMeshMidpoint = touchingParts[0].Parent?.Name ?? ''
         data = meshMapGetEncoded(plot.mesh, encodedMeshMidpoint)
         meshMidpoint = decodeMeshMidpoint(encodedMeshMidpoint)
