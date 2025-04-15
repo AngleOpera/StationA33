@@ -44,6 +44,7 @@ yarn && yarn build && yarn start
 - Install [ResizeAlign](https://create.roblox.com/store/asset/165534573/Stravant-ResizeAlign) plugin
 - Install [ThreeDText-2](https://create.roblox.com/store/asset/2273628561/ThreeDText-2) plugin
 - Install [ThumbnailCamera-Generate](https://create.roblox.com/store/asset/9231353080/ThumbmailCamera-Generate) plugin
+- Install [Rig Editor](https://devforum.roblox.com/t/modern-rig-editor-plugin/260728) plugin
 
 ### Install VSCode Extensions
 

@@ -32,7 +32,7 @@
       <bool name="DefinesCapabilities">false</bool>
       <float name="ScaleFactor">1</float>
       <int64 name="SourceAssetId">18635549868</int64>
-      <BinaryString name="Tags">Qm90</BinaryString>
+      <BinaryString name="Tags">Qm90AEFuaW1hdGU=</BinaryString>
       <UniqueId name="UniqueId">73bfec25492f9ca6080a0a3e0000af8e</UniqueId>
       <OptionalCoordinateFrame name="WorldPivotData">
         <CFrame>
@@ -8893,10 +8893,10 @@
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">73bfec25492f9ca6080a0a3e0000b017</UniqueId>
-        <Ref name="Value">null</Ref>
+        <Ref name="Value">138</Ref>
       </Properties>
     </Item>
-    <Item class="Camera" referent="138">
+    <Item class="Camera" referent="139">
       <Properties>
         <string name="Name">ThumbnailCamera</string>
         <BinaryString name="AttributesSerialize">AQAAABUAAABUaHVtYm5haWxDYW1lcmFPZmZzZXQUYKmpP7xe2z/gXHHAAJZHdL+6i+W9/PyNPgAAAIAHWW0/xtq/PoMlmb4rErc+OXtivw==</BinaryString>

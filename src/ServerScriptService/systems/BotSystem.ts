@@ -39,7 +39,13 @@ export const schedules: Record<string, SpawnWave[]> = {
         {
           duration: 1,
           spawn: {
-            CircuitBreaker: 10,
+            AlienBioHazard: 1,
+            CircuitBreaker: 1,
+            CombatRobot: 1,
+            CubeForce: 1,
+            CyberClaw: 1,
+            ImperialGunner: 1,
+            SecurityRobot: 1,
           },
         },
       ],

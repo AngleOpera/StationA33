@@ -6,13 +6,7 @@ import { findFirstChildWhichIs } from 'ReplicatedStorage/shared/utils/instance'
 
 export interface AnimatedCharacter extends Model {
   Humanoid: Humanoid
-  Torso: BasePart & {
-    'Left Hip': Motor6D
-    'Left Shoulder': Motor6D
-    Neck: Motor6D
-    'Right Hip': Motor6D
-    'Right Shoulder': Motor6D
-  }
+  Torso: BasePart
 }
 
 export interface WeightedAnimationID {
@@ -99,12 +93,12 @@ export class AnimateComponent
   jumpAnimDuration = 0.3
   jumpMaxLimbVelocity = 0.75
   lastTick = 0
-  leftHip!: Motor6D
-  leftShoulder!: Motor6D
-  neck!: Motor6D
+  leftHip?: Motor6D
+  leftShoulder?: Motor6D
+  neck?: Motor6D
   pose = 'Standing'
-  rightHip!: Motor6D
-  rightShoulder!: Motor6D
+  rightHip?: Motor6D
+  rightShoulder?: Motor6D
   toolAnim = 'None'
   toolAnimInstance?: Animation
   toolAnimName = ''
@@ -115,11 +109,14 @@ export class AnimateComponent
 
   onStart() {
     this.torso = this.instance.Torso
-    this.rightShoulder = this.instance.Torso['Right Shoulder']
-    this.leftShoulder = this.instance.Torso['Left Shoulder']
-    this.rightHip = this.instance.Torso['Right Hip']
-    this.leftHip = this.instance.Torso['Left Hip']
-    this.neck = this.instance.Torso.Neck
+
+    this.rightShoulder =
+      this.instance.Torso.FindFirstChild<Motor6D>('Right Shoulder')
+    this.leftShoulder =
+      this.instance.Torso.FindFirstChild<Motor6D>('Left Shoulder')
+    this.rightHip = this.instance.Torso.FindFirstChild<Motor6D>('Right Hip')
+    this.leftHip = this.instance.Torso.FindFirstChild<Motor6D>('Left Hip')
+    this.neck = this.instance.Torso.FindFirstChild<Motor6D>('Neck')
     this.humanoid = this.instance.Humanoid
 
     // Clear any existing animation tracks
@@ -453,12 +450,16 @@ export class AnimateComponent
   }
 
   moveSit() {
-    this.leftShoulder.MaxVelocity = 0.15
-    this.leftShoulder.SetDesiredAngle(-3.14 / 2)
-    this.rightShoulder.MaxVelocity = 0.15
-    this.rightShoulder.SetDesiredAngle(3.14 / 2)
-    this.leftHip.SetDesiredAngle(-3.14 / 2)
-    this.rightHip.SetDesiredAngle(3.14 / 2)
+    if (this.leftShoulder) {
+      this.leftShoulder.MaxVelocity = 0.15
+      this.leftShoulder.SetDesiredAngle(-3.14 / 2)
+    }
+    if (this.rightShoulder) {
+      this.rightShoulder.MaxVelocity = 0.15
+      this.rightShoulder.SetDesiredAngle(3.14 / 2)
+    }
+    this.leftHip?.SetDesiredAngle(-3.14 / 2)
+    this.rightHip?.SetDesiredAngle(3.14 / 2)
   }
 
   move(time: number) {
@@ -497,10 +498,10 @@ export class AnimateComponent
     }
     if (setAngles) {
       const desiredAngle = amplitude * math.sin(time * frequency)
-      this.rightShoulder.SetDesiredAngle(desiredAngle + climbFudge)
-      this.leftShoulder.SetDesiredAngle(desiredAngle - climbFudge)
-      this.rightHip.SetDesiredAngle(-desiredAngle)
-      this.leftHip.SetDesiredAngle(-desiredAngle)
+      this.rightShoulder?.SetDesiredAngle(desiredAngle + climbFudge)
+      this.leftShoulder?.SetDesiredAngle(desiredAngle - climbFudge)
+      this.rightHip?.SetDesiredAngle(-desiredAngle)
+      this.leftHip?.SetDesiredAngle(-desiredAngle)
     }
 
     // Tool Animation handling

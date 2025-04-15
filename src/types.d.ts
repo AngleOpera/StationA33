@@ -2,7 +2,14 @@ interface Bot extends Model {
   Humanoid: Humanoid
 }
 
-type BotName = 'CircuitBreaker' | 'CyberClaw' | 'ImperialGunner'
+type BotName =
+  | 'AlienBioHazard'
+  | 'CircuitBreaker'
+  | 'CombatRobot'
+  | 'CubeForce'
+  | 'CyberClaw'
+  | 'ImperialGunner'
+  | 'SecurityRobot'
 
 interface BlockAttributes {
   BlockId: number
