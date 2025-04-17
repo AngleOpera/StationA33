@@ -67,7 +67,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-107.854</X>
-          <Y>5.2902775</Y>
+          <Y>5.1</Y>
           <Z>344.386</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -202,7 +202,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-107.854</X>
-          <Y>3.6902776</Y>
+          <Y>3.5</Y>
           <Z>344.386</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -528,7 +528,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-107.354</X>
-          <Y>1.6902776</Y>
+          <Y>1.5</Y>
           <Z>344.386</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -629,7 +629,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-108.354</X>
-          <Y>1.6902776</Y>
+          <Y>1.5</Y>
           <Z>344.386</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -730,7 +730,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-106.354</X>
-          <Y>3.6902776</Y>
+          <Y>3.5</Y>
           <Z>344.386</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -964,7 +964,7 @@
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
           <X>-109.354</X>
-          <Y>3.6902776</Y>
+          <Y>3.5</Y>
           <Z>344.386</Z>
           <R00>-1</R00>
           <R01>0</R01>
@@ -1252,7 +1252,7 @@
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">3d976e68f36de7ba080f3cae00006656</UniqueId>
-        <Ref name="Value">24</Ref>
+        <Ref name="Value">null</Ref>
       </Properties>
     </Item>
   </Item>

@@ -139,8 +139,8 @@ export class AnimateComponent
         const fileList = this.animNames[child.Name]
         if (fileList) this.configureAnimationSet(child.Name, fileList)
       }
-      script.ChildAdded.Connect(scriptChildModified)
-      script.ChildRemoved.Connect(scriptChildModified)
+      animations.ChildAdded.Connect(scriptChildModified)
+      animations.ChildRemoved.Connect(scriptChildModified)
     }
     for (const [name, fileList] of Object.entries(this.animNames)) {
       this.configureAnimationSet(name, fileList)
@@ -251,7 +251,7 @@ export class AnimateComponent
     }
 
     // check for config values
-    const animationsFolder = this.instance.FindFirstChild('Animations')
+    const animationsFolder = this.instance.FindFirstChild(this.animationsFolder)
     const config = animationsFolder?.FindFirstChild(name)
     if (config) {
       // print(`Loading anims ${name}`)
