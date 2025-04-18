@@ -837,7 +837,7 @@
     <Item class="Part" referent="1">
       <Properties>
         <string name="Name">HumanoidRootPart</string>
-        <bool name="Anchored">true</bool>
+        <bool name="Anchored">false</bool>
         <BinaryString name="AttributesSerialize">AQAAAAcAAABSb2pvX0lkAiAAAAA3M2JmZWMyNTQ5MmY5Y2E2MDgwYTBhM2UwMDAwYWZhMg==</BinaryString>
         <bool name="AudioCanCollide">true</bool>
         <float name="BackParamA">-0.5</float>
@@ -963,7 +963,7 @@
       </Item>
       <Item class="Motor6D" referent="25">
         <Properties>
-          <string name="Name">LowerTorso</string>
+          <string name="Name">RootJoint</string>
           <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAANzNiZmVjMjU0OTJmOWNhNjA4MGEwYTNlMDAwMGFmYTIRAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADczYmZlYzI1NDkyZjljYTYwODBhMGEzZTAwMDBhZjhm</BinaryString>
           <CoordinateFrame name="C0">
             <X>0</X>
@@ -1374,7 +1374,7 @@
           <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAANzNiZmVjMjU0OTJmOWNhNjA4MGEwYTNlMDAwMGFmYTURAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADczYmZlYzI1NDkyZjljYTYwODBhMGEzZTAwMDBhZmVh</BinaryString>
           <CoordinateFrame name="C0">
             <X>-1.4338684</X>
-            <Y>-0.0018441677</Y>
+            <Y>0.99815583</Y>
             <Z>0.0026855469</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -1388,7 +1388,7 @@
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0</X>
-            <Y>0</Y>
+            <Y>1</Y>
             <Z>0</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -1419,7 +1419,7 @@
           <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAANzNiZmVjMjU0OTJmOWNhNjA4MGEwYTNlMDAwMGFmYTURAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADczYmZlYzI1NDkyZjljYTYwODBhMGEzZTAwMDBhZmUx</BinaryString>
           <CoordinateFrame name="C0">
             <X>1.4791031</X>
-            <Y>0.000004053116</Y>
+            <Y>1.000004</Y>
             <Z>0</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -1433,7 +1433,7 @@
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0</X>
-            <Y>0</Y>
+            <Y>1</Y>
             <Z>0</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -1599,7 +1599,7 @@
           <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAANzNiZmVjMjU0OTJmOWNhNjA4MGEwYTNlMDAwMGFmYTURAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADczYmZlYzI1NDkyZjljYTYwODBhMGEzZTAwMDBhZjkx</BinaryString>
           <CoordinateFrame name="C0">
             <X>-0.5</X>
-            <Y>-2</Y>
+            <Y>-1</Y>
             <Z>0</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -1613,7 +1613,7 @@
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0</X>
-            <Y>0</Y>
+            <Y>1</Y>
             <Z>0</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -1734,7 +1734,7 @@
           <BinaryString name="AttributesSerialize">AgAAABEAAABSb2pvX1RhcmdldF9QYXJ0MAIgAAAANzNiZmVjMjU0OTJmOWNhNjA4MGEwYTNlMDAwMGFmYTURAAAAUm9qb19UYXJnZXRfUGFydDECIAAAADczYmZlYzI1NDkyZjljYTYwODBhMGEzZTAwMDBhZjk1</BinaryString>
           <CoordinateFrame name="C0">
             <X>0.5</X>
-            <Y>-2</Y>
+            <Y>-1</Y>
             <Z>0</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -1748,7 +1748,7 @@
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0</X>
-            <Y>0</Y>
+            <Y>1</Y>
             <Z>0</Z>
             <R00>1</R00>
             <R01>0</R01>
@@ -8942,6 +8942,74 @@
         <UniqueId name="UniqueId">73bfec25492f9ca6080a0a3e0000b018</UniqueId>
         <bool name="VRTiltAndRollEnabled">false</bool>
       </Properties>
+    </Item>
+    <Item class="Folder" referent="140">
+      <Properties>
+        <string name="Name">Animations</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+        <bool name="DefinesCapabilities">false</bool>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+        <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e5</UniqueId>
+      </Properties>
+      <Item class="StringValue" referent="141">
+        <Properties>
+          <string name="Name">walk</string>
+          <BinaryString name="AttributesSerialize"></BinaryString>
+          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <bool name="DefinesCapabilities">false</bool>
+          <int64 name="SourceAssetId">-1</int64>
+          <BinaryString name="Tags"></BinaryString>
+          <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e6</UniqueId>
+          <string name="Value"></string>
+        </Properties>
+        <Item class="Animation" referent="142">
+          <Properties>
+            <string name="Name">Animation</string>
+            <ContentId name="AnimationId">
+              <url>rbxassetid://107741010261107</url>
+            </ContentId>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+            <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e7</UniqueId>
+          </Properties>
+        </Item>
+      </Item>
+      <Item class="StringValue" referent="143">
+        <Properties>
+          <string name="Name">run</string>
+          <BinaryString name="AttributesSerialize"></BinaryString>
+          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+          <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+          <bool name="DefinesCapabilities">false</bool>
+          <int64 name="SourceAssetId">-1</int64>
+          <BinaryString name="Tags"></BinaryString>
+          <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e8</UniqueId>
+          <string name="Value"></string>
+        </Properties>
+        <Item class="Animation" referent="144">
+          <Properties>
+            <string name="Name">Animation</string>
+            <ContentId name="AnimationId">
+              <url>rbxassetid://107741010261107</url>
+            </ContentId>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+            <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e9</UniqueId>
+          </Properties>
+        </Item>
+      </Item>
     </Item>
   </Item>
   <SharedStrings>
