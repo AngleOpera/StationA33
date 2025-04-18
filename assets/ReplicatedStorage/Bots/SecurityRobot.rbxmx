@@ -70,13 +70,13 @@
           <Y>5.1</Y>
           <Z>344.386</Z>
           <R00>-1</R00>
-          <R01>0</R01>
-          <R02>0.00000008742278</R02>
-          <R10>0</R10>
+          <R01>-0.000000000000006600236</R01>
+          <R02>0</R02>
+          <R10>-0.000000000000006600236</R10>
           <R11>1</R11>
-          <R12>0</R12>
-          <R20>-0.00000008742278</R20>
-          <R21>0</R21>
+          <R12>0.00000004371139</R12>
+          <R20>0</R20>
+          <R21>0.00000004371139</R21>
           <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">true</bool>
@@ -294,7 +294,7 @@
             <X>-0.5</X>
             <Y>-0.79999995</Y>
             <Z>0</Z>
-            <R00>-0.00000004371138</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>-1</R02>
             <R10>0</R10>
@@ -302,13 +302,13 @@
             <R12>0</R12>
             <R20>1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371138</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0</X>
             <Y>1.2</Y>
             <Z>0</Z>
-            <R00>-0.00000004371138</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>-1</R02>
             <R10>0</R10>
@@ -316,7 +316,7 @@
             <R12>0</R12>
             <R20>1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371138</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
           <float name="DesiredAngle">0</float>
@@ -340,14 +340,14 @@
             <Y>1</Y>
             <Z>0</Z>
             <R00>-1</R00>
-            <R01>-0.00000008742278</R01>
-            <R02>-0.000000000000003821371</R02>
+            <R01>0</R01>
+            <R02>0</R02>
             <R10>0</R10>
-            <R11>-0.00000004371139</R11>
+            <R11>0</R11>
             <R12>1</R12>
-            <R20>-0.00000008742278</R20>
+            <R20>0</R20>
             <R21>1</R21>
-            <R22>0.00000004371139</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0</X>
@@ -384,7 +384,7 @@
             <X>-1</X>
             <Y>0.6999998</Y>
             <Z>0</Z>
-            <R00>-0.00000004371138</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>-1</R02>
             <R10>0</R10>
@@ -392,13 +392,13 @@
             <R12>0</R12>
             <R20>1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371138</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0.5</X>
             <Y>0.6999998</Y>
             <Z>0</Z>
-            <R00>-0.00000004371138</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>-1</R02>
             <R10>0</R10>
@@ -406,7 +406,7 @@
             <R12>0</R12>
             <R20>1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371138</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
           <float name="DesiredAngle">0</float>
@@ -429,7 +429,7 @@
             <X>0.5</X>
             <Y>-0.79999995</Y>
             <Z>0</Z>
-            <R00>-0.00000004371139</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>1</R02>
             <R10>0</R10>
@@ -437,13 +437,13 @@
             <R12>0</R12>
             <R20>-1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371139</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>0</X>
             <Y>1.2</Y>
             <Z>0</Z>
-            <R00>-0.00000004371139</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>1</R02>
             <R10>0</R10>
@@ -451,7 +451,7 @@
             <R12>0</R12>
             <R20>-1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371139</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
           <float name="DesiredAngle">0</float>
@@ -474,7 +474,7 @@
             <X>1</X>
             <Y>0.6999998</Y>
             <Z>0</Z>
-            <R00>-0.00000004371139</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>1</R02>
             <R10>0</R10>
@@ -482,13 +482,13 @@
             <R12>0</R12>
             <R20>-1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371139</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <CoordinateFrame name="C1">
             <X>-0.5</X>
             <Y>0.6999998</Y>
             <Z>0</Z>
-            <R00>-0.00000004371139</R00>
+            <R00>0</R00>
             <R01>0</R01>
             <R02>1</R02>
             <R10>0</R10>
@@ -496,7 +496,7 @@
             <R12>0</R12>
             <R20>-1</R20>
             <R21>0</R21>
-            <R22>-0.00000004371139</R22>
+            <R22>0</R22>
           </CoordinateFrame>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
           <float name="DesiredAngle">0</float>
@@ -825,11 +825,11 @@
         <bool name="BreakJointsOnDeath">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <token name="CollisionType">0</token>
-        <token name="DisplayDistanceType">0</token>
+        <token name="DisplayDistanceType">1</token>
         <string name="DisplayName"></string>
         <bool name="EvaluateStateMachine">true</bool>
-        <float name="HealthDisplayDistance">100</float>
-        <token name="HealthDisplayType">0</token>
+        <float name="HealthDisplayDistance">10</float>
+        <token name="HealthDisplayType">1</token>
         <float name="Health_XML">100</float>
         <float name="HipHeight">0</float>
         <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
@@ -843,14 +843,14 @@
         <float name="JumpPower">50</float>
         <float name="MaxHealth">100</float>
         <float name="MaxSlopeAngle">89</float>
-        <float name="NameDisplayDistance">100</float>
+        <float name="NameDisplayDistance">10</float>
         <token name="NameOcclusion">0</token>
         <bool name="RequiresNeck">true</bool>
         <token name="RigType">0</token>
         <bool name="DefinesCapabilities">false</bool>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
-        <UniqueId name="UniqueId">73bfec25492f9ca6080a0a3e000003dc</UniqueId>
+        <UniqueId name="UniqueId">4cc65bc96b199060c7f0277f00000000</UniqueId>
         <bool name="UseJumpPower">true</bool>
         <float name="WalkSpeed">17</float>
       </Properties>
@@ -864,7 +864,7 @@
           <bool name="DefinesCapabilities">false</bool>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags"></BinaryString>
-          <UniqueId name="UniqueId">3d976e68f36de7ba080f3cae00005f7b</UniqueId>
+          <UniqueId name="UniqueId">2d7f64ef487ab09ac7f0277f00000001</UniqueId>
         </Properties>
       </Item>
     </Item>

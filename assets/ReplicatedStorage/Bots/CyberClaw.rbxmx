@@ -1520,11 +1520,11 @@
         <bool name="BreakJointsOnDeath">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <token name="CollisionType">0</token>
-        <token name="DisplayDistanceType">0</token>
+        <token name="DisplayDistanceType">1</token>
         <string name="DisplayName"></string>
         <bool name="EvaluateStateMachine">true</bool>
-        <float name="HealthDisplayDistance">100</float>
-        <token name="HealthDisplayType">0</token>
+        <float name="HealthDisplayDistance">10</float>
+        <token name="HealthDisplayType">1</token>
         <float name="Health_XML">100</float>
         <float name="HipHeight">0</float>
         <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
@@ -1538,7 +1538,7 @@
         <float name="JumpPower">50</float>
         <float name="MaxHealth">120</float>
         <float name="MaxSlopeAngle">89</float>
-        <float name="NameDisplayDistance">100</float>
+        <float name="NameDisplayDistance">10</float>
         <token name="NameOcclusion">2</token>
         <bool name="RequiresNeck">true</bool>
         <token name="RigType">0</token>
@@ -1582,13 +1582,13 @@
           <Y>1.8390051</Y>
           <Z>347.96994</Z>
           <R00>-1</R00>
-          <R01>0.000000000000005176876</R01>
-          <R02>-0.000000000000113574474</R02>
-          <R10>0.000000000000011098023</R10>
+          <R01>0.000000000000005176869</R01>
+          <R02>-0.00000000000011357426</R02>
+          <R10>0.000000000000011098045</R10>
           <R11>-0.997162</R11>
-          <R12>0.07533824</R12>
-          <R20>0.000000000000099475766</R20>
-          <R21>0.07533825</R21>
+          <R12>0.075338244</R12>
+          <R20>0.00000000000009947598</R20>
+          <R21>0.07533826</R21>
           <R22>0.997162</R22>
         </CoordinateFrame>
         <bool name="CanCollide">false</bool>
@@ -1707,13 +1707,13 @@
             <Y>-0.90019417</Y>
             <Z>-0.000061035156</Z>
             <R00>1</R00>
-            <R01>0.000000000000016303868</R01>
-            <R02>-0.0000000000004726869</R02>
-            <R10>0.00000000000001630387</R10>
+            <R01>0</R01>
+            <R02>0</R02>
+            <R10>0</R10>
             <R11>-1</R11>
-            <R12>0.0000000057156595</R12>
-            <R20>-0.0000000000004726869</R20>
-            <R21>-0.0000000057156595</R21>
+            <R12>0</R12>
+            <R20>0</R20>
+            <R21>0</R21>
             <R22>-1</R22>
           </CoordinateFrame>
           <CoordinateFrame name="C1">
@@ -1721,13 +1721,13 @@
             <Y>-0.3000126</Y>
             <Z>-0.000030517578</Z>
             <R00>1</R00>
-            <R01>0.000000000000016303873</R01>
-            <R02>-0.0000000000004726871</R02>
-            <R10>-0.00000000000001630388</R10>
+            <R01>0</R01>
+            <R02>0</R02>
+            <R10>0</R10>
             <R11>1</R11>
-            <R12>-0.00000001183735</R12>
-            <R20>0.0000000000004726871</R20>
-            <R21>0.00000001183735</R21>
+            <R12>0</R12>
+            <R20>0</R20>
+            <R21>0</R21>
             <R22>1</R22>
           </CoordinateFrame>
           <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -2124,10 +2124,10 @@
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000094f4</UniqueId>
-        <Ref name="Value">50</Ref>
+        <Ref name="Value">null</Ref>
       </Properties>
     </Item>
-    <Item class="Folder" referent="51">
+    <Item class="Folder" referent="50">
       <Properties>
         <string name="Name">Animations</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -2138,7 +2138,7 @@
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">4f3ca0d26d969d4c0813332200009e29</UniqueId>
       </Properties>
-      <Item class="StringValue" referent="52">
+      <Item class="StringValue" referent="51">
         <Properties>
           <string name="Name">walk</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -2150,7 +2150,7 @@
           <UniqueId name="UniqueId">4f3ca0d26d969d4c0813332200009e2a</UniqueId>
           <string name="Value"></string>
         </Properties>
-        <Item class="Animation" referent="53">
+        <Item class="Animation" referent="52">
           <Properties>
             <string name="Name">Animation</string>
             <ContentId name="AnimationId">
@@ -2166,7 +2166,7 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="StringValue" referent="54">
+      <Item class="StringValue" referent="53">
         <Properties>
           <string name="Name">run</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -2178,7 +2178,7 @@
           <UniqueId name="UniqueId">4f3ca0d26d969d4c0813332200009e2c</UniqueId>
           <string name="Value"></string>
         </Properties>
-        <Item class="Animation" referent="55">
+        <Item class="Animation" referent="54">
           <Properties>
             <string name="Name">Animation</string>
             <ContentId name="AnimationId">

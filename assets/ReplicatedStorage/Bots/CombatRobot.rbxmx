@@ -639,11 +639,11 @@
         <bool name="BreakJointsOnDeath">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <token name="CollisionType">0</token>
-        <token name="DisplayDistanceType">2</token>
+        <token name="DisplayDistanceType">1</token>
         <string name="DisplayName"></string>
         <bool name="EvaluateStateMachine">true</bool>
-        <float name="HealthDisplayDistance">0</float>
-        <token name="HealthDisplayType">2</token>
+        <float name="HealthDisplayDistance">10</float>
+        <token name="HealthDisplayType">1</token>
         <float name="Health_XML">100</float>
         <float name="HipHeight">0</float>
         <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
@@ -657,7 +657,7 @@
         <float name="JumpPower">50</float>
         <float name="MaxHealth">100</float>
         <float name="MaxSlopeAngle">89</float>
-        <float name="NameDisplayDistance">0</float>
+        <float name="NameDisplayDistance">10</float>
         <token name="NameOcclusion">2</token>
         <bool name="RequiresNeck">true</bool>
         <token name="RigType">0</token>
@@ -8893,10 +8893,10 @@
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">73bfec25492f9ca6080a0a3e0000b017</UniqueId>
-        <Ref name="Value">138</Ref>
+        <Ref name="Value">null</Ref>
       </Properties>
     </Item>
-    <Item class="Camera" referent="139">
+    <Item class="Camera" referent="138">
       <Properties>
         <string name="Name">ThumbnailCamera</string>
         <BinaryString name="AttributesSerialize">AQAAABUAAABUaHVtYm5haWxDYW1lcmFPZmZzZXQUYKmpP7xe2z/gXHHAAJZHdL+6i+W9/PyNPgAAAIAHWW0/xtq/PoMlmb4rErc+OXtivw==</BinaryString>
@@ -8943,7 +8943,7 @@
         <bool name="VRTiltAndRollEnabled">false</bool>
       </Properties>
     </Item>
-    <Item class="Folder" referent="140">
+    <Item class="Folder" referent="139">
       <Properties>
         <string name="Name">Animations</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8954,7 +8954,7 @@
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e5</UniqueId>
       </Properties>
-      <Item class="StringValue" referent="141">
+      <Item class="StringValue" referent="140">
         <Properties>
           <string name="Name">walk</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8966,7 +8966,7 @@
           <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e6</UniqueId>
           <string name="Value"></string>
         </Properties>
-        <Item class="Animation" referent="142">
+        <Item class="Animation" referent="141">
           <Properties>
             <string name="Name">Animation</string>
             <ContentId name="AnimationId">
@@ -8982,7 +8982,7 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="StringValue" referent="143">
+      <Item class="StringValue" referent="142">
         <Properties>
           <string name="Name">run</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -8994,7 +8994,7 @@
           <UniqueId name="UniqueId">4f3ca0d26d969d4c08133322000090e8</UniqueId>
           <string name="Value"></string>
         </Properties>
-        <Item class="Animation" referent="144">
+        <Item class="Animation" referent="143">
           <Properties>
             <string name="Name">Animation</string>
             <ContentId name="AnimationId">

@@ -11104,11 +11104,11 @@
         <bool name="BreakJointsOnDeath">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <token name="CollisionType">0</token>
-        <token name="DisplayDistanceType">0</token>
+        <token name="DisplayDistanceType">1</token>
         <string name="DisplayName"></string>
         <bool name="EvaluateStateMachine">true</bool>
-        <float name="HealthDisplayDistance">100</float>
-        <token name="HealthDisplayType">0</token>
+        <float name="HealthDisplayDistance">10</float>
+        <token name="HealthDisplayType">1</token>
         <float name="Health_XML">100</float>
         <float name="HipHeight">0</float>
         <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
@@ -11122,7 +11122,7 @@
         <float name="JumpPower">50</float>
         <float name="MaxHealth">100</float>
         <float name="MaxSlopeAngle">89</float>
-        <float name="NameDisplayDistance">100</float>
+        <float name="NameDisplayDistance">10</float>
         <token name="NameOcclusion">2</token>
         <bool name="RequiresNeck">true</bool>
         <token name="RigType">0</token>

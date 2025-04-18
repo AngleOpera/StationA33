@@ -66,18 +66,18 @@
         <token name="BottomSurface">4</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-173.35742</X>
-          <Y>3.8136733</Y>
-          <Z>347.32687</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-173.46506</X>
+          <Y>4.7712345</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">true</bool>
         <bool name="CanQuery">true</bool>
@@ -143,7 +143,7 @@
         <float name="TopParamB">0.5</float>
         <token name="TopSurface">0</token>
         <token name="TopSurfaceInput">0</token>
-        <float name="Transparency">1</float>
+        <float name="Transparency">0</float>
         <UniqueId name="UniqueId">73bfec25492f9ca6080a0a3e0000cfd3</UniqueId>
         <Vector3 name="Velocity">
           <X>0</X>
@@ -203,18 +203,18 @@
         <token name="BottomSurface">4</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-173.35742</X>
-          <Y>2.542439</Y>
-          <Z>347.32687</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-173.46506</X>
+          <Y>3.5</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">true</bool>
         <bool name="CanQuery">true</bool>
@@ -529,18 +529,18 @@
         <token name="BottomSurface">4</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-172.08794</X>
-          <Y>2.5424395</Y>
-          <Z>347.3934</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-172.19382</X>
+          <Y>3.5</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">false</bool>
         <bool name="CanQuery">true</bool>
@@ -630,18 +630,18 @@
         <token name="BottomSurface">4</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-174.6269</X>
-          <Y>2.5424385</Y>
-          <Z>347.26035</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-174.7363</X>
+          <Y>3.5</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">false</bool>
         <bool name="CanQuery">true</bool>
@@ -731,18 +731,18 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-172.93427</X>
-          <Y>0.84746015</Y>
-          <Z>347.34906</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-173.0413</X>
+          <Y>1.805021</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">false</bool>
         <bool name="CanQuery">true</bool>
@@ -832,18 +832,18 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-173.78058</X>
-          <Y>0.8474599</Y>
-          <Z>347.3047</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-173.88881</X>
+          <Y>1.805021</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">false</bool>
         <bool name="CanQuery">true</bool>
@@ -1008,11 +1008,11 @@
         <bool name="BreakJointsOnDeath">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <token name="CollisionType">0</token>
-        <token name="DisplayDistanceType">0</token>
+        <token name="DisplayDistanceType">1</token>
         <string name="DisplayName"></string>
         <bool name="EvaluateStateMachine">true</bool>
-        <float name="HealthDisplayDistance">84.74895</float>
-        <token name="HealthDisplayType">0</token>
+        <float name="HealthDisplayDistance">10</float>
+        <token name="HealthDisplayType">1</token>
         <float name="Health_XML">100</float>
         <float name="HipHeight">0</float>
         <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
@@ -1026,7 +1026,7 @@
         <float name="JumpPower">29.4562</float>
         <float name="MaxHealth">100</float>
         <float name="MaxSlopeAngle">89</float>
-        <float name="NameDisplayDistance">84.74895</float>
+        <float name="NameDisplayDistance">10</float>
         <token name="NameOcclusion">0</token>
         <bool name="RequiresNeck">true</bool>
         <token name="RigType">0</token>
@@ -1066,18 +1066,18 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-173.35742</X>
-          <Y>3.8136733</Y>
-          <Z>347.32687</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-173.46506</X>
+          <Y>4.7712345</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">false</bool>
         <bool name="CanQuery">true</bool>
@@ -1257,18 +1257,18 @@
         <token name="BottomSurface">0</token>
         <token name="BottomSurfaceInput">0</token>
         <CoordinateFrame name="CFrame">
-          <X>-173.35742</X>
-          <Y>2.542439</Y>
-          <Z>347.32687</Z>
-          <R00>-0.99862516</R00>
-          <R01>0.00000027879207</R01>
-          <R02>0.052335758</R02>
-          <R10>-0.00000029165324</R10>
+          <X>-173.46506</X>
+          <Y>3.5</Y>
+          <Z>347.842</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>-0.0000001509958</R02>
+          <R10>0</R10>
           <R11>1</R11>
-          <R12>-0.00000023808948</R12>
-          <R20>-0.052335422</R20>
-          <R21>0.0000002530274</R21>
-          <R22>-0.9986288</R22>
+          <R12>0</R12>
+          <R20>0.0000001509958</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
         </CoordinateFrame>
         <bool name="CanCollide">false</bool>
         <bool name="CanQuery">true</bool>

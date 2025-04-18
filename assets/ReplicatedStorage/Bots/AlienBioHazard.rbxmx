@@ -1178,10 +1178,10 @@
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">4f3ca0d26d969d4c081333220000a168</UniqueId>
-        <Ref name="Value">21</Ref>
+        <Ref name="Value">null</Ref>
       </Properties>
     </Item>
-    <Item class="Folder" referent="22">
+    <Item class="Folder" referent="21">
       <Properties>
         <string name="Name">Animations</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -1192,7 +1192,7 @@
         <BinaryString name="Tags"></BinaryString>
         <UniqueId name="UniqueId">4f3ca0d26d969d4c081333220000a249</UniqueId>
       </Properties>
-      <Item class="StringValue" referent="23">
+      <Item class="StringValue" referent="22">
         <Properties>
           <string name="Name">walk</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -1204,7 +1204,7 @@
           <UniqueId name="UniqueId">4f3ca0d26d969d4c081333220000a24a</UniqueId>
           <string name="Value"></string>
         </Properties>
-        <Item class="Animation" referent="24">
+        <Item class="Animation" referent="23">
           <Properties>
             <string name="Name">Animation</string>
             <ContentId name="AnimationId">
@@ -1220,7 +1220,7 @@
           </Properties>
         </Item>
       </Item>
-      <Item class="StringValue" referent="25">
+      <Item class="StringValue" referent="24">
         <Properties>
           <string name="Name">run</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
@@ -1232,7 +1232,7 @@
           <UniqueId name="UniqueId">4f3ca0d26d969d4c081333220000a24c</UniqueId>
           <string name="Value"></string>
         </Properties>
-        <Item class="Animation" referent="26">
+        <Item class="Animation" referent="25">
           <Properties>
             <string name="Name">Animation</string>
             <ContentId name="AnimationId">
@@ -1249,7 +1249,7 @@
         </Item>
       </Item>
     </Item>
-    <Item class="CharacterMesh" referent="27">
+    <Item class="CharacterMesh" referent="26">
       <Properties>
         <string name="Name">Roblox 2.0 torso</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -1265,7 +1265,7 @@
         <UniqueId name="UniqueId">3bcd3a9eafdd1b61080ca998000003f4</UniqueId>
       </Properties>
     </Item>
-    <Item class="Shirt" referent="28">
+    <Item class="Shirt" referent="27">
       <Properties>
         <string name="Name">Shirt</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -1285,7 +1285,7 @@
         <UniqueId name="UniqueId">3bcd3a9eafdd1b61080ca998000003f5</UniqueId>
       </Properties>
     </Item>
-    <Item class="Pants" referent="29">
+    <Item class="Pants" referent="28">
       <Properties>
         <string name="Name">Pants</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -1305,7 +1305,7 @@
         <UniqueId name="UniqueId">3bcd3a9eafdd1b61080ca998000003f6</UniqueId>
       </Properties>
     </Item>
-    <Item class="Humanoid" referent="30">
+    <Item class="Humanoid" referent="29">
       <Properties>
         <string name="Name">Humanoid</string>
         <BinaryString name="AttributesSerialize"></BinaryString>
@@ -1315,11 +1315,11 @@
         <bool name="BreakJointsOnDeath">true</bool>
         <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
         <token name="CollisionType">0</token>
-        <token name="DisplayDistanceType">0</token>
+        <token name="DisplayDistanceType">1</token>
         <string name="DisplayName"></string>
         <bool name="EvaluateStateMachine">true</bool>
-        <float name="HealthDisplayDistance">100</float>
-        <token name="HealthDisplayType">0</token>
+        <float name="HealthDisplayDistance">10</float>
+        <token name="HealthDisplayType">1</token>
         <float name="Health_XML">100</float>
         <float name="HipHeight">0</float>
         <UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
@@ -1333,7 +1333,7 @@
         <float name="JumpPower">50</float>
         <float name="MaxHealth">100</float>
         <float name="MaxSlopeAngle">89</float>
-        <float name="NameDisplayDistance">100</float>
+        <float name="NameDisplayDistance">10</float>
         <token name="NameOcclusion">0</token>
         <bool name="RequiresNeck">true</bool>
         <token name="RigType">0</token>
@@ -1344,7 +1344,7 @@
         <bool name="UseJumpPower">true</bool>
         <float name="WalkSpeed">17</float>
       </Properties>
-      <Item class="Animator" referent="31">
+      <Item class="Animator" referent="30">
         <Properties>
           <string name="Name">Animator</string>
           <BinaryString name="AttributesSerialize"></BinaryString>
